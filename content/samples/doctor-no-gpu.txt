@@ -1,0 +1,12 @@
+Verdict
+  [ok] Host checked. The free rehearsal needs the REAX source, which is private until launch.
+What works today (rehearsal)
+  Localnet rehearsal is possible with the pinned source and tools.
+What is needed for real mining
+  No usable NVIDIA GPU detected; AMD and Apple GPUs are unsupported for mining.
+    Fix: Use localnet rehearsal, or use Linux with an NVIDIA GPU and driver R580+: https://www.nvidia.com/en-us/drivers/
+  Requires 1 NVIDIA GPU(s) with 24 GB VRAM and R580+ driver.
+    Fix: Select a pool matching your GPU capacity or use localnet rehearsal; supported hardware is listed in the release descriptor.
+  Check the release descriptor: the network must be live, with a netuid and public images.
+Next
+  reaxctl plan  # Review what you can prepare today.

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mine.decisionmodels.io/schemas/mine.schema.json",
+  "title": "Decision Models mining manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state", "source", "copy", "schema", "status", "updated", "prompts", "agent_tiers", "rules", "steps", "mainnet_steps", "os_support", "requirements", "pools", "links", "integrity"],
+  "properties": {
+    "state": {"enum": ["prelaunch", "live"]},
+    "source": {"type": "object", "required": ["public"], "properties": {"public": {"type": "boolean"}}},
+    "copy": {"type": "object", "additionalProperties": {"type": "string"}},
+    "schema": {"const": "decisionmodels-mine/1"},
+    "status": {"type": "object", "required": ["live", "launch_status", "netuid", "network"], "properties": {"live": {"type": "boolean"}, "launch_status": {"enum": ["launching_soon", "live"]}, "netuid": {"type": ["integer", "null"]}, "network": {"type": "string"}}},
+    "updated": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "prompts": {"type": "object", "additionalProperties": false, "required": ["short", "safe", "guided"], "properties": {"short": {"type": "string", "minLength": 20}, "safe": {"type": "string", "minLength": 20}, "guided": {"type": "string", "minLength": 20}}},
+    "agent_tiers": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "object", "required": ["id", "title", "capability", "examples"], "properties": {"id": {"enum": ["A", "B", "C"]}, "title": {"type": "string"}, "capability": {"type": "string"}, "examples": {"type": "array", "items": {"type": "string"}}}}},
+    "rules": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 10}},
+    "steps": {"type": "array", "minItems": 8, "items": {"$ref": "#/$defs/step"}},
+    "mainnet_steps": {"type": "array", "minItems": 8, "items": {"$ref": "#/$defs/step"}},
+    "os_support": {"type": "object", "additionalProperties": false, "required": ["linux", "windows", "macos"], "properties": {"linux": {"$ref": "#/$defs/os"}, "windows": {"$ref": "#/$defs/os"}, "macos": {"$ref": "#/$defs/os"}}},
+    "requirements": {"type": "object", "required": ["cpu_cores", "ram_gb", "disk_gb", "driver_min", "python_min", "open_ports", "never_publish_ports"], "properties": {"cpu_cores": {"type": "integer", "minimum": 1}, "ram_gb": {"type": "integer", "minimum": 1}, "disk_gb": {"type": "object"}, "driver_min": {"type": "string"}, "python_min": {"type": "string"}, "open_ports": {"type": "array", "items": {"type": "integer"}}, "never_publish_ports": {"type": "array", "items": {"type": "integer"}}}},
+    "pools": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "gpu", "enabled_at_launch"], "properties": {"id": {"type": "string"}, "gpu": {"type": "object", "required": ["vendor", "min_vram_gb", "count"], "properties": {"vendor": {"type": "string"}, "min_vram_gb": {"type": "number", "minimum": 1}, "count": {"type": "integer", "minimum": 1}}}, "enabled_at_launch": {"type": "boolean"}}}},
+    "links": {"type": "object", "required": ["agent", "linux", "windows", "macos", "wallets", "risks", "release", "kit", "protocol", "faq", "register"], "additionalProperties": {"type": "string"}},
+    "integrity": {"type": "object", "additionalProperties": false, "required": ["version", "release_id", "commit", "sha256", "tarball"], "properties": {"version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][a-zA-Z0-9.-]+)?$"}, "release_id": {"type": "string", "minLength": 1}, "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "tarball": {"type": "string", "pattern": "^reax-miner-kit-[a-zA-Z0-9.+-]+\\.tar\\.gz$"}}}
+  },
+  "$defs": {
+    "step": {"type": "object", "additionalProperties": false, "required": ["id", "title", "who", "command", "cost", "verify", "blocked_until_live"], "properties": {"id": {"type": "string"}, "title": {"type": "string"}, "who": {"enum": ["agent", "human"]}, "command": {"type": ["string", "null"]}, "cost": {"type": "object", "additionalProperties": false, "required": ["kind", "note"], "properties": {"kind": {"enum": ["none", "tao", "fiat"]}, "note": {"type": "string"}}}, "verify": {"type": "string"}, "blocked_until_live": {"type": "boolean"}}},
+    "os": {"type": "object", "additionalProperties": false, "required": ["mining", "guide", "wallet", "caveat"], "properties": {"mining": {"enum": ["native", "conditional", "remote_only"]}, "guide": {"type": "string", "pattern": "^/os/"}, "wallet": {"type": "string"}, "caveat": {"type": "string"}}}
+  }
+}

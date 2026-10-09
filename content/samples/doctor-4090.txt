@@ -1,0 +1,8 @@
+Verdict
+  [ok] Host checked. The free rehearsal needs the REAX source, which is private until launch.
+What works today (rehearsal)
+  Localnet rehearsal is possible with the pinned source and tools.
+What is needed for real mining
+  Check the release descriptor: the network must be live, with a netuid and public images.
+Next
+  reaxctl plan  # Review what you can prepare today.

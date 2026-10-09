@@ -1,0 +1,29 @@
+<svg class="key-diagram" viewBox="0 0 540 300" role="img" aria-labelledby="key-title key-desc">
+<title id="key-title">Your coldkey stays home; the hotkey signs on the miner</title>
+<desc id="key-desc">A wallet on your trusted device holds the coldkey, controls funds and approves payments. A separate mining machine holds only the hotkey and signs answers. The coldkey never crosses the dashed boundary.</desc>
+<rect class="key-box" x="12" y="36" width="232" height="228" rx="12"/>
+<rect class="key-box" x="296" y="36" width="232" height="228" rx="12"/>
+<g class="key-icon" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="105" y="70" width="46" height="34" rx="4"/><path d="M105 75v-9l35-5v9M139 81h12v14h-12z"/>
+<rect x="394" y="66" width="36" height="36" rx="4"/><rect x="404" y="76" width="16" height="16" rx="2"/><path d="M400 60v6m12-6v6m12-6v6M400 102v6m12-6v6m12-6v6M388 72h6m-6 12h6m-6 12h6M430 72h6m-6 12h6m-6 12h6"/>
+<path class="key-boundary" d="M270 12v276" stroke-dasharray="4 6"/>
+<path d="M230 145h-14m0 0 5-5m-5 5 5 5M310 145h14m0 0-5-5m5 5-5 5"/>
+<path class="key-cross" d="m263 138 14 14m0-14-14 14"/>
+</g>
+<text x="128" y="133" text-anchor="middle" class="key-label">YOUR TRUSTED DEVICE</text>
+<text x="128" y="169" text-anchor="middle" class="key-name">Coldkey</text>
+<text x="128" y="198" text-anchor="middle">Funds, approves payments</text>
+<text x="128" y="235" text-anchor="middle" class="key-note">STAYS HOME</text>
+<text x="412" y="133" text-anchor="middle" class="key-label">MINING MACHINE</text>
+<text x="412" y="169" text-anchor="middle" class="key-name">Hotkey</text>
+<text x="412" y="198" text-anchor="middle">Signs answers</text>
+<text x="412" y="235" text-anchor="middle" class="key-note">OPERATIONAL KEY ONLY</text>
+<text x="270" y="296" text-anchor="middle" class="key-note">COLDKEY NEVER CROSSES</text>
+</svg>
+<svg class="key-diagram key-diagram-mobile" viewBox="0 0 280 570" role="img" aria-labelledby="mobile-key-title mobile-key-desc">
+<title id="mobile-key-title">Separate devices, separate keys</title><desc id="mobile-key-desc">Your trusted device holds the coldkey for funds and payment approval. It stays home and never crosses to the mining machine. The miner holds only the hotkey to sign answers.</desc>
+<rect class="key-box" x="12" y="12" width="256" height="226" rx="12"/><rect class="key-box" x="12" y="328" width="256" height="226" rx="12"/>
+<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="119" y="40" width="42" height="32" rx="4"/><path d="M119 45v-9l32-5v9M150 49h11v14h-11z"/><rect x="122" y="356" width="36" height="36" rx="4"/><rect x="132" y="366" width="16" height="16" rx="2"/><path d="M128 350v6m12-6v6m12-6v6M128 392v6m12-6v6m12-6v6M116 362h6m-6 12h6m-6 12h6M158 362h6m-6 12h6m-6 12h6"/><path class="key-boundary" d="M12 283h256" stroke-dasharray="4 6"/><path class="key-cross" d="m134 277 12 12m0-12-12 12"/></g>
+<text x="140" y="106" text-anchor="middle" class="key-label">YOUR TRUSTED DEVICE</text><text x="140" y="144" text-anchor="middle" class="key-name">Coldkey</text><text x="140" y="174" text-anchor="middle">Funds, approves payments</text><text x="140" y="212" text-anchor="middle" class="key-note">STAYS HOME</text>
+<text x="140" y="264" text-anchor="middle" class="key-note">COLDKEY NEVER CROSSES</text>
+<text x="140" y="422" text-anchor="middle" class="key-label">MINING MACHINE</text><text x="140" y="460" text-anchor="middle" class="key-name">Hotkey</text><text x="140" y="490" text-anchor="middle">Signs answers</text><text x="140" y="530" text-anchor="middle" class="key-note">OPERATIONAL KEY ONLY</text></svg>

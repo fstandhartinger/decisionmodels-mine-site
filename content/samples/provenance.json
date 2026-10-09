@@ -1,0 +1,20 @@
+{
+  "kit_commit": "395ef70c686f06edf52e663143768da43c84251e",
+  "kit_version": "0.1.0",
+  "archive_sha256": "48cc93f2ac810ce8dc35a3b65eaa9e505a889c4f4d07de4b780b613c967cf2c7",
+  "path": "reaxlib.cli.main \u2192 cmd_doctor.diagnose \u2192 result.emit (fixture sysprobe injection)",
+  "samples": {
+    "4090": {
+      "fixture": "tests/fixtures/core_4090.json",
+      "fixture_sha256": "133501758f65de9dbad6a08353541b39d878340c7edcfaba7b86d3b48b1ad252",
+      "output_sha256": "33586e37f07264313f9815e825f2fc6b49c9e131d6a729e651cffcf9a3923c60",
+      "excerpt": false
+    },
+    "no-gpu": {
+      "fixture": "tests/fixtures/core_no_gpu.json",
+      "fixture_sha256": "36eb7a32d072060867e67966fa622512ce42022acd461ed7a3a64eff3895f00b",
+      "output_sha256": "70ed693f317e7be5b1a22f92f4b2ef6eb32ec78c1047f2130ef67a35902ac989",
+      "excerpt": false
+    }
+  }
+}
