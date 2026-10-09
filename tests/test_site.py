@@ -186,10 +186,10 @@ class SiteTests(unittest.TestCase):
                         self.assertIn('Launching soon.</h2>', home)
                         self.assertIn('miner code and images are published at launch', home)
                         self.assertIn('private until launch', (output/'llms.txt').read_text())
-                        self.assertTrue(all(s['command'] is None for s in data['steps'][2:]))
+                        self.assertTrue(all(s['command'] and s['blocked_until_live'] for s in data['steps'][2:]))
                         self.assertIn('STOP', data['steps'][1]['verify'])
                         for os_name in ['linux','windows','macos']:
-                            self.assertIn('then stop', (output/'os'/ (os_name+'.md')).read_text())
+                            self.assertIn('Setup opens at launch', (output/'os'/ (os_name+'.md')).read_text())
                     else:
                         self.assertEqual(data['state'], 'live')
                         self.assertTrue(all(s['command'] for s in data['steps']))
@@ -202,6 +202,41 @@ class SiteTests(unittest.TestCase):
                         else:
                             self.assertIn('Practice run available', home)
                             self.assertIn('registration remains blocked', home)
+
+    def test_agent_commands_match_manifest(self):
+        import shlex
+        agent = (DIST/'agent.md').read_text()
+        mainnet = agent.split('## Step 4')[1].split('## Step 5')[0]
+        commands = [shlex.split(c) for c in re.findall(r'`(\./reaxctl [^`]+)`', mainnet)]
+        for step in self.data['mainnet_steps']:
+            if step['command'] and step['id'] not in ('doctor', 'choose-mode'):
+                # Argument order is immaterial; exact values and approval flags are not.
+                expected = shlex.split(step['command'])
+                self.assertTrue(any(sorted(c) == sorted(expected) for c in commands), step['id'])
+        install = next(s for s in self.data['mainnet_steps'] if s['id'] == 'install')
+        self.assertIn('--confirm-mainnet', install['command'])
+        self.assertIn('only after the human explicitly approves', mainnet)
+        self.assertIn('Python 3.8+', agent)
+        self.assertIn('Python 3.10+', agent)
+        for step in self.data['steps'][2:]:
+            self.assertTrue(step['blocked_until_live'])
+            self.assertIn('Do not run this command yet', step['verify'])
+
+    def test_human_layout_and_copy(self):
+        for source in DIST.rglob('*.html'):
+            text = source.read_text()
+            self.assertEqual(text.count('<table>'), text.count('aria-label="Table"'), source)
+            self.assertNotIn('rel="preload"', text)
+            if source.name != 'agent.html':
+                self.assertNotIn('installation is refused with exit 12', text)
+                self.assertNotIn('Before launch, run doctor and plan', text)
+        error = (DIST/'404.html').read_text()
+        self.assertNotIn('ON THIS PAGE', error)
+        self.assertNotIn('Read as Markdown', error)
+        home = (DIST/'index.html').read_text()
+        self.assertIn('Not live yet — launching soon', home)
+        self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
+        self.assertRegex(home, r'<form[^>]*class="checker"[^>]*hidden')
 
     def test_headers_and_installer(self):
         config=(DIST/'nginx.conf').read_text()

@@ -18,8 +18,11 @@ COPY = {
     'prelaunch': {
         'STATUS_PILL': 'Launching soon',
         'STATUS_TITLE': 'Launching soon.',
-        'STATUS_BODY': 'The REAX subnet is not live on Bittensor mainnet yet, and the miner code and images are published at launch. Today your agent can check your machine and tell you exactly what you need — hardware, wallet, ports — so you are ready on day one. Setup, a free practice run on a local chain, and the real network all open at launch; this page then switches over.',
-        'HERO_NOTE': 'Give your coding agent one link. Today it checks your machine and prepares a hardware, wallet and ports plan. Setup and mining open at launch; you keep your keys and approve every payment.',
+        'STATUS_BODY': 'The REAX subnet (a network within Bittensor) is not live on the main network yet, and the miner code and images are published at launch. Today your agent can check your machine and tell you exactly what you need — hardware, wallet, ports — so you are ready on day one. Setup, a free practice run on a local chain, and the real network all open at launch; this page then switches over.',
+        'HERO_NOTE': 'Give your coding agent one link. It checks your machine and sets up a miner for REAX, a peer-to-peer inference network on Bittensor. You keep your keys and approve every payment.',
+        'HUMAN_NOTE': 'Your agent can check this machine today. Setup opens at launch.',
+        'STRIP_STATUS': 'Not live yet — launching soon',
+        'PYTHON_NOTE': 'Controller: Python 3.8+; tools virtual environment: Python 3.10+.',
         'PRACTICE_NOTE': 'Before launch, run doctor and plan, explain the findings and wallet plan, then stop. Miner source and images are private until launch; installation is refused with exit 12. At launch, start with a free practice run on a local chain using test TAO before real registration.',
         'META_DESCRIPTION': 'Prepare for REAX mining with your coding agent: check hardware, wallet and ports today. Setup and a free local-chain practice run open at launch.',
         'CHECKER_TITLE': 'Check your machine and prepare for launch.',
@@ -33,8 +36,11 @@ COPY = {
     'live': {
         'STATUS_PILL': 'Network live',
         'STATUS_TITLE': 'The network is open. Practice before registering.',
-        'STATUS_BODY': 'The REAX subnet is live on Bittensor mainnet. Start with a free practice run on a local chain using test TAO before real registration. Check the release descriptor for the current netuid; a human approves every payment.',
+        'STATUS_BODY': 'The REAX subnet (a network within Bittensor) is live on the main network. Start with a free practice run on a local chain using test TAO (the network’s currency) before real registration. Check the release descriptor for the current netuid; a human approves every payment.',
         'HERO_NOTE': 'Give your coding agent one link. It checks your machine, starts with a free local-chain practice run using test TAO, then prepares real registration. You keep your keys and approve every payment.',
+        'HUMAN_NOTE': 'Start with a free practice run using test TAO (the network’s currency) before real registration.',
+        'STRIP_STATUS': 'Network live',
+        'PYTHON_NOTE': 'Controller: Python 3.8+; tools virtual environment: Python 3.10+.',
         'PRACTICE_NOTE': 'Start with a free practice run on a local chain using test TAO and throw-away accounts before real registration. No GPU or real TAO is needed for practice; Python 3.10+ and the published REAX source are required. Follow the agent playbook and verify the run before proceeding.',
         'META_DESCRIPTION': 'Set up REAX mining with your coding agent. Practice free on a local chain with test TAO before real registration; keep your keys and approve every payment.',
         'CHECKER_TITLE': 'Practice free before real registration.',
@@ -52,7 +58,8 @@ def state_copy(release):
     copy = dict(COPY[STATE])
     # Publishing source permits practice, but never implies the real network is live.
     if STATE == 'live' and not release['status']['live']:
-        copy.update(STATUS_PILL='Practice run available', STATUS_TITLE='Practice before launch.',
+        copy.update(STRIP_STATUS='Not live yet — practice available', STATUS_PILL='Practice run available', STATUS_TITLE='Practice before launch.',
+                    HUMAN_NOTE='Your agent can start a free practice run today. Real registration opens at launch.',
                     STATUS_BODY='The REAX source is public. Start with a free practice run on a local chain using test TAO. Mainnet registration remains blocked until status.live is true.',
                     CHECKER_BODY=copy['CHECKER_BODY'] + ' Mainnet registration remains blocked until status.live is true.',
                     LLMS_NOTE=copy['LLMS_NOTE'] + ' Mainnet registration remains blocked until status.live is true.')
@@ -79,7 +86,7 @@ def build():
     # Keep operational release fields pinned; presentation notes follow the same state copy.
     release['status'] = dict(release['status'], notes=copy['CHECKER_BODY'])
     write('releases/current.json', json.dumps(release, indent=2)+'\n')
-    prompts = {k: v.replace('{{PRACTICE_NOTE}}', copy['PRACTICE_NOTE']) for k,v in json.loads((ROOT / 'content/prompts.json').read_text()).items()}
+    prompts = {k: v.replace('{{PRACTICE_NOTE}}', copy['PRACTICE_NOTE']).replace('{{HUMAN_NOTE}}', copy['HUMAN_NOTE']) for k,v in json.loads((ROOT / 'content/prompts.json').read_text()).items()}
     substitutions = {'KIT_VERSION': lock['version'], 'RELEASE_ID': lock['release_id'], 'KIT_COMMIT': lock['commit'], 'KIT_SHA256': lock['sha256'], 'UPDATED': lock['updated']}
     substitutions.update(copy)
     def fill(value):
@@ -123,7 +130,7 @@ def build():
         s['blocked_until_live'] = s['id'] not in ('doctor', 'choose-mode')
         s['cost'] = {'kind':'none','note':'No payment by the agent.'}
         if s['id'] == 'install':
-            s['command'] += ' --pool s1-fast'
+            s['command'] += ' --pool s1-fast --confirm-mainnet'
             s['verify'] += '; mainnet requires human-approved --confirm-mainnet'
         if s['id'] == 'register':
             s.update(who='human', title='Human funds and signs registration in their own wallet',cost={'kind':'tao','note':'Live fee, non-refundable burn; human approval required.'}, verify='Correct netuid and public addresses; on-chain registration confirmed')
@@ -131,31 +138,30 @@ def build():
     mainnet[at:at] = [dict(id='coldkey', title='Human creates a coldkey on a separate trusted device',who='human',command=None,cost={'kind':'none','note':'No secrets reach the agent.'},verify='Human returns only public SS58 address',blocked_until_live=True),dict(id='coldkeypub',title='Install the public coldkey address',who='agent',command='./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json',cost={'kind':'none','note':'Public address only'},verify='Public address checksum verified',blocked_until_live=True)]
     for step in steps:
         if STATE == 'prelaunch' and step['id'] not in ('doctor', 'choose-mode'):
-            step['command'] = None
-            step['verify'] = 'Unavailable until launch; source is private and install exits 12.'
+            step['blocked_until_live'] = True
+            step['verify'] = 'Unavailable until launch; source is private and install exits 12. Do not run this command yet.'
         step['cost']['note'] = 'No payment. Runtime steps open when source is public.' if STATE == 'prelaunch' else 'Test TAO only; no real payment.'
     data = dict(state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
                 agent_tiers=[dict(id='A', title='Local execution',capability='Shell/file operations on the selected target host, subject to permissions.', examples=['Claude Code local','Codex CLI local','Cursor local','Gemini CLI local']),dict(id='B',title='Hosted or browser execution',capability='Read guides and prepare a reviewed script; no default target-host shell.',examples=['Cloud coding sessions','Browser agents']),dict(id='C',title='Chat only',capability='Explain and prepare steps; no execution tool.',examples=['Chat without tools'])],rules=rules,steps=steps,mainnet_steps=mainnet,os_support=os_support,requirements=release['requirements'],pools=release['pools'],links=dict(agent='/agent.md',linux='/os/linux',windows='/os/windows',macos='/os/macos',wallets='/wallets',risks='/rewards-and-risks',release='/releases/current.json',kit='https://github.com/fstandhartinger/reax-miner-kit',protocol='https://reax.dev/mine/',faq='https://reax.dev/miner-faq/',register='https://reax.dev/register/'),integrity={k:lock[k] for k in ('version','release_id','commit','sha256','tarball')})
     write('mine.json', json.dumps(data,indent=2,ensure_ascii=False)+'\n')
-    prompt_html = '<div class="prompt-card"><div class="prompt-tabs" aria-label="Prompt variants">'
+    prompt_html = '<div class="prompt-card"><div class="prompt-tabs" role="tablist" aria-label="Prompt variants">'
     for ident,label in [('short','Short'),('safe','Safe by default'),('guided',"I’m not technical")]:
-        prompt_html += '<button type="button" class="prompt-tab" data-variant="'+ident+'" aria-pressed="'+('true' if ident=='short' else 'false')+'" hidden>'+label+'</button>'
-    prompt_html += '</div><div class="prompt-row"><p id="agent-prompt">'+html.escape(prompts['short'])+'</p><button type="button" id="copy-prompt" hidden>Copy prompt</button></div><p class="copy-status" aria-live="polite"></p><noscript><p>Copy the selectable text above into your local coding agent. Read <a href="/agent.md">agent.md</a> first.</p></noscript></div>'
-    checker = '''<form class="checker" action="/os/linux" method="get" toolname="check_mining_requirements" tooldescription="Check public REAX OS and GPU requirements and open an OS guide. No actions or wallet access.">
-<label for="os">Operating system</label><select id="os" name="os"><option value="linux">Linux</option><option value="windows">Windows</option><option value="macos">macOS</option></select>
-<label for="gpu">GPU VRAM</label><select id="gpu" name="gpu"><option value="none">No GPU</option><option value="lt16">NVIDIA &lt;16 GB</option><option value="16">NVIDIA 16–23 GB</option><option value="24">NVIDIA 24–47 GB</option><option value="48">NVIDIA 48+ GB</option><option value="amd">AMD GPU</option><option value="apple">Apple GPU</option></select>
+        prompt_html += '<button type="button" class="prompt-tab" data-variant="'+ident+'" id="prompt-tab-'+ident+'" role="tab" aria-controls="agent-prompt" tabindex="'+('0' if ident=='short' else '-1')+'" aria-selected="'+('true' if ident=='short' else 'false')+'" hidden>'+label+'</button>'
+    prompt_html += '</div><div class="prompt-row"><p id="agent-prompt" role="tabpanel" aria-labelledby="prompt-tab-short" aria-live="polite">'+html.escape(prompts['short'])+'</p><button type="button" id="copy-prompt" hidden>Copy prompt</button></div><p class="copy-status" aria-live="polite"></p><noscript><p>Copy the selectable text above into your local coding agent. Read <a href="/agent.md">agent.md</a> first.</p></noscript></div>'
+    checker = '''<form hidden class="checker" action="/os/linux" method="get" toolname="check_mining_requirements" tooldescription="Check public REAX OS and GPU requirements and open an OS guide. No actions or wallet access.">
+<label for="os">Operating system</label><select id="os" name="os"><option value="">Choose…</option><option value="linux">Linux</option><option value="windows">Windows</option><option value="macos">macOS</option></select>
+<label for="gpu">GPU memory (VRAM)</label><select id="gpu" name="gpu"><option value="">Choose…</option><option value="none">No GPU</option><option value="lt16">NVIDIA &lt;16 GB</option><option value="16">NVIDIA 16–23 GB</option><option value="24">NVIDIA 24–47 GB</option><option value="48">NVIDIA 48+ GB</option><option value="amd">AMD GPU</option><option value="apple">Apple GPU</option></select>
 <div class="guide-actions"><button type="submit" formaction="/os/linux" name="guide" value="linux">Linux guide</button><button type="submit" formaction="/os/windows" name="guide" value="windows">Windows guide</button><button type="submit" formaction="/os/macos" name="guide" value="macos">macOS guide</button></div>
-<p class="form-note">Without JavaScript, choose your OS guide above.</p></form><div id="verdict" class="verdict" role="status"><strong>{{CHECKER_TITLE}}</strong><p>{{CHECKER_BODY}}</p><a id="os-guide" href="/os/linux">Read the Linux guide →</a></div>'''
+</form><div id="verdict" class="verdict" role="status" hidden></div><noscript><form class="guide-actions" action="/os/linux"><button type="submit" formaction="/os/linux">Linux guide</button><button type="submit" formaction="/os/windows">Windows guide</button><button type="submit" formaction="/os/macos">macOS guide</button></form></noscript>'''
     checker = fill(checker)
     diagram = (ROOT/'templates/key-diagram.svg').read_text()
     session_lines = [
-        '> Set up this machine for mining at Decision Models by REAX: mine.decisionmodels.io',
+        '> Check this computer for REAX mining: mine.decisionmodels.io',
         '✓ Read the playbook (agent.md)',
         '✓ Checked hardware: Linux, NVIDIA RTX 4090 · 24 GB',
         '✓ Installed the miner kit (checksum verified)',
         '✓ Rehearsal on a local chain: miner scored 1.000',
-        '→ Needs you: create your wallet and approve the registration',
-        '  I never see your keys.'
+        '→ Needs you: create your wallet and approve registration. I never see your keys.'
     ]
     if STATE == 'prelaunch':
         session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Reviewed hardware, wallet and ports plan', '→ Setup and the free practice run open at launch', '  I stop here until the source is public. Your keys stay with you.']
@@ -198,24 +204,28 @@ def build():
     sources = {}
     for source in sorted((ROOT/'content').rglob('*.md')):
         rel = source.relative_to(ROOT/'content').with_suffix('').as_posix()
-        raw = fill(source.read_text())
+        raw = source.read_text()
+        if rel != 'agent':
+            raw = raw.replace('{{PRACTICE_NOTE}}', '{{HUMAN_NOTE}}')
+        raw = fill(raw)
         text_source = raw
         for key,value in feature_md.items(): text_source = text_source.replace('{{'+key+'}}',value)
         # Markdown twins use the same words, stripped of presentation wrappers.
-        text_source = re.sub(r'</?(?:div|section|details)[^>]*>','',text_source)
+        text_source = re.sub(r'</?(?:div|section|details)\b[^>]*>','',text_source)
         text_source = re.sub(r'<br\s*/?>','\n',text_source)
-        text_source = re.sub(r'</?(?:p|summary)[^>]*>','',text_source)
+        text_source = re.sub(r'</?(?:p|summary)\b[^>]*>','',text_source)
         text_source = re.sub(r' \{#[^}]+\}', '', text_source)
         sources[rel] = text_source
         write(rel+'.md',text_source)
         for key,value in feature_html.items(): raw = raw.replace('{{'+key+'}}',value)
         md = markdown.Markdown(extensions=['extra','toc','md_in_html'],extension_configs={'toc':{'permalink':False}})
         body = md.convert(raw)
+        body = body.replace('<table>', '<div class="table-scroll" tabindex="0" role="region" aria-label="Table"><table>').replace('</table>', '</table></div>')
         title_match = re.search(r'<h1[^>]*>(.*?)</h1>',body)
         title = re.sub('<[^>]+>','',title_match.group(1)) if title_match else 'Mining guides'
         home = rel == 'index'
         path = '/' if home else '/'+rel
-        values = dict(TITLE=html.escape(title),PATH=path,MD_PATH='/'+rel+'.md',CLASS='home' if home else 'docs',LAYOUT='home-layout' if home else 'docs-layout',TOC='' if home else '<aside class="toc" aria-label="On this page"><p class="eyebrow">ON THIS PAGE</p>'+md.toc+'<a href="/'+rel+'.md">Read as Markdown</a></aside>',BODY=body,ROBOTS='index, follow' if INDEXING_ALLOWED else 'noindex, nofollow')
+        values = dict(TITLE=html.escape(title),PATH=path,MD_PATH='/'+rel+'.md',CLASS='home' if home else 'docs',LAYOUT='home-layout' if home or rel == '404' else 'docs-layout',TOC='' if home or rel == '404' else '<aside class="toc" aria-label="On this page"><p class="eyebrow">ON THIS PAGE</p>'+md.toc+'<a href="/'+rel+'.md">Read as Markdown</a></aside>',BODY=body,ROBOTS='index, follow' if INDEXING_ALLOWED else 'noindex, nofollow')
         output = template
         output = fill(output)
         for key,value in values.items(): output=output.replace('{{'+key+'}}',value)

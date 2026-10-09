@@ -61,35 +61,59 @@
     if (prompt) {
       const copyButton = document.querySelector('#copy-prompt'); copyButton.hidden = false;
       copyButton.addEventListener('click', () => copy(prompt.textContent, copyButton, document.querySelector('.copy-status')));
-      document.querySelectorAll('.prompt-tab').forEach(tab => {
+      const tabs = [...document.querySelectorAll('.prompt-tab')];
+      const choose = tab => {
+        prompt.textContent = data.prompts[tab.dataset.variant];
+        prompt.setAttribute('aria-labelledby', tab.id);
+        tabs.forEach(other => {
+          const selected = other === tab;
+          other.setAttribute('aria-selected', String(selected));
+          other.tabIndex = selected ? 0 : -1;
+        });
+        document.querySelector('.copy-status').textContent = '';
+      };
+      tabs.forEach(tab => {
         tab.hidden = false;
-        tab.addEventListener('click', () => {
-          prompt.textContent = data.prompts[tab.dataset.variant];
-          document.querySelectorAll('.prompt-tab').forEach(other => other.setAttribute('aria-pressed', String(other === tab)));
-          document.querySelector('.copy-status').textContent = '';
+        tab.addEventListener('click', () => choose(tab));
+        tab.addEventListener('keydown', event => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          const index = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 :
+            (tabs.indexOf(tab) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          choose(tabs[index]); tabs[index].focus();
         });
       });
     }
     if (checker) {
+      checker.hidden = false;
       const os = checker.querySelector('#os'), gpu = checker.querySelector('#gpu');
       const buttons = checker.querySelectorAll('.guide-actions button');
-      buttons.forEach((button, i) => { button.hidden = i !== 0; });
+      buttons.forEach(button => { button.hidden = true; });
       const update = () => {
+        const verdict = document.querySelector('#verdict');
+        verdict.replaceChildren(); verdict.hidden = !os.value || !gpu.value;
+        if (verdict.hidden) return;
         const value = gpu.value;
         const sizes = { none: 0, lt16: 8, '16': 16, '24': 24, '48': 48, amd: 0, apple: 0 };
         const vendor = value === 'amd' ? 'AMD' : value === 'apple' ? 'Apple' : 'NVIDIA';
         const result = window.MiningRequirements.check(data, os.value, sizes[value], vendor);
-        const verdict = document.querySelector('#verdict');
-        verdict.replaceChildren();
-        const strong = document.createElement('strong'); strong.textContent = result.verdict; verdict.append(strong);
-        result.reasons.forEach(reason => { const p = document.createElement('p'); p.textContent = reason; verdict.append(p); });
+        const sentence = document.createElement('p');
+        const status = data.status.live ? 'verify runtime before mining' : 'the network is not live yet';
+        sentence.textContent = os.value === 'macos'
+          ? `This Mac cannot mine locally; use an authorized NVIDIA Linux host (${status}).`
+          : result.hardware_candidate
+            ? (os.value === 'windows'
+              ? `This GPU is a conditional WSL2 candidate, not yet tested by us end to end; ${status}.`
+              : `This GPU meets the capacity requirement; ${status}.`)
+            : `Mining needs another host with a compatible NVIDIA GPU of at least 24 GB; ${status}.`;
+        verdict.append(sentence);
         const link = document.createElement('a'); link.id = 'os-guide'; link.href = result.guide; link.textContent = `Read the ${os.options[os.selectedIndex].text} guide →`; verdict.append(link);
-        checker.action = result.guide; buttons[0].setAttribute('formaction', result.guide); buttons[0].textContent = 'Open OS guide';
-        checker.querySelector('.form-note').hidden = true;
+        checker.action = result.guide;
       };
       checker.addEventListener('change', update);
       checker.addEventListener('submit', event => {
-        // Human submit also navigates normally; declarative tool calls can read the result.
+        event.preventDefault();
+        // Declarative tool calls can read the verdict without navigating.
         update();
         if (event.agentInvoked && typeof event.respondWith === 'function') { event.preventDefault(); event.respondWith(Promise.resolve(document.querySelector('#verdict').textContent)); }
       });

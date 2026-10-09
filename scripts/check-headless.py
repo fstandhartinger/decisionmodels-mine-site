@@ -45,7 +45,11 @@ def main():
                     assert response.read()==(ROOT/'dist'/twin).read_bytes(),route
                     assert response.headers.get_content_type()=='text/markdown',dict(response.headers)
                     assert response.headers['Vary']=='Accept'
-            with get('/not-a-guide') as response: assert response.status==404
+            for route in ['/not-a-guide', '/404', '/404.html']:
+                with get(route) as response:
+                    assert response.status==404, route
+                    body=response.read().decode()
+                    assert 'ON THIS PAGE' not in body and 'Read as Markdown' not in body
             with get('/agent.md') as response: assert response.headers.get_content_type()=='text/markdown'
             with get('/mine.json') as response: assert response.headers.get_content_type()=='application/json'
             print('PASS: nginx syntax, healthz, 8 HTML/Markdown negotiations, MIME, Vary, CSP, launch hold and 404')

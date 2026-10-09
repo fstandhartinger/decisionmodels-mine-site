@@ -42,8 +42,8 @@ echo "{{KIT_SHA256}}  reax-miner-kit-{{KIT_VERSION}}.tar.gz" | sha256sum -c -
 mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~/reax-miner-kit && cd ~/reax-miner-kit
 ```
 
-(`install.sh` at https://mine.decisionmodels.io/install.sh does the second variant for people; read it before running, it is 40 lines. Do not pipe it into a shell without reading it.)
-The kit is plain Python 3 standard library, no dependencies. `./reaxctl spec --json` prints its full command set.
+(`install.sh` at https://mine.decisionmodels.io/install.sh does the second variant for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
+The controller uses Python 3.8+ and the standard library, with no dependencies. The tools virtual environment needs Python 3.10+. `./reaxctl spec --json` prints its full command set.
 
 ## Step 2 — check the machine
 
@@ -89,12 +89,12 @@ Real networks (`--mode testnet|mainnet`) are refused (exit 12) while `status.liv
 
 ## Step 4 — real mining (only when `status.live` is true)
 
-1. `./reaxctl install --mode mainnet --pool s1-fast --yes --json` — installs tools, pulls the pinned images by digest, downloads the pinned model weights (≈ 9 GB).
-2. `./reaxctl wallet hotkey --json` — creates the **hotkey only** on this machine and prints its public address.
-3. **Human step — coldkey.** Ask the person to create/open their wallet on their own trusted device: Talisman (browser extension) is the recommended default; `btcli` on a separate Linux/macOS/WSL2 computer is the alternative. Neither the phrase nor the file ever reaches you. They give you only their **public** SS58 address. Then: `./reaxctl wallet coldkeypub --ss58 <address> --json`.
-4. **Human step — fund and register.** Run `./reaxctl register --json`. It returns the registration page and the hotkey address. The person opens it, sees the live registration fee (a non-refundable burn in TAO), and approves in their own wallet. You wait. Confirm the fee with them first; stop if they hesitate.
-5. `./reaxctl start --json`, then `./reaxctl verify --json`. All items must pass (health, commitment published, registered, clock in sync). Fix with the `fix` text of the failing item; re-run.
-6. `./reaxctl service install --json` (systemd; needs admin once — give the person the exact `sudo` line it prints) and `./reaxctl update timer install --json`.
+1. `./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet` — pass `--confirm-mainnet` only after the human explicitly approves mainnet installation; installs tools, pulls the pinned images by digest, downloads the pinned model weights (≈ 9 GB).
+2. `./reaxctl wallet hotkey --json --mode mainnet` — creates the **hotkey only** on this machine and prints its public address.
+3. **Human step — coldkey.** Ask the person to create/open their wallet on their own trusted device: Talisman (browser extension) is the recommended default; `btcli` on a separate Linux/macOS/WSL2 computer is the alternative. Neither the phrase nor the file ever reaches you. They give you only their **public** SS58 address. Then: `./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json`.
+4. **Human step — fund and register.** Run `./reaxctl register --json --mode mainnet`. It returns the registration page and the hotkey address. The person opens it, sees the live registration fee (a non-refundable burn in TAO), and approves in their own wallet. You wait. Confirm the fee with them first; stop if they hesitate.
+5. `./reaxctl start --json --mode mainnet`, then `./reaxctl verify --json --mode mainnet`. All items must pass (health, commitment published, registered, clock in sync). Fix with the `fix` text of the failing item; re-run.
+6. `./reaxctl service install --json --mode mainnet` (systemd; needs admin once — give the person the exact `sudo` line it prints) and `./reaxctl update timer install --json --mode mainnet`.
 
 The miner needs a public IPv4/IPv6 address and one open TCP port (8091). Behind a home router that means a port forward the person must configure; `verify --probe-ip` checks reachability.
 

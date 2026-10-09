@@ -12,7 +12,7 @@ from pathlib import Path
 import threading
 import time
 from urllib.parse import urlsplit
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -45,7 +45,7 @@ def capture(url,output,cdp,isolated=False):
                 time.sleep(1)
         with sync_playwright() as pw:
             browser = pw.chromium.launch(executable_path='/usr/bin/google-chrome', headless=True, args=['--no-sandbox']) if isolated else pw.chromium.connect_over_cdp(cdp)
-            context = browser.new_context() if isolated else browser.contexts[0]
+            context = browser.new_context(permissions=['clipboard-read', 'clipboard-write']) if isolated else browser.contexts[0]
             page=context.new_page()
             errors=[]; page.on('pageerror',lambda error: errors.append(str(error)))
             page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
@@ -61,7 +61,14 @@ def capture(url,output,cdp,isolated=False):
                         assert page.locator('h1').count()==1
                         assert not page.evaluate('document.documentElement.scrollWidth > innerWidth'),f'Overflow {label} {theme}'
                         page.screenshot(path=str(output/f'{label}-{theme}.png'),full_page=True)
+                        strip_bottom = page.locator('.requirements-strip').bounding_box()['y'] + page.locator('.requirements-strip').bounding_box()['height']
+                        assert strip_bottom <= page.viewport_size['height'], f'Requirements below fold: {strip_bottom}'
+                        checks.append(f'Hero requirements and launch status visible above fold at {width}px: bottom {strip_bottom:.0f}px')
+                        page.screenshot(path=str(output/f'{label}-{theme}-top.png'))
                         if width == 1440: page.screenshot(path=str(output/f'{label}-{theme}-top.png'))
+                        assert page.locator('#verdict').inner_text() == ''
+                        assert page.locator('#os').input_value() == ''
+                        assert page.locator('#gpu').input_value() == ''
                         for sample in ['4090', 'no-gpu']:
                             page.locator('[data-sample="'+sample+'"]').click()
                             assert page.locator('#doctor-'+sample).is_visible()
@@ -70,24 +77,34 @@ def capture(url,output,cdp,isolated=False):
                             page.locator('.doctor-samples').screenshot(path=str(output/f'{label}-{theme}-doctor-{sample}.png'))
                         page.locator('[data-sample="4090"]').click()
                         checks.append(f'{label} {theme}: no horizontal overflow; screenshot captured')
+                page.locator('[data-variant="short"]').focus()
+                page.keyboard.press('ArrowRight')
+                assert page.locator('[data-variant="safe"]').get_attribute('aria-selected') == 'true'
+                assert page.locator('#agent-prompt').get_attribute('aria-live') == 'polite'
+                page.keyboard.press('End')
+                assert page.locator('[data-variant="guided"]').get_attribute('tabindex') == '0'
+                checks.append('Prompt tabs support arrows and roving tabindex; live prompt region present')
                 page.locator('[data-sample="4090"]').focus()
                 page.keyboard.press('ArrowRight')
                 assert page.locator('#doctor-no-gpu').is_visible()
                 page.keyboard.press('Home')
                 assert page.locator('#doctor-4090').is_visible()
                 checks.append('Doctor tabs support keyboard navigation')
-                page.get_by_role('button',name='Safe by default',exact=True).click()
+                page.get_by_role('tab',name='Safe by default',exact=True).click()
                 assert 'reference material' in page.locator('#agent-prompt').inner_text()
-                page.get_by_role('button',name='Short',exact=True).click()
-                assert page.locator('#agent-prompt').inner_text()=='Set up this machine for mining at Decision Models by REAX: https://mine.decisionmodels.io'
+                page.get_by_role('tab',name='Short',exact=True).click()
+                assert page.locator('#agent-prompt').inner_text()=='Check whether this computer can mine REAX (Decision Models) and prepare a setup plan: https://mine.decisionmodels.io'
                 # Clipboard access is not granted automatically; the UI has a selectable-text fallback.
                 page.get_by_role('button',name='Copy prompt',exact=True).click()
-                assert page.locator('.copy-status').inner_text()
+                expect(page.locator('.copy-status')).not_to_have_text('')
                 checks.append('Prompt variants and copy/fallback passed')
                 for os in ['linux','windows','macos']:
                     page.select_option('#os',os); page.select_option('#gpu','24')
                     assert page.locator('#os-guide').get_attribute('href')=='/os/'+os
                     assert page.locator('.checker').get_attribute('action')=='/os/'+os
+                    assert page.locator('#verdict p').count() == 1
+                    assert page.locator('#verdict a').count() == 1
+                    assert not page.locator('.guide-actions button:visible').count()
                     verdict=page.locator('#verdict').inner_text()
                     assert 'not live' in verdict
                     if os=='windows': assert 'not yet tested by us' in verdict
@@ -102,24 +119,51 @@ def capture(url,output,cdp,isolated=False):
                     assert page.locator('.theme-toggle').inner_text() == mode
                     assert page.evaluate('localStorage.getItem("dm-theme")') == mode.lower()
                 checks.append('Light / Dark / Auto cycle and persistence passed; both doctor tabs captured at each viewport/theme')
-                page.goto(url+'/agent',wait_until='networkidle')
-                assert page.locator('pre button').count()>0
-                assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
-                page.screenshot(path=str(output/'mobile-agent.png'),full_page=True)
-                checks.append('Agent docs code-copy controls and mobile layout passed')
+                routes = ['/agent', '/os/linux', '/os/windows', '/os/macos', '/wallets', '/rewards-and-risks', '/troubleshooting', '/webmcp']
+                for width,label in [(1440,'desk'), (390,'phone')]:
+                    page.set_viewport_size({'width':width,'height':900 if width==1440 else 844})
+                    for color in ['light', 'dark']:
+                        page.emulate_media(color_scheme=color,reduced_motion='reduce')
+                        for route in ['/', *routes]:
+                            page.goto(url+route, wait_until='networkidle')
+                            assert not page.evaluate('document.documentElement.scrollWidth > innerWidth'), f'{route} {width} {color}'
+                            assert page.locator('table').count() == page.locator('.table-scroll').count()
+                            if route in ['/', '/agent', '/wallets']:
+                                name = 'home' if route == '/' else route[1:]
+                                page.screenshot(path=str(output/f'{name}-{label}-{color}.png'),full_page=True)
+                            if width == 390:
+                                assert page.locator('button:visible, nav a:visible').evaluate_all('(els) => els.every(e => e.getBoundingClientRect().height >= 44)'), route
+                            checks.append(f'{route} {width} {color}: no page overflow; accessible table wrappers; phone touch targets >=44px')
+                page.goto(url+'/agent', wait_until='networkidle')
+                assert page.locator('pre button').count() > 0
+                checks.append('Agent docs code-copy controls passed')
                 # Disable scripts on our own tab, rather than creating another browser profile/context.
                 session=page.context.new_cdp_session(page)
                 session.send('Emulation.setScriptExecutionDisabled',{'value':True})
                 page.goto(url+'/',wait_until='networkidle')
                 assert page.locator('#agent-prompt').is_visible()
+                assert not page.locator('.checker').is_visible()
+                assert not page.locator('#copy-prompt').is_visible()
                 assert page.get_by_role('button',name='Windows guide',exact=True).is_visible()
                 page.get_by_role('button',name='Windows guide',exact=True).click()
-                page.wait_for_url('**/os/windows?*')
+                page.wait_for_url('**/os/windows*')
                 assert page.locator('h1').inner_text().startswith('Windows')
                 checks.append('No-JS selectable prompt and OS guide navigation passed')
                 session.send('Emulation.setScriptExecutionDisabled',{'value':False})
                 if errors: raise AssertionError(errors)
                 checks.append('No browser JavaScript or console errors')
+                # A 404 document deliberately reports a failed resource in Chromium.
+                for color in ['light', 'dark']:
+                    page.emulate_media(color_scheme=color, reduced_motion='reduce')
+                    response = page.goto(url+'/404', wait_until='networkidle')
+                    assert response.status == 404
+                    assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
+                    assert page.locator('.toc').count() == 0
+                    checks.append(f'/404 390 {color}: HTTP 404, no page overflow, no TOC')
+                page.emulate_media(reduced_motion='no-preference')
+                page.goto(url+'/', wait_until='domcontentloaded')
+                assert page.locator('.session-line').evaluate_all('(els) => els.slice(0,3).every(e => getComputedStyle(e).opacity === "1" && getComputedStyle(e).animationName === "none")')
+                checks.append('First three terminal lines visible immediately with normal motion')
             finally:
                 page.close()
                 if isolated: browser.close()

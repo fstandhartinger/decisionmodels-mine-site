@@ -1,6 +1,6 @@
 <div class="hero" markdown="1">
 <div class="hero-copy" markdown="1">
-<p class="eyebrow">GLOBAL TIER · POWERED BY REAX</p>
+<p class="eyebrow">COMPUTE FOR REAX · POWERED BY YOUR GPU</p>
 
 # Point your agent here. Mine with your own GPU.
 
@@ -8,7 +8,9 @@
 
 {{PROMPT_BOX}}
 
-<p class="compatibility">Works with Claude Code, Codex CLI, Cursor, Gemini CLI — any agent that can run commands on your machine.</p>
+<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+</span><span>Linux (Windows via WSL2)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
+
+<p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Works with Claude Code, Codex CLI, Cursor and Gemini CLI. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
 
 [Prefer to do it yourself? Read the playbook →](/agent)
 </div>
@@ -48,11 +50,11 @@ These are the bundled release's requirements for s1-fast. Availability follows t
 
 | Component | Requirement |
 | --- | --- |
-| GPU | One compatible NVIDIA GPU, ≥24 GB VRAM |
+| GPU | One compatible NVIDIA GPU, ≥24 GB VRAM (GPU memory) |
 | Driver | R580+ for CUDA 13 |
 | Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |
-| OS | Linux x86_64; Windows via WSL2 is conditional and not yet tested by us end to end |
+| OS | Linux x86_64; Windows via Windows Subsystem for Linux 2 (WSL2) is conditional and not yet tested by us end to end |
 
 {{GPU_NOTE}} A Mac can control an authorized remote NVIDIA Linux host.
 </section>
@@ -63,9 +65,11 @@ These are the bundled release's requirements for s1-fast. Availability follows t
 
 ## You keep the keys
 
-- Your coldkey stays on a separate trusted device.
+- Your coldkey (the key controlling your funds) stays on a separate trusted device.
 - The agent never sees your recovery phrase or coldkey private file.
 - A human approves every payment.
+
+[New to mining? Read the glossary →](/wallets#glossary)
 
 [Choose a wallet and understand the signing boundary →](/wallets)
 </div>
@@ -78,7 +82,7 @@ These are the bundled release's requirements for s1-fast. Availability follows t
 
 ## Rewards and risks
 
-Mining receives variable REAX subnet emissions, with risks. Emissions depend on competition and can be zero. Hardware, electricity, connection costs and a non-refundable registration burn are yours to weigh.
+Mining receives variable rewards from the REAX subnet (a network within Bittensor), with risks. Emissions depend on competition and can be zero. Hardware, electricity, connection costs and a non-refundable registration burn are yours to weigh.
 
 [Read the risks before paying →](/rewards-and-risks)
 </section>
@@ -96,7 +100,7 @@ Mining receives variable REAX subnet emissions, with risks. Emissions depend on 
 | [releases/current.json](/releases/current.json) | The kit's bundled release descriptor |
 | [install.sh](/install.sh) | Readable pinned-archive download; read before running |
 | [Kit source](https://github.com/fstandhartinger/reax-miner-kit) | Review the Python commands |
-| [WebMCP tools](/webmcp.js) | Optional read-only tools; browser support varies |
+| [WebMCP tools](/webmcp) | Optional read-only tools; browser support varies |
 
 Local agents can act on the selected machine. Cloud/browser agents can prepare a plan; chat-only agents can explain steps. The agent must say where its commands run. WebMCP does not grant a local shell or permission to spend.
 

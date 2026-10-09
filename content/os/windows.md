@@ -1,12 +1,12 @@
-# Windows: a conditional WSL2 path
+# Windows: a conditional Linux path
 
-Native Windows mining is unsupported. NVIDIA CUDA containers can run through WSL2, but the complete REAX Windows path is **not yet tested by us**. Generic CUDA support is not proof that this miner works. {{PRACTICE_NOTE}}
+Native Windows mining is unsupported. NVIDIA CUDA containers can run through Windows Subsystem for Linux 2 (WSL2), but the complete REAX Windows path is **not yet tested by us**. Generic CUDA support is not proof that this miner works. {{HUMAN_NOTE}}
 
 ## Human step: choose the host
 
 Prefer Windows 11 with a supported NVIDIA GPU and a current Windows production driver, R580+ for the pinned CUDA 13 runtime. Older GPU families may lack CUDA 13 library support. Windows 10 Home/Pro standard support ended on October 14, 2025; any extended support is specific to your device.
 
-Windows and its WSL VM count as the same machine for custody. A funded browser coldkey on the Windows mining host is not a separate signer.
+Windows and its WSL VM count as the same machine for custody. A funded browser coldkey (funds key) on the Windows mining host is not a separate signer.
 
 ## Agent step: inspect WSL2
 
@@ -32,6 +32,8 @@ Recommended default: Talisman on a separate trusted workstation. `btcli` runs in
 
 ## Start with checks; practice once source is public
 
-{{PRACTICE_NOTE}} The [playbook](/agent.md) explains the practice flow once source is public. NVIDIA below 24 GB, AMD and no-GPU machines cannot mine this release.
+ The [playbook](/agent.md) explains the practice flow once source is public. NVIDIA below 24 GB, AMD and no-GPU machines cannot mine this release.
 
 [Wallet guide](/wallets) · [NVIDIA WSL guidance](https://docs.nvidia.com/cuda/wsl-user-guide/index.html) · [Docker GPU guidance](https://docs.docker.com/desktop/features/gpu/)
+
+[Mining terms explained](/wallets#glossary)

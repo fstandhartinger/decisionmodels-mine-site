@@ -22,8 +22,14 @@ vm.runInContext(fs.readFileSync('site/webmcp.js', 'utf8'), ctx);
   assert.match(prelaunch.reasons.join(' '), /private until launch/);
   assert.doesNotMatch(prelaunch.reasons.join(' '), /Rehearse free.*today|Free rehearsal is available/);
   const prepared = await tools.get('get_setup_steps').execute({mode:'localnet'});
-  assert.equal(prepared.steps.find(s => s.id === 'install').command, null);
+  assert.equal(prepared.steps.find(s => s.id === 'install').blocked_until_live, true);
+  assert.match(prepared.steps.find(s => s.id === 'install').command, /install --mode localnet/);
   assert.match(prepared.steps.find(s => s.id === 'choose-mode').verify, /STOP/);
+  const mainnetInstall = (await tools.get('get_setup_steps').execute({mode:'mainnet'})).steps.find(s => s.id === 'install');
+  assert.match(mainnetInstall.command, /--confirm-mainnet/);
+  const testnetInstall = (await tools.get('get_setup_steps').execute({mode:'testnet'})).steps.find(s => s.id === 'install');
+  assert.match(testnetInstall.command, /--mode testnet/);
+  assert.doesNotMatch(testnetInstall.command, /--confirm-(mainnet|testnet)/);
   const liveManifest = JSON.parse(JSON.stringify(manifest));
   liveManifest.state = 'live'; liveManifest.status.live = true; liveManifest.source.public = true;
   // Use the real live copy selected by the builder, not a test-authored verdict.
