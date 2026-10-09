@@ -78,7 +78,7 @@ def state_copy(release):
                     HERO_NOTE='Give your coding agent one link. It checks your machine and prepares a plan; source and images remain private, so public setup is still gated. You keep your keys and approve every payment.',
                     LLMS_NOTE='Bittensor Finney is live as netuid '+str(netuid)+', but source and images stay private. Stop after doctor and plan; authorized localnet rehearsal needs REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
                     CHOOSE_MODE='Review the plan; source and images remain private',
-                    PLAN_VERIFY='Explain host findings and stop before install; source and images are private.')
+                    PLAN_VERIFY='Explain host findings; STOP before install because source and images are private.')
     elif STATE == 'prelaunch' and release['source']['public']:
         copy.update(STATUS_BRIEF='REAX source is public; Bittensor Finney registration is starting soon as netuid '+str(netuid)+'. Alpha trading and emission remain disabled until the subnet owner starts it.',
                     SOURCE_STATUS='Source is public; container images remain private until launch.',

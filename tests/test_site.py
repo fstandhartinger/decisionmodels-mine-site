@@ -86,7 +86,9 @@ class SiteTests(unittest.TestCase):
         schema=json.loads((ROOT/'schemas/mine.schema.json').read_text()); validate(self.data,schema,schema)
         release=json.loads((DIST/'releases/current.json').read_text())
         for key in ['status','requirements','pools']: self.assertEqual(self.data[key],release[key])
-        self.assertEqual((self.data['status']['live'], self.data['status']['launch_status'], self.data['status']['netuid']), (False, 'registered_starting_soon', 92))
+        self.assertIs(type(self.data['status']['live']), bool)
+        self.assertEqual(self.data['status']['launch_status'], 'live' if self.data['status']['live'] else 'registered_starting_soon')
+        self.assertEqual(self.data['status']['netuid'], 92)
         self.assertFalse(self.data['source']['public'])
         self.assertFalse(release['images']['public'])
         self.assertEqual([t['id'] for t in self.data['agent_tiers']],['A','B','C'])
@@ -107,7 +109,7 @@ class SiteTests(unittest.TestCase):
         for step in self.data['mainnet_steps']:
             self.assertEqual(step['blocked_until_live'],step['id'] not in ['doctor','choose-mode'])
             if step['cost']['kind']=='tao': self.assertEqual(step['who'],'human')
-        self.assertFalse(self.data['status']['live'])
+        self.assertIs(type(self.data['status']['live']), bool)
 
     def test_release_packaging_refuses_missing_or_invalid_semver(self):
         before=(ROOT/'kit.lock.json').read_bytes()
@@ -210,6 +212,9 @@ class SiteTests(unittest.TestCase):
                         self.assertEqual(data['state'], 'live')
                         self.assertIn('Network live', home)
                         self.assertIn('source remains private', home.lower())
+                        self.assertIn('alpha trading and epochs have started', home.lower())
+                        self.assertIn('separate root-gated subnet emission flag', home.lower())
+                        self.assertIn('can be zero', home.lower())
                         self.assertIn('live chain alone does not satisfy the source gate', (output/'agent.md').read_text().lower())
                         self.assertTrue(all(s['blocked_until_live'] for s in data['steps'][2:]))
                         self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
@@ -265,7 +270,11 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('ON THIS PAGE', error)
         self.assertNotIn('Read as Markdown', error)
         home = (DIST/'index.html').read_text()
-        self.assertIn('Netuid 92 registered · starting soon', home)
+        if self.data['status']['live']:
+            self.assertIn('Network live', home)
+            self.assertIn('source remains private', home.lower())
+        else:
+            self.assertIn('Netuid 92 registered · starting soon', home)
         self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
         self.assertRegex(home, r'<form[^>]*class="checker"[^>]*hidden')
 
