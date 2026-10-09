@@ -87,6 +87,9 @@ def build():
     release['status'] = dict(release['status'], notes=copy['CHECKER_BODY'])
     write('releases/current.json', json.dumps(release, indent=2)+'\n')
     prompts = {k: v.replace('{{PRACTICE_NOTE}}', copy['PRACTICE_NOTE']).replace('{{HUMAN_NOTE}}', copy['HUMAN_NOTE']) for k,v in json.loads((ROOT / 'content/prompts.json').read_text()).items()}
+    live_short = prompts.pop('short_live')  # the one-sentence prompt of the launch concept; before launch the short prompt only asks for a check
+    if STATE == 'live':
+        prompts['short'] = live_short
     substitutions = {'KIT_VERSION': lock['version'], 'RELEASE_ID': lock['release_id'], 'KIT_COMMIT': lock['commit'], 'KIT_SHA256': lock['sha256'], 'UPDATED': lock['updated']}
     substitutions.update(copy)
     def fill(value):
@@ -156,7 +159,7 @@ def build():
     checker = fill(checker)
     diagram = (ROOT/'templates/key-diagram.svg').read_text()
     session_lines = [
-        '> Check this computer for REAX mining: mine.decisionmodels.io',
+        '> ' + ('Set up this machine for mining at Decision Models by REAX: mine.decisionmodels.io' if STATE == 'live' else 'Check this computer for REAX mining: mine.decisionmodels.io'),
         '✓ Read the playbook (agent.md)',
         '✓ Checked hardware: Linux, NVIDIA RTX 4090 · 24 GB',
         '✓ Installed the miner kit (checksum verified)',
