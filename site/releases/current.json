@@ -8,7 +8,7 @@
     "netuid": 92,
     "network": "finney",
     "testnet_netuid": null,
-    "notes": "REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it. Source and images stay private until launch; authorized localnet rehearsal remains available, testnet needs its own configured netuid."
+    "notes": "REAX is registered on Bittensor Finney mainnet as netuid 92 and is starting soon. Alpha trading and emissions remain disabled until the subnet owner starts it. Source and images remain private until launch. Authorized localnet rehearsal remains available; testnet requires its own configured netuid. Read-only chain status updates independently of launch and source gates."
   },
   "minimum_release": "1.1.0rc2",
   "images": {
