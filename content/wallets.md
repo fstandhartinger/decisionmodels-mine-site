@@ -36,7 +36,7 @@ Documentation checked on October 9, 2026. **No funded registration or hardware s
 | TAO.com | Listed third-party wallet; old web wallet is deprecated | Current registration UI and bridge compatibility |
 | Ledger | v11 generic Polkadot app signing; metadata proofs | Specific REAX registration tested on a device |
 
-The research finds current stable Bittensor 11.3.0; the **bundled kit pins 11.1.0**. Keep the wallet CLI isolated from miner dependencies and follow the tested kit pins. Do not silently upgrade the miner or combine legacy `bittensor-cli` console entry points. This version difference needs release-owner review.
+The research finds current stable Bittensor 11.3.0; the **bundled kit pins 11.1.0**. Keep the wallet CLI isolated from miner dependencies and follow the tested kit pins. Do not silently upgrade the miner or combine legacy `bittensor-cli` console entry points. The pin changes only with a tested kit release.
 
 ## If signing fails
 

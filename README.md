@@ -15,7 +15,7 @@ python3 scripts/check-headless.py
 ./scripts/serve-local.sh
 ```
 
-Only the pinned `markdown` package is required to build. Unit tests and HTTP checks use Python's standard library. Node is optional for the read-only tool tests. Playwright is optional for browser checks. The screenshot script defaults to Sandy's existing Chrome over CDP under its lock and never closes the shared browser. It closes its own tab in `finally`, with a 90-second lock wait limit. Only when the job explicitly authorizes temporary headless Chrome, `--isolated` opts into a disposable browser that is closed in `finally`.
+Only the pinned `markdown` package is required to build. Unit tests and HTTP checks use Python's standard library. Node is optional for the read-only tool tests. Playwright is optional for browser checks. `scripts/screenshot.py` captures review screenshots with a disposable headless Chrome (`--isolated`) or an existing Chrome over CDP (`--cdp`).
 
 ```sh
 python3 scripts/check-headless.py --screenshots /path/to/worker/shots

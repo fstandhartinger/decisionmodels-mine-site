@@ -1,7 +1,7 @@
 Verdict
   [ok] Host checked. The free rehearsal needs the REAX source, which is private until launch.
 What works today (rehearsal)
-  Localnet rehearsal is possible with the pinned source and tools.
+  The practice run opens at launch: the miner source is private until then.
 What is needed for real mining
   Check the release descriptor: the network must be live, with a netuid and public images.
 Next

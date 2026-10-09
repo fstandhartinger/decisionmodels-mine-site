@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Review our unpublished site in the shared Sandy browser; closes only its own tab.
+"""Review our unpublished site with a disposable or existing Chrome; closes only its own tab.
 Use --url for an nginx instance, or a temporary loopback static server is started.
 --isolated is opt-in only for briefs that explicitly permit headless Chrome.
 """

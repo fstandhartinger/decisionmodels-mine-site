@@ -121,8 +121,9 @@ def build():
               ('verify','Verify end to end','agent','./reaxctl verify --json','All checklist items pass'),
               ('service','Install the service with approved permissions','agent','./reaxctl service install --json','Service status'),
               ('update-timer','Keep safe updates enabled','agent','./reaxctl update timer install --json','Timer status; manifest changes need approval')]
-    steps = [dict(id=i,title=t,who=w,command=c,cost={'kind':'none','note':'Test TAO only; no real payment.'},verify=v,blocked_until_live=False) for i,t,w,c,v in titles]
-    mainnet = [dict(s) for s in steps if s['id'] != 'localnet']
+    all_steps = [dict(id=i,title=t,who=w,command=c,cost={'kind':'none','note':'Test TAO only; no real payment.'},verify=v,blocked_until_live=False) for i,t,w,c,v in titles]
+    mainnet = [dict(s) for s in all_steps if s['id'] != 'localnet']
+    steps = [s for s in all_steps if s['id'] not in ('service', 'update-timer')]  # persistent units make no sense for a throw-away practice chain
     for s in mainnet:
         s['command'] = s['command'].replace('--mode localnet', '--mode mainnet')
         # Global mode is explicit for every real-network command; human approval is still required.
@@ -239,7 +240,7 @@ def build():
     installer = fill((ROOT/'templates/install.sh').read_text()).replace('{{KIT_TARBALL}}',lock['tarball'])
     write('install.sh',installer)
     write('robots.txt','User-agent: *\nAllow: /\n')
-    write('.well-known/security.txt','Contact: mailto:info@decisionmodels.io\nExpires: 2027-10-09T00:00:00Z\nCanonical: https://mine.decisionmodels.io/.well-known/security.txt\nPreferred-Languages: en\n')
+    write('.well-known/security.txt','Contact: mailto:info@productivity-boost.com\nExpires: 2027-10-09T00:00:00Z\nCanonical: https://mine.decisionmodels.io/.well-known/security.txt\nPreferred-Languages: en\n')
     config = (ROOT/'nginx.conf').read_text().replace('{{ROBOTS}}','index, follow' if INDEXING_ALLOWED else 'noindex, nofollow')
     write('nginx.conf',config)
     print('Built '+str(len(sources))+' HTML/Markdown pairs; kit '+lock['version']+' '+lock['sha256'])

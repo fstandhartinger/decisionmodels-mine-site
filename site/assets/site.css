@@ -34,3 +34,4 @@
 
 .copy-status:empty{display:none}
 @media(max-width:600px){.hero{padding-top:24px}.hero h1{font-size:38px;margin-bottom:20px}.hero-copy>.eyebrow{margin-bottom:12px}.hero .lead{font-size:16px;line-height:1.5;margin-bottom:16px}.hero .prompt-card{padding:16px}.hero .prompt-tab{font-size:11px;padding-inline:8px}.hero .prompt-row p{margin-block:16px}.requirements-strip{gap:8px 12px}}
+.agent-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.6}

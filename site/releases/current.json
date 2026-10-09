@@ -28,7 +28,7 @@
   "pools": [
     {
       "id": "s1-fast",
-      "model": "Plumb-4B (System1 s1-fast)",
+      "model": "Plumb-4B (s1-fast)",
       "weights": {
         "repo": "crh225/plumb-4b",
         "revision": "55de037801a8a9b9de3db5c0e16cef86210c2186",
@@ -53,7 +53,7 @@
     },
     {
       "id": "s1-pro",
-      "model": "Surogate Rune 26B-A4B v3 (System1 s1-pro)",
+      "model": "Surogate Rune 26B-A4B v3 (s1-pro)",
       "weights": {
         "repo": "surogate/rune-26b-a4b-GGUF",
         "revision": "c6b360d47895bb77bdf3805a13ee5a5557ab1921",

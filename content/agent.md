@@ -26,23 +26,18 @@ State to the person: which machine your commands run on, OS, whether you have a 
 
 ## Step 1 — get the kit (pinned, reviewable)
 
-Preferred (you can read the code before running it):
-
-```bash
-git clone https://github.com/fstandhartinger/reax-miner-kit.git ~/reax-miner-kit
-cd ~/reax-miner-kit && git checkout {{KIT_COMMIT}}      # pinned release {{KIT_VERSION}}
-./reaxctl --version
-```
-
-Alternative (checksummed archive, no git needed):
+Download the checksummed archive and read the code before running it (the kit is plain Python, a few thousand lines):
 
 ```bash
 curl -fsSLO https://mine.decisionmodels.io/kit/reax-miner-kit-{{KIT_VERSION}}.tar.gz
 echo "{{KIT_SHA256}}  reax-miner-kit-{{KIT_VERSION}}.tar.gz" | sha256sum -c -
 mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~/reax-miner-kit && cd ~/reax-miner-kit
+./reaxctl --version
 ```
 
-(`install.sh` at https://mine.decisionmodels.io/install.sh does the second variant for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
+The kit's source repository (`github.com/fstandhartinger/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit.
+
+(`install.sh` at https://mine.decisionmodels.io/install.sh does the same for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
 The controller uses Python 3.8+ and the standard library, with no dependencies. The tools virtual environment needs Python 3.10+. `./reaxctl spec --json` prints its full command set.
 
 ## Step 2 — check the machine
