@@ -36,7 +36,7 @@ mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~
 ./reaxctl --version
 ```
 
-The kit's source repository (`github.com/fstandhartinger/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit. The miner source and images are private until launch.
+The kit's source repository (`github.com/reaxlabs/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit. The miner source and images are private until launch.
 
 (`install.sh` at https://mine.decisionmodels.io/install.sh does the same for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
 The controller uses Python 3.8+ and the standard library, with no dependencies. The tools virtual environment needs Python 3.10+. `./reaxctl spec --json` prints its full command set.
@@ -106,4 +106,4 @@ Run `./reaxctl status --json` and `./reaxctl logs --lines 100`; each failure has
 
 ## Links
 
-Human guide: https://mine.decisionmodels.io · Protocol, scoring and FAQ: https://reax.dev/mine/ · Wallets: https://mine.decisionmodels.io/wallets.md · Kit source: https://github.com/fstandhartinger/reax-miner-kit
+Human guide: https://mine.decisionmodels.io · Protocol, scoring and FAQ: https://reax.dev/mine/ · Wallets: https://mine.decisionmodels.io/wallets.md · Kit source: https://github.com/reaxlabs/reax-miner-kit

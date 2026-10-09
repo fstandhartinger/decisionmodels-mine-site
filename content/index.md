@@ -101,7 +101,7 @@ Mining receives variable rewards from the REAX subnet (a network within Bittenso
 | [mine.json](/mine.json) | Status, steps, requirements and rules |
 | [releases/current.json](/releases/current.json) | The kit's bundled release descriptor |
 | [install.sh](/install.sh) | Readable pinned-archive download; read before running |
-| [Kit source](https://github.com/fstandhartinger/reax-miner-kit) | Review the Python commands |
+| [Kit source](https://github.com/reaxlabs/reax-miner-kit) | Review the Python commands |
 | [WebMCP tools](/webmcp) | Optional read-only tools; browser support varies |
 
 Local agents can act on the selected machine. Cloud/browser agents can prepare a plan; chat-only agents can explain steps. The agent must say where its commands run. WebMCP does not grant a local shell or permission to spend.

@@ -12,16 +12,16 @@
   },
   "minimum_release": "1.1.0rc2",
   "images": {
-    "miner": "ghcr.io/fstandhartinger/reax-miner",
-    "s1_fast_runtime": "ghcr.io/fstandhartinger/reax-s1-fast-runtime",
-    "s1_pro_runtime": "ghcr.io/fstandhartinger/reax-s1-pro-runtime",
+    "miner": "ghcr.io/reaxlabs/reax-miner",
+    "s1_fast_runtime": "ghcr.io/reaxlabs/reax-s1-fast-runtime",
+    "s1_pro_runtime": "ghcr.io/reaxlabs/reax-s1-pro-runtime",
     "tag": null,
     "digests": null,
     "public": false,
     "note": "Private until launch; tag and digests are filled in at launch."
   },
   "source": {
-    "git": "https://github.com/fstandhartinger/reax-subnet",
+    "git": "https://github.com/reaxlabs/reax-subnet",
     "ref": "v1.1.0-rc2",
     "public": false
   },
