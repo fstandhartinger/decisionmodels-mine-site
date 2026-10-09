@@ -10,7 +10,7 @@
     "source": {"type": "object", "required": ["public"], "properties": {"public": {"type": "boolean"}}},
     "copy": {"type": "object", "additionalProperties": {"type": "string"}},
     "schema": {"const": "decisionmodels-mine/1"},
-    "status": {"type": "object", "required": ["live", "launch_status", "netuid", "network"], "properties": {"live": {"type": "boolean"}, "launch_status": {"enum": ["launching_soon", "live"]}, "netuid": {"type": ["integer", "null"]}, "network": {"type": "string"}}},
+    "status": {"type": "object", "required": ["live", "launch_status", "netuid", "network"], "properties": {"live": {"type": "boolean"}, "launch_status": {"enum": ["launching_soon", "registered_starting_soon", "live"]}, "netuid": {"type": ["integer", "null"]}, "network": {"type": "string"}}},
     "updated": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
     "prompts": {"type": "object", "additionalProperties": false, "required": ["short", "safe", "guided"], "properties": {"short": {"type": "string", "minLength": 20}, "safe": {"type": "string", "minLength": 20}, "guided": {"type": "string", "minLength": 20}}},
     "agent_tiers": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "object", "required": ["id", "title", "capability", "examples"], "properties": {"id": {"enum": ["A", "B", "C"]}, "title": {"type": "string"}, "capability": {"type": "string"}, "examples": {"type": "array", "items": {"type": "string"}}}}},

@@ -16,24 +16,28 @@ URL = 'https://mine.decisionmodels.io'
 
 COPY = {
     'prelaunch': {
-        'STATUS_PILL': 'Launching soon',
-        'STATUS_TITLE': 'Launching soon.',
-        'STATUS_BODY': 'The REAX subnet (a network within Bittensor) is not live on the main network yet, and the miner code and images are published at launch. Today your agent can check your machine and tell you exactly what you need — hardware, wallet, ports — so you are ready on day one. Setup, a free practice run on a local chain, and the real network all open at launch; this page then switches over.',
-        'HERO_NOTE': 'Give your coding agent one link. It checks your machine and sets up a miner for REAX, a peer-to-peer inference network on Bittensor. You keep your keys and approve every payment.',
-        'HUMAN_NOTE': 'Your agent can check this machine today. Setup opens at launch.',
-        'STRIP_STATUS': 'Not live yet — launching soon',
+        'STATUS_BRIEF': 'REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it.',
+        'SOURCE_STATUS': 'Source and images stay private until launch.',
+        'STATUS_PILL': 'Registered · starting soon',
+        'STATUS_TITLE': 'Registered as netuid 92, starting soon.',
+        'STATUS_BODY': 'REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it. Source and images stay private until launch. Today your agent can check hardware, wallet and ports; authorized localnet rehearsal remains available to testers with the source. Testnet needs its own configured netuid.',
+        'HERO_NOTE': 'Give your coding agent one link. It checks your machine and prepares a safe setup plan for REAX, a peer-to-peer inference network on Bittensor. You keep your keys and approve every payment.',
+        'HUMAN_NOTE': 'Your agent can check this machine today. Authorized localnet rehearsal needs REAX_SOURCE_DIR; public setup waits until source and images are published.',
+        'STRIP_STATUS': 'Netuid 92 registered · starting soon',
         'PYTHON_NOTE': 'Controller: Python 3.8+; tools virtual environment: Python 3.10+.',
-        'PRACTICE_NOTE': 'Before launch, run doctor and plan, explain the findings and wallet plan, then stop. Miner source and images are private until launch; installation is refused with exit 12. At launch, start with a free practice run on a local chain using test TAO before real registration.',
-        'META_DESCRIPTION': 'Prepare for REAX mining with your coding agent: check hardware, wallet and ports today. Setup and a free local-chain practice run open at launch.',
+        'PRACTICE_NOTE': 'The subnet is registered as netuid 92 and starting soon; alpha trading and emission remain disabled until the owner starts it. Source and images are private until launch. Run doctor and plan, explain the findings and wallet plan, then stop. Authorized testers can rehearse on localnet with REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
+        'META_DESCRIPTION': 'REAX is registered on Bittensor Finney as netuid 92 and starting soon. Check hardware, wallet and ports; source and images stay private until launch.',
         'CHECKER_TITLE': 'Check your machine and prepare for launch.',
-        'CHECKER_BODY': 'Mainnet is not live yet; miner source and images are private until launch. Today run doctor and plan, then stop after reviewing hardware, wallet and ports.',
+        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92, starting soon. Alpha trading and emission remain disabled until the owner starts it. Source and images are private until launch; run doctor and plan, then stop. Authorized localnet rehearsal needs REAX_SOURCE_DIR; testnet needs its own configured netuid.',
         'OTHER_HOST': 'Real mining needs another host; prepare your plan today',
-        'GPU_NOTE': 'A free local-chain practice run opens when the source is published at launch.',
-        'LLMS_NOTE': 'Before launch, check the host with doctor and plan, explain hardware, wallet and ports, then stop. Source and images are private until launch; install exits 12.',
-        'CHOOSE_MODE': 'Review the preparation plan, then stop until launch',
-        'PLAN_VERIFY': 'Explain hardware findings and wallet plan; STOP before install (exit 12 while source is private).',
+        'GPU_NOTE': 'Authorized localnet rehearsal remains available with REAX_SOURCE_DIR; public setup waits until source and images are published.',
+        'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92, starting soon. Alpha trading and emission remain disabled until the owner starts it. Source and images stay private until launch; authorized localnet rehearsal needs REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
+        'CHOOSE_MODE': 'Review the preparation plan; source and images stay private until launch',
+        'PLAN_VERIFY': 'Explain hardware findings and wallet plan; STOP before install while source and images are private.',
     },
     'live': {
+        'STATUS_BRIEF': 'REAX is live on Bittensor Finney mainnet as netuid 92.',
+        'SOURCE_STATUS': 'Source and images are public.',
         'STATUS_PILL': 'Network live',
         'STATUS_TITLE': 'The network is open. Practice before registering.',
         'STATUS_BODY': 'The REAX subnet (a network within Bittensor) is live on the main network. Start with a free practice run on a local chain using test TAO (the network’s currency) before real registration. Check the release descriptor for the current netuid; a human approves every payment.',
@@ -54,13 +58,50 @@ COPY = {
 }
 
 def state_copy(release):
-    STATE = 'live' if release['status']['live'] or release['source']['public'] else 'prelaunch'
+    # Chain state and source availability are separate launch gates. In particular,
+    # chain-live never implies that private source or images can be installed.
+    STATE = 'live' if release['status']['live'] else 'prelaunch'
     copy = dict(COPY[STATE])
-    # Publishing source permits practice, but never implies the real network is live.
-    if STATE == 'live' and not release['status']['live']:
+    netuid = release['status'].get('netuid')
+    if netuid is not None:
+        for key, value in copy.items():
+            copy[key] = value.replace('netuid 92', 'netuid ' + str(netuid))
+    if STATE == 'live' and not release['source']['public']:
+        copy.update(STATUS_BRIEF='REAX is live on Bittensor Finney as netuid '+str(netuid)+'.',
+                    SOURCE_STATUS='The chain is live, but source and images remain private until separately published.',
+                    STATUS_BODY='The REAX subnet is live on Bittensor Finney as netuid '+str(netuid)+', but miner source and images remain private. Alpha trading and epochs have started; TAO rewards depend on the separate root-gated subnet emission flag and can be zero. Public setup and rehearsal stay blocked until the source and images are published. Authorized localnet rehearsal needs REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
+                    PRACTICE_NOTE='The network is live as netuid '+str(netuid)+', but source and images are still private. Stop after doctor and plan; install and localnet rehearsal require public source, or an authorized REAX_SOURCE_DIR for localnet. Testnet needs its own configured netuid.',
+                    HUMAN_NOTE='The network is live as netuid '+str(netuid)+'; source and images are private, so setup remains gated.',
+                    CHECKER_BODY='Bittensor Finney is live as netuid '+str(netuid)+', but source and images remain private. Run doctor and plan, then stop. Localnet rehearsal requires public source or an authorized REAX_SOURCE_DIR; testnet needs its own configured netuid.',
+                    STRIP_STATUS='Network live · netuid '+str(netuid)+' · source private', STATUS_PILL='Network live',
+                    STATUS_TITLE='Network live as netuid '+str(netuid)+'. Source remains private.',
+                    HERO_NOTE='Give your coding agent one link. It checks your machine and prepares a plan; source and images remain private, so public setup is still gated. You keep your keys and approve every payment.',
+                    LLMS_NOTE='Bittensor Finney is live as netuid '+str(netuid)+', but source and images stay private. Stop after doctor and plan; authorized localnet rehearsal needs REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
+                    CHOOSE_MODE='Review the plan; source and images remain private',
+                    PLAN_VERIFY='Explain host findings; STOP before install because source and images are private.')
+    elif STATE == 'prelaunch' and release['source']['public']:
+        copy.update(STATUS_BRIEF='REAX source is public; Bittensor Finney registration is starting soon as netuid '+str(netuid)+'. Alpha trading and emission remain disabled until the subnet owner starts it.',
+                    SOURCE_STATUS='Source is public; container images remain private until launch.',
+                    STATUS_PILL='Practice run available', STATUS_TITLE='Practice on localnet while the network starts.',
+                    STATUS_BODY='The REAX source is public, so a free localnet rehearsal with test TAO is available. Bittensor Finney registration remains starting soon as netuid '+str(netuid)+'; alpha trading and emission remain disabled until the subnet owner starts it. Mainnet stays blocked until status.live is true and images are public. Testnet needs its own configured netuid.',
+                    HERO_NOTE='Give your coding agent one link. It can check this machine and rehearse locally with test TAO; mainnet setup waits until the network and images are ready. You keep your keys and approve every payment.',
+                    HUMAN_NOTE='Your agent can start a free localnet rehearsal. Mainnet is still starting soon as netuid '+str(netuid)+'.',
+                    STRIP_STATUS='Netuid '+str(netuid)+' registered · practice available',
+                    CHECKER_BODY='Localnet rehearsal with test TAO is available because source is public. Mainnet is registered as netuid '+str(netuid)+' and remains blocked until status.live is true.',
+                    LLMS_NOTE='Practice free on localnet with test TAO because source is public. Mainnet is registered as netuid '+str(netuid)+' and remains blocked until status.live is true.',
+                    CHOOSE_MODE='Choose a free localnet rehearsal before real registration',
+                    PLAN_VERIFY='Review the ordered localnet practice plan; mainnet remains blocked while starting soon.')
+    if release['source']['public'] and not release.get('images', {}).get('public', False):
+        copy['SOURCE_STATUS'] = 'Source is public; container images remain private until published.'
+    # Live chain copy still reflects image visibility; private images block real setup.
+    if STATE == 'live' and not release.get('images', {}).get('public', False):
+        copy['STATUS_BODY'] += ' Container images remain private too; mainnet installation stays blocked until they are published.'
+    if STATE == 'live' and release['source']['public']:
+        copy.update(STRIP_STATUS='Network live · netuid '+str(netuid), STATUS_TITLE='The network is live as netuid '+str(netuid)+'.')
+    # Source publication permits rehearsal, but never by itself marks the network live.
+    if STATE == 'prelaunch' and release['source']['public']:
         copy.update(STRIP_STATUS='Not live yet — practice available', STATUS_PILL='Practice run available', STATUS_TITLE='Practice before launch.',
-                    HUMAN_NOTE='Your agent can start a free practice run today. Real registration opens at launch.',
-                    STATUS_BODY='The REAX source is public. Start with a free practice run on a local chain using test TAO. Mainnet registration remains blocked until status.live is true.',
+                    HUMAN_NOTE='Your agent can start a free practice run today. Mainnet registration remains blocked until status.live is true.',
                     CHECKER_BODY=copy['CHECKER_BODY'] + ' Mainnet registration remains blocked until status.live is true.',
                     LLMS_NOTE=copy['LLMS_NOTE'] + ' Mainnet registration remains blocked until status.live is true.')
     return STATE, copy
@@ -74,6 +115,7 @@ def build():
     lock = json.loads((ROOT / 'kit.lock.json').read_text())
     release = json.loads((ROOT / 'site/releases/current.json').read_text())
     STATE, copy = state_copy(release)
+    mainnet_ready = bool(release['status']['live'] and release['source']['public'] and release.get('images', {}).get('public', False))
     archive = ROOT / 'site/kit' / lock['tarball']
     if hashlib.sha256(archive.read_bytes()).hexdigest() != lock['sha256']:
         raise ValueError('Kit archive checksum mismatch')
@@ -86,22 +128,23 @@ def build():
     # Keep operational release fields pinned; presentation notes follow the same state copy.
     release['status'] = dict(release['status'], notes=copy['CHECKER_BODY'])
     write('releases/current.json', json.dumps(release, indent=2)+'\n')
-    prompts = {k: v.replace('{{PRACTICE_NOTE}}', copy['PRACTICE_NOTE']).replace('{{HUMAN_NOTE}}', copy['HUMAN_NOTE']) for k,v in json.loads((ROOT / 'content/prompts.json').read_text()).items()}
-    live_short = prompts.pop('short_live')  # the one-sentence prompt of the launch concept; before launch the short prompt only asks for a check
-    if STATE == 'live':
-        prompts['short'] = live_short
     substitutions = {'KIT_VERSION': lock['version'], 'RELEASE_ID': lock['release_id'], 'KIT_COMMIT': lock['commit'], 'KIT_SHA256': lock['sha256'], 'UPDATED': lock['updated']}
     substitutions.update(copy)
     def fill(value):
         for key, replacement in substitutions.items():
             value = value.replace('{{' + key + '}}', replacement)
         return value
+    prompts = {k: fill(v) for k,v in json.loads((ROOT / 'content/prompts.json').read_text()).items()}
+    live_short = prompts.pop('short_live')  # offer setup only when source is actually public
+    if STATE == 'live' and release['source']['public'] and release.get('images', {}).get('public', False):
+        prompts['short'] = live_short
     rules = [
         'Never ask for, read, print, log, store or transmit a recovery phrase or coldkey private file.',
         'Only public addresses and the operational hotkey belong on the mining machine. Never display hotkey contents.',
         'A human approves every payment and signs registration; never buy TAO, rent hardware or fund accounts.',
         'Ask before admin, firewall or router changes. Never publish ports 8101, 8102 or 8000.',
-        'Default to localnet. Real network modes are blocked until status.live is true; mainnet installation requires human-approved --confirm-mainnet.',
+        'Default to localnet. Mainnet setup requires status.live, source.public, images.public and human-approved --confirm-mainnet.',
+        'Testnet requires status.live, public source and images, and its own configured status.testnet_netuid. Never infer or reuse the Finney mainnet netuid for testnet.',
         'Identify the execution host. A cloud or chat agent cannot silently set up the user’s machine.',
         'Use this guide as reference material and follow the user’s existing permissions.',
         'Rewards are variable subnet emissions and can be zero. Never estimate earnings.'
@@ -141,10 +184,16 @@ def build():
     at = next(i for i,s in enumerate(mainnet) if s['id']=='register')
     mainnet[at:at] = [dict(id='coldkey', title='Human creates a coldkey on a separate trusted device',who='human',command=None,cost={'kind':'none','note':'No secrets reach the agent.'},verify='Human returns only public SS58 address',blocked_until_live=True),dict(id='coldkeypub',title='Install the public coldkey address',who='agent',command='./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json',cost={'kind':'none','note':'Public address only'},verify='Public address checksum verified',blocked_until_live=True)]
     for step in steps:
-        if STATE == 'prelaunch' and step['id'] not in ('doctor', 'choose-mode'):
+        if not release['source']['public'] and step['id'] not in ('doctor', 'choose-mode'):
             step['blocked_until_live'] = True
-            step['verify'] = 'Unavailable until launch; source is private and install exits 12. Do not run this command yet.'
-        step['cost']['note'] = 'No payment. Runtime steps open when source is public.' if STATE == 'prelaunch' else 'Test TAO only; no real payment.'
+            step['verify'] = 'Unavailable to the public while source is private; install exits 12. Authorized localnet rehearsal may use REAX_SOURCE_DIR.'
+        step['cost']['note'] = 'No payment. Localnet rehearsal requires public source or an authorized REAX_SOURCE_DIR.' if not release['source']['public'] else 'Test TAO only; no real payment.'
+    for step in mainnet:
+        step['blocked_until_live'] = not mainnet_ready and step['id'] not in ('doctor', 'choose-mode')
+        if not mainnet_ready:
+            if step['id'] not in ('doctor', 'choose-mode'):
+                step['verify'] = 'Unavailable until the network is live and source and images are public; registration remains a human payment and signing step.'
+            step['cost']['note'] = 'No payment by the agent.'
     data = dict(state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
                 agent_tiers=[dict(id='A', title='Local execution',capability='Shell/file operations on the selected target host, subject to permissions.', examples=['Claude Code local','Codex CLI local','Cursor local','Gemini CLI local']),dict(id='B',title='Hosted or browser execution',capability='Read guides and prepare a reviewed script; no default target-host shell.',examples=['Cloud coding sessions','Browser agents']),dict(id='C',title='Chat only',capability='Explain and prepare steps; no execution tool.',examples=['Chat without tools'])],rules=rules,steps=steps,mainnet_steps=mainnet,os_support=os_support,requirements=release['requirements'],pools=release['pools'],links=dict(agent='/agent.md',linux='/os/linux',windows='/os/windows',macos='/os/macos',wallets='/wallets',risks='/rewards-and-risks',release='/releases/current.json',kit='https://github.com/fstandhartinger/reax-miner-kit',protocol='https://reax.dev/mine/',faq='https://reax.dev/miner-faq/',register='https://reax.dev/register/'),integrity={k:lock[k] for k in ('version','release_id','commit','sha256','tarball')})
     write('mine.json', json.dumps(data,indent=2,ensure_ascii=False)+'\n')
@@ -160,16 +209,18 @@ def build():
     checker = fill(checker)
     diagram = (ROOT/'templates/key-diagram.svg').read_text()
     session_lines = [
-        '> ' + ('Set up this machine for mining at Decision Models by REAX: mine.decisionmodels.io' if STATE == 'live' else 'Check this computer for REAX mining: mine.decisionmodels.io'),
+        '> ' + ('Set up this machine for mining at Decision Models by REAX: mine.decisionmodels.io' if mainnet_ready else 'Check this computer for REAX mining: mine.decisionmodels.io'),
         '✓ Read the playbook (agent.md)',
         '✓ Checked hardware: Linux, NVIDIA RTX 4090 · 24 GB',
         '✓ Installed the miner kit (checksum verified)',
         '✓ Rehearsal on a local chain: miner scored 1.000',
         '→ Needs you: create your wallet and approve registration. I never see your keys.'
     ]
-    if STATE == 'prelaunch':
-        session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Reviewed hardware, wallet and ports plan', '→ Setup and the free practice run open at launch', '  I stop here until the source is public. Your keys stay with you.']
-    session_caption = 'Illustration of a typical session. ' + ('Today: checks and a plan; setup opens at launch.' if STATE == 'prelaunch' else 'Practice with test TAO before real registration.')
+    if not mainnet_ready and not release['source']['public']:
+        session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Reviewed hardware, wallet and ports plan', '→ Public setup waits until source and images are published', '  Authorized localnet rehearsal needs REAX_SOURCE_DIR.']
+    elif not mainnet_ready:
+        session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Rehearsed on localnet with test TAO', '→ Mainnet setup waits for the network, source and images', '  Testnet requires its own configured netuid.']
+    session_caption = 'Illustration of a typical session. ' + ('Practice with test TAO before mainnet setup.' if release['source']['public'] else 'Checks and plan; authorized localnet rehearsal needs REAX_SOURCE_DIR.')
     session = '<div class="session-wrap"><div class="agent-session" aria-hidden="true"><div class="session-header"><span class="session-dot"></span>Your agent · this machine<span class="session-tag">LOCAL</span></div><div class="session-transcript">'
     session += ''.join('<p class="session-line line-'+str(i)+'">'+('<span class="session-tick">✓</span>'+html.escape(line[1:]) if line.startswith('✓') else html.escape(line))+'</p>' for i,line in enumerate(session_lines))
     session += '</div></div><p class="visually-hidden">Illustrative agent session: '+html.escape(' '.join(session_lines))+'</p><p class="session-caption">'+session_caption+'</p></div>'
@@ -177,11 +228,11 @@ def build():
         ('Check hardware', 'Checks your GPU, driver and the requirements.', 'AGENT', '<rect x="4" y="5" width="16" height="12" rx="2"/><path d="M8 21h8M12 17v4M8 9h8M8 13h4"/>'),
         ('Install the kit', 'Installs the pinned miner kit and verifies its checksum.', 'AGENT', '<path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/>'),
         ('Create your wallet', 'You create your wallet on a separate trusted device.', 'YOU', '<rect x="3" y="6" width="18" height="15" rx="2"/><path d="M3 9V5l14-2v3M16 12h5v5h-5z"/>'),
-        ('Approve registration', ('At launch, you review the fee and sign in your wallet.' if STATE == 'prelaunch' else 'You review the live fee and sign in your own wallet.'), 'YOU', '<path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6zM8 12l3 3 5-6"/>'),
+        ('Approve registration', ('When mainnet setup opens, you review the live fee and sign in your wallet.' if not mainnet_ready else 'You review the live fee and sign in your own wallet.'), 'YOU', '<path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6zM8 12l3 3 5-6"/>'),
         ('Start and verify', 'Starts the miner, checks its answers and keeps it updated.', 'AGENT', '<path d="M4 12a8 8 0 0 1 14-5l2 2M20 3v6h-6M20 12A8 8 0 0 1 6 17l-2-2M4 21v-6h6"/>')
     ]
-    if STATE == 'prelaunch':
-        setup = [(t, ('At launch: ' + sentence) if t in ('Install the kit', 'Start and verify') else sentence, who, icon) for t,sentence,who,icon in setup]
+    if not mainnet_ready:
+        setup = [(t, ('When mainnet setup opens: ' + sentence) if t in ('Install the kit', 'Start and verify') else sentence, who, icon) for t,sentence,who,icon in setup]
     timeline = '<ol class="step-cards">'
     for i,(title, sentence, who, icon) in enumerate(setup, 1):
         timeline += '<li class="step-card '+('human-step' if who=='YOU' else '')+'"><div class="step-top"><span class="step-number">0'+str(i)+'</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icon+'</svg></div><span class="role-chip '+who.lower()+'">'+who+'</span><h3>'+title+'</h3><p>'+sentence+'</p></li>'
