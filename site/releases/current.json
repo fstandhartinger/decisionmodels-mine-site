@@ -3,12 +3,12 @@
   "release_id": "1.1.0rc2",
   "updated": "2026-10-09",
   "status": {
-    "launch_status": "launching_soon",
+    "launch_status": "registered_starting_soon",
     "live": false,
-    "netuid": null,
+    "netuid": 92,
     "network": "finney",
     "testnet_netuid": null,
-    "notes": "REAX is not on Bittensor mainnet yet: the subnet slot has not been bought. The miner source and container images are published at launch. Until then only doctor, plan and wallet guidance work for the public; real networks and the local-chain practice run open at launch. The netuid is announced at launch."
+    "notes": "REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it. Source and images stay private until launch; authorized localnet rehearsal remains available, testnet needs its own configured netuid."
   },
   "minimum_release": "1.1.0rc2",
   "images": {

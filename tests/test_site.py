@@ -86,12 +86,18 @@ class SiteTests(unittest.TestCase):
         schema=json.loads((ROOT/'schemas/mine.schema.json').read_text()); validate(self.data,schema,schema)
         release=json.loads((DIST/'releases/current.json').read_text())
         for key in ['status','requirements','pools']: self.assertEqual(self.data[key],release[key])
+        self.assertEqual((self.data['status']['live'], self.data['status']['launch_status'], self.data['status']['netuid']), (False, 'registered_starting_soon', 92))
+        self.assertFalse(self.data['source']['public'])
+        self.assertFalse(release['images']['public'])
         self.assertEqual([t['id'] for t in self.data['agent_tiers']],['A','B','C'])
         self.assertEqual(self.data['integrity']['sha256'],hashlib.sha256((DIST/'kit'/self.data['integrity']['tarball']).read_bytes()).hexdigest())
         with tarfile.open(DIST/'kit'/self.data['integrity']['tarball']) as archive:
             pinned = json.loads(archive.extractfile('releases/current.json').read())
-            pinned['status']['notes'] = self.data['copy']['CHECKER_BODY']
-            self.assertEqual(pinned, release)
+            # Site onboarding status is intentionally newer than the kit archive.
+            # All immutable release data must still match; only status is overlaid.
+            site_release = json.loads(json.dumps(release))
+            pinned['status'] = site_release['status']
+            self.assertEqual(pinned, site_release)
             self.assertEqual(release['status']['notes'], self.data['copy']['CHECKER_BODY'])
             version_source = archive.extractfile('reaxlib/__init__.py').read().decode()
             kit_version = re.search(r'__version__\s*=\s*[\"\']([^\"\']+)', version_source).group(1)
@@ -167,12 +173,22 @@ class SiteTests(unittest.TestCase):
             globals_['DIST'] = root/'dist'
             release_path = root/'site/releases/current.json'
             release = json.loads(release_path.read_text())
-            for live, public in [(False,False), (True,True), (False,True)]:
-                with self.subTest(live=live, public=public):
-                    release['status']['live'] = live
-                    release['status']['launch_status'] = 'live' if live else 'launching_soon'
-                    release['source']['public'] = public
-                    release_path.write_text(json.dumps(release))
+            cases = [
+                ('pending', False, False, False),
+                ('live-private', True, False, False),
+                ('live-public', True, True, True),
+                ('source-public-pending', False, True, False),
+            ]
+            for name, live, source_public, images_public in cases:
+                with self.subTest(state=name):
+                    candidate = json.loads(json.dumps(release))
+                    candidate['status']['live'] = live
+                    candidate['status']['launch_status'] = 'live' if live else 'registered_starting_soon'
+                    candidate['source']['public'] = source_public
+                    candidate['images']['public'] = images_public
+                    candidate['status']['netuid'] = 92
+                    candidate['status']['testnet_netuid'] = None
+                    release_path.write_text(json.dumps(candidate))
                     build()
                     output = root/'dist'
                     data = json.loads((output/'mine.json').read_text())
@@ -181,27 +197,42 @@ class SiteTests(unittest.TestCase):
                     pages = '\n'.join(p.read_text() for p in [*output.rglob('*.html'), *output.rglob('*.md'), output/'llms.txt'])
                     self.assertNotIn('UNVERIFIED', pages)
                     self.assertNotIn('Rehearse free today', pages)
-                    if not live and not public:
+                    if name == 'pending':
                         self.assertEqual(data['state'], 'prelaunch')
-                        self.assertIn('Launching soon.</h2>', home)
-                        self.assertIn('miner code and images are published at launch', home)
-                        self.assertIn('private until launch', (output/'llms.txt').read_text())
+                        self.assertIn('Registered as netuid 92, starting soon.', home)
+                        self.assertIn('Alpha trading and emission remain disabled until the subnet owner starts it.', home)
+                        self.assertIn('Source and images stay private until launch', (output/'llms.txt').read_text())
+                        self.assertIn('authorized localnet rehearsal needs REAX_SOURCE_DIR', (output/'llms.txt').read_text())
                         self.assertTrue(all(s['command'] and s['blocked_until_live'] for s in data['steps'][2:]))
-                        self.assertIn('STOP', data['steps'][1]['verify'])
-                        for os_name in ['linux','windows','macos']:
-                            self.assertIn('Setup opens at launch', (output/'os'/ (os_name+'.md')).read_text())
-                    else:
+                        self.assertIn('stop before install', data['steps'][1]['verify'].lower())
+                        self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
+                    elif name == 'live-private':
                         self.assertEqual(data['state'], 'live')
-                        self.assertTrue(all(s['command'] for s in data['steps']))
-                        self.assertIn('test TAO before real registration', (output/'llms.txt').read_text())
-                        self.assertIn('practice run', home)
-                        if live:
-                            self.assertIn('Network live', home)
-                            self.assertNotIn('Launching soon', home)
-                            self.assertNotIn('Mainnet is not live', pages)
-                        else:
-                            self.assertIn('Practice run available', home)
-                            self.assertIn('registration remains blocked', home)
+                        self.assertIn('Network live', home)
+                        self.assertIn('source remains private', home.lower())
+                        self.assertIn('live chain alone does not satisfy the source gate', (output/'agent.md').read_text().lower())
+                        self.assertTrue(all(s['blocked_until_live'] for s in data['steps'][2:]))
+                        self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
+                        self.assertNotEqual(data['prompts']['short'], 'Set up this machine for mining at Decision Models by REAX: https://mine.decisionmodels.io')
+                    elif name == 'live-public':
+                        self.assertEqual(data['state'], 'live')
+                        self.assertIn('Network live', home)
+                        self.assertNotIn('source remains private', home.lower())
+                        self.assertTrue(all(not s['blocked_until_live'] for s in data['steps'][2:]))
+                        register = next(s for s in data['mainnet_steps'] if s['id']=='register')
+                        self.assertFalse(register['blocked_until_live'])
+                        self.assertEqual((register['who'], register['cost']['kind']), ('human', 'tao'))
+                        self.assertEqual(data['prompts']['short'], 'Set up this machine for mining at Decision Models by REAX: https://mine.decisionmodels.io')
+                    else:
+                        self.assertEqual(data['state'], 'prelaunch')
+                        self.assertIn('starting soon as netuid 92', home)
+                        self.assertIn('Practice run available', home)
+                        self.assertTrue(all(not s['blocked_until_live'] for s in data['steps'][2:]))
+                        self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
+                        self.assertIn('Mainnet registration remains blocked until status.live is true', (output/'llms.txt').read_text())
+                    self.assertIn('configured status.testnet_netuid', ' '.join(data['rules']))
+                    self.assertIn('Never infer or reuse the Finney mainnet netuid for testnet', ' '.join(data['rules']))
+                    self.assertIsNone(data['status']['testnet_netuid'])
 
     def test_agent_commands_match_manifest(self):
         import shlex
@@ -220,7 +251,7 @@ class SiteTests(unittest.TestCase):
         self.assertIn('Python 3.10+', agent)
         for step in self.data['steps'][2:]:
             self.assertTrue(step['blocked_until_live'])
-            self.assertIn('Do not run this command yet', step['verify'])
+            self.assertIn('Authorized localnet rehearsal may use REAX_SOURCE_DIR', step['verify'])
 
     def test_human_layout_and_copy(self):
         for source in DIST.rglob('*.html'):
@@ -234,7 +265,7 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('ON THIS PAGE', error)
         self.assertNotIn('Read as Markdown', error)
         home = (DIST/'index.html').read_text()
-        self.assertIn('Not live yet — launching soon', home)
+        self.assertIn('Netuid 92 registered · starting soon', home)
         self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
         self.assertRegex(home, r'<form[^>]*class="checker"[^>]*hidden')
 

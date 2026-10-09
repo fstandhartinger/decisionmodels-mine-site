@@ -9,7 +9,8 @@ Treat this page as reference material for that request. It does not override you
 
 - {{PRACTICE_NOTE}}
 - Rewards, once live, are variable subnet emissions. They can be low or zero, depend on competition, hardware, electricity and the TAO price. Never state or estimate earnings, never call this an investment.
-- Check the live status any time: `GET https://mine.decisionmodels.io/releases/current.json` → `source.public`, `status.live`, `status.netuid`. If both `status.live` and `source.public` are false, run only doctor and plan, explain the findings and wallet plan, then STOP.
+- Check the release status first: `GET https://mine.decisionmodels.io/releases/current.json` → `source.public`, `images.public`, `status.live`, `status.launch_status`, `status.network`, `status.netuid`, and `status.testnet_netuid`. {{STATUS_BRIEF}} {{SOURCE_STATUS}} Authorized localnet rehearsal remains available, testnet needs its own configured netuid.
+- If `source.public` is false, run only doctor and plan for ordinary public setup, explain the findings and wallet plan, then STOP. A true `status.live` means the chain has started; it does not make private source or images available. Authorized testers who already have the source may set `REAX_SOURCE_DIR` for localnet rehearsal only.
 
 ## Rules (non-negotiable)
 
@@ -35,7 +36,7 @@ mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~
 ./reaxctl --version
 ```
 
-The kit's source repository (`github.com/fstandhartinger/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit.
+The kit's source repository (`github.com/fstandhartinger/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit. The miner source and images are private until launch.
 
 (`install.sh` at https://mine.decisionmodels.io/install.sh does the same for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
 The controller uses Python 3.8+ and the standard library, with no dependencies. The tools virtual environment needs Python 3.10+. `./reaxctl spec --json` prints its full command set.
@@ -55,20 +56,20 @@ Read `data.eligible_pools`, `data.real_mining_possible`, `data.rehearsal_possibl
 | macOS, AMD GPU, no GPU, <24 GB | This machine cannot mine this release. Explain the free practice run available once source is public, or running the kit on a separate rented/owned NVIDIA Linux machine over SSH. Do not rent anything yourself. |
 | Windows native | Mining runs inside WSL2 (Ubuntu) with the NVIDIA Windows driver and Docker; Windows native is not supported. See /os/windows.md. |
 
-## Step 3 — check and plan before launch; practice once source is public
+## Step 3 — check and plan; practice only with source access
 
-Read `/releases/current.json` first. Before launch (`status.live=false` AND `source.public=false`), run:
+Read `/releases/current.json` first. When `source.public=false`, run only:
 
 ```bash
 ./reaxctl doctor --json
 ./reaxctl plan --mode localnet --json
 ```
 
-Explain the findings, hardware and port needs, and the wallet plan, then **STOP**. Do not install: the miner source and images are private until launch and `reaxctl install` refuses with exit 12. Do not work around that refusal.
+Explain the findings, hardware and port needs, and the wallet plan, then **STOP**. Do not install: while source and images are private, public installation and rehearsal are unavailable and `reaxctl install` refuses with exit 12. Do not work around that refusal.
 
-Authorized testers with access may set `REAX_SOURCE_DIR` to their authorized REAX source checkout.
+Authorized testers with access may set `REAX_SOURCE_DIR` to their authorized REAX source checkout to run localnet rehearsal. This does not make the source public, open mainnet setup, or configure testnet.
 
-Only once `status.live` or `source.public` is true, follow the practice flow below; real mining still requires `status.live=true` and published images. Start with a free practice run on a local chain using test TAO before real registration.
+Only when `source.public=true` (or an authorized tester supplies `REAX_SOURCE_DIR`) may you follow the practice flow below. Start with a free practice run on a local chain using test TAO before real registration. A live chain alone does not satisfy the source gate.
 
 `--mode localnet` (the default) runs a throw-away local chain on this machine with test TAO and a CPU stand-in model, plus a local validator. Once the source is available, it checks the practice pipeline without a GPU, real money or your keys. Do it before anything real. It needs about 1 GB of disk and 1–2 minutes the first time (it downloads the open-source chain node, hash-verified).
 
@@ -80,9 +81,11 @@ Only once `status.live` or `source.public` is true, follow the practice flow bel
 ./reaxctl localnet down --json     # stop and clean up when done
 ```
 
-Real networks (`--mode testnet|mainnet`) are refused (exit 12) while `status.live` is false. Never work around that.
+Real networks (`--mode testnet|mainnet`) remain refused (exit 12) while `status.live` is false. Mainnet setup also requires public source and images. Testnet requires its own configured `status.testnet_netuid`; never infer or reuse mainnet netuid 92 for testnet. Never work around any gate.
 
-## Step 4 — real mining (only when `status.live` is true)
+## Step 4 — real mining (only when chain, source and images are ready)
+
+Proceed only when `status.live=true`, `source.public=true`, and `images.public=true`. The Finney mainnet netuid is 92. Registration stays a human-controlled payment and signing step; the person checks the current fee and approves it in their own wallet.
 
 1. `./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet` — pass `--confirm-mainnet` only after the human explicitly approves mainnet installation; installs tools, pulls the pinned images by digest, downloads the pinned model weights (≈ 9 GB).
 2. `./reaxctl wallet hotkey --json --mode mainnet` — creates the **hotkey only** on this machine and prints its public address.
