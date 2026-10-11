@@ -99,6 +99,9 @@ class SiteTests(unittest.TestCase):
             # All immutable release data must still match; only status is overlaid.
             site_release = json.loads(json.dumps(release))
             pinned['status'] = site_release['status']
+            # The start watcher also stamps `updated` when it flips status; everything else must still match.
+            self.assertLessEqual(pinned['updated'], site_release['updated'])
+            pinned['updated'] = site_release['updated']
             self.assertEqual(pinned, site_release)
             self.assertEqual(release['status']['notes'], self.data['copy']['CHECKER_BODY'])
             version_source = archive.extractfile('reaxlib/__init__.py').read().decode()
