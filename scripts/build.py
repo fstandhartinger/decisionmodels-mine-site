@@ -28,7 +28,7 @@ COPY = {
         'PRACTICE_NOTE': 'Status: REAX is registered as netuid 92 on Bittensor Finney and registration is open, but emissions have not started (planned with the public launch, set on chain by the subnet owner); rewards are variable and can be zero. The miner source and images are published at launch. Today: check the hardware, explain the verdict, rental options, wallet and registration plan, and help companies with the EU miner agreement. Registering a hotkey only makes sense once its miner can run, because a registered miner that is not running scores zero. Do not install the miner while source.public is false (install exits 12); named partners with software access may use REAX_SOURCE_DIR for a local rehearsal.',
         'META_DESCRIPTION': 'Mine on REAX (Bittensor netuid 92) via Decision Models: registration open, emissions not started yet. Agent-first guide: hardware check, GPU rental, wallet, rewards mechanics, EU miner track.',
         'CHECKER_TITLE': 'Check your machine and prepare now.',
-        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open; emissions have not started. The miner source and images are published at launch. Run doctor and plan now; install waits for the published source.',
+        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open; emissions have not started. The miner source and images are private until launch. Run doctor and plan now; install waits for the published source.',
         'OTHER_HOST': 'This machine cannot mine; rent or use another NVIDIA host',
         'GPU_NOTE': 'The miner software is published at launch; prepare hardware, wallet and ports now.',
         'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92; registration open; emissions not started yet (planned with the public launch; rewards variable, can be zero). Source and images are published at launch. Hardware check, rentals, wallets, rewards mechanics and the EU (GDPR) miner track are documented.',
@@ -236,10 +236,10 @@ def build():
         '→ Needs you: create your wallet and approve registration. I never see your keys.'
     ]
     if not mainnet_ready and not release['source']['public']:
-        session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Reviewed hardware, wallet and ports plan', '→ Public setup waits until source and images are published', '  Authorized localnet rehearsal needs REAX_SOURCE_DIR.']
+        session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Reviewed hardware, wallet and ports plan', '→ Setup opens when the miner software is published']
     elif not mainnet_ready:
         session_lines = [session_lines[0], session_lines[1], session_lines[2], '✓ Rehearsed on localnet with test TAO', '→ Mainnet setup waits for the network, source and images', '  Testnet requires its own configured netuid.']
-    session_caption = 'Illustration of a typical session. ' + ('Practice with test TAO before mainnet setup.' if release['source']['public'] else 'Checks and plan; authorized localnet rehearsal needs REAX_SOURCE_DIR.')
+    session_caption = 'Illustration of a typical session. ' + ('Practice with test TAO before mainnet setup.' if release['source']['public'] else 'Checks and plan today; setup opens when the miner software is published.')
     session = '<div class="session-wrap"><div class="agent-session" aria-hidden="true"><div class="session-header"><span class="session-dot"></span>Your agent · this machine<span class="session-tag">LOCAL</span></div><div class="session-transcript">'
     session += ''.join('<p class="session-line line-'+str(i)+'">'+('<span class="session-tick">✓</span>'+html.escape(line[1:]) if line.startswith('✓') else html.escape(line))+'</p>' for i,line in enumerate(session_lines))
     session += '</div></div><p class="visually-hidden">Illustrative agent session: '+html.escape(' '.join(session_lines))+'</p><p class="session-caption">'+session_caption+'</p></div>'
