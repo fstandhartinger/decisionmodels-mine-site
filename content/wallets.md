@@ -21,9 +21,9 @@ btcli wallet new-coldkey --wallet-name reax
 btcli wallet list                   # shows the public ss58 address
 ```
 
-Run these in your **own terminal**, not through the agent: `new-coldkey` prints the recovery phrase. Keep the `~/.bittensor/wallets/reax/coldkey` file on this computer only.
+Run these in your **own terminal**, not through the agent: `new-coldkey` prints the recovery phrase. Keep the `~/.bittensor/wallets/reax/coldkey` file on this trusted device only. Never copy it to the mining server, and never give it, or the recovery phrase, to an agent.
 
-Other wallets listed on bittensor.com/wallet: Nova Wallet, SubWallet, Crucible, TAO.com and Taostats wallets, and the Polkadot.js extension. For larger amounts a Ledger hardware wallet is the strongest option. Our [verification table](#what-is-verified) below says what we tested.
+Other wallets listed on bittensor.com/wallet: Nova Wallet, SubWallet, Crucible, TAO.com and Taostats wallets, and the Polkadot.js extension. A Ledger hardware wallet gives stronger protection for your keys. Our [verification table](#what-is-verified) below says what we tested.
 
 The **hotkey** is different: it is created by the kit directly on the mining server (`reaxctl wallet hotkey`) and only identifies your miner. A stolen hotkey cannot move your funds, but it can impersonate your miner, so protect it too.
 
@@ -41,7 +41,7 @@ If you only have the mining computer, pause funded setup until you have a separa
 
 The agent may prepare software, inspect compatibility and install an operational hotkey without displaying its contents. It may use your public SS58 coldkey address. It must never ask for, read, print, log or transmit a seed, recovery phrase or coldkey private file. Secret-bearing steps happen outside the agent transcript. A human approves every payment and signs registration in their own wallet.
 
-The registration burn is non-refundable. Verify the network, netuid (subnet number), public addresses, live fee and your approval before signing. Do not invent a `register_limit` CLI command; raw runtime support does not establish an approved signing flow or an all-in fee cap.
+The registration burn is non-refundable. Verify the network, netuid (subnet number), public addresses, live fee and your approval before signing. Use only the commands in this guide or the official btcli documentation.
 
 ## What is verified? {#what-is-verified}
 
@@ -57,7 +57,7 @@ Documentation checked on October 9, 2026. **No funded registration or hardware s
 | TAO.com | Listed third-party wallet; old web wallet is deprecated | Current registration UI and bridge compatibility |
 | Ledger | v11 generic Polkadot app signing; metadata proofs | Specific REAX registration tested on a device |
 
-The research finds current stable Bittensor 11.3.0; the **bundled kit pins 11.1.0**. Keep the wallet CLI isolated from miner dependencies and follow the tested kit pins. Do not silently upgrade the miner or combine legacy `bittensor-cli` console entry points. The pin changes only with a tested kit release.
+The newest stable Bittensor release we found is 11.3.0, but **the kit uses 11.1.0**, the version we tested. Keep the wallet CLI isolated from miner dependencies and follow the tested kit pins. Do not silently upgrade the miner or combine legacy `bittensor-cli` console entry points. The pin changes only with a tested kit release.
 
 ## If signing fails
 

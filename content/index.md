@@ -8,9 +8,9 @@
 
 {{PROMPT_BOX}}
 
-<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+ (RTX 3090/4090/5090 and up)</span><span>Linux (Windows via WSL2)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
+<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+ (RTX 3090/4090/5090 and up)</span><span>Linux (Windows via WSL2 is conditional)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
 
-<p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Tested with Claude Code; other coding agents that can run commands on your computer should work the same way. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
+<p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Tested with Claude Code; other coding agents that can run commands on your computer may work, but we have not tested them. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
 
 <p class="agent-note">AI agent reading this page? Your instructions are in <a href="/agent.md">/agent.md</a>: status, hardware verdict, rental options, wallet without seeds, rewards, and the EU miner track.</p>
 
@@ -92,9 +92,9 @@ Validators test every miner each round and score answers that match their refere
 <section class="home-section" id="eu" markdown="1">
 <p class="eyebrow">05 / FOR COMPANIES</p>
 
-## EU miners: GDPR-compliant mining
+## EU miners: mining under a GDPR sub-processing agreement
 
-EU companies with GPUs in EU data centres can sign a sub-processing agreement (AVV, Art. 28 GDPR) online and, once verified, serve Decision Models' EU-tier traffic in addition to normal mining. Requirements, EU AI Act notes and the signing flow are on one page.
+EU companies with GPUs in EU data centres can sign a sub-processing agreement (AVV, Art. 28 GDPR) online. Once verified, a company may serve Decision Models' EU-tier traffic in addition to normal mining. EU routing is switched off until the first verified EU miner, and no traffic volume is promised. Requirements, EU AI Act notes and the signing flow are on one page.
 
 [EU miner track →](/eu) · [Sign the agreement →](/eu/sign)
 </section>

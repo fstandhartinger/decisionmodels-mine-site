@@ -16,22 +16,22 @@ URL = 'https://mine.decisionmodels.io'
 
 COPY = {
     'prelaunch': {
-        'STATUS_BRIEF': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open. Emissions have not started yet; rewards begin when the subnet owner starts them (expected at launch).',
-        'SOURCE_STATUS': 'The miner source and container images are published at launch; named partners can get early access.',
-        'STATUS_PILL': 'Registration open · rewards start with emissions',
-        'STATUS_TITLE': 'Registration is open. Rewards start when emissions start.',
-        'STATUS_BODY': 'REAX is registered on Bittensor Finney mainnet as netuid 92 and miners can register now. Emissions have not started yet: rewards begin when the subnet owner starts them, expected at launch. The miner source and container images are published at launch; until then your agent checks your hardware, prepares wallet, ports and registration, and companies can sign the EU miner agreement. Named partners can ask for early access.',
+        'STATUS_BRIEF': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open. Emissions have not started yet; the start is planned with the public launch and is set by the subnet owner on chain. Rewards are variable and can be zero.',
+        'SOURCE_STATUS': 'The miner source and container images are published at launch; named partners can ask for access to the software before that.',
+        'STATUS_PILL': 'Registration open · emissions not started',
+        'STATUS_TITLE': 'Registration is open. Emissions have not started.',
+        'STATUS_BODY': 'REAX is registered on Bittensor Finney mainnet as netuid 92, and registration is open on the network. Emissions have not started: the start is planned with the public launch and is set on chain by the subnet owner, not by us. Rewards, once emissions run, are variable and can be zero. The miner source and container images are published at launch; until then your agent can check your hardware and prepare wallet, ports and plan, and companies can sign the EU miner agreement. Named partners can ask for access to the software before the public release.',
         'HERO_NOTE': 'Give your coding agent one link. It checks whether your machine can mine, suggests a rented GPU if not, walks you through wallet and registration, and explains how rewards work. You keep your keys and approve every payment.',
-        'HUMAN_NOTE': 'Registration is open on netuid 92; rewards start when emissions start. Your agent can check hardware and prepare everything today; the miner software is published at launch (early access for named partners).',
-        'STRIP_STATUS': 'Registration open · rewards start with emissions',
+        'HUMAN_NOTE': 'Registration is open on netuid 92; emissions have not started. Your agent can check your hardware and prepare everything today; the miner software is published at launch.',
+        'STRIP_STATUS': 'Registration open · emissions not started',
         'PYTHON_NOTE': 'Controller: Python 3.8+; tools virtual environment: Python 3.10+.',
-        'PRACTICE_NOTE': 'Status: REAX is registered as netuid 92 on Bittensor Finney and registration is open, but emissions have not started; rewards begin when the subnet owner starts them (expected at launch). The miner source and images are published at launch. Today: check the hardware, explain the verdict, rental options, wallet and registration plan, and help companies with the EU miner agreement. Do not install the miner while source.public is false (install exits 12); named partners with early access may use REAX_SOURCE_DIR.',
-        'META_DESCRIPTION': 'Mine on REAX (Bittensor netuid 92) via Decision Models: registration open, rewards start when emissions start. Agent-first guide: hardware check, GPU rental, wallet, rewards, EU miner track.',
+        'PRACTICE_NOTE': 'Status: REAX is registered as netuid 92 on Bittensor Finney and registration is open, but emissions have not started (planned with the public launch, set on chain by the subnet owner); rewards are variable and can be zero. The miner source and images are published at launch. Today: check the hardware, explain the verdict, rental options, wallet and registration plan, and help companies with the EU miner agreement. Registering a hotkey only makes sense once its miner can run, because a registered miner that is not running scores zero. Do not install the miner while source.public is false (install exits 12); named partners with software access may use REAX_SOURCE_DIR for a local rehearsal.',
+        'META_DESCRIPTION': 'Mine on REAX (Bittensor netuid 92) via Decision Models: registration open, emissions not started yet. Agent-first guide: hardware check, GPU rental, wallet, rewards mechanics, EU miner track.',
         'CHECKER_TITLE': 'Check your machine and prepare now.',
-        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open; emissions have not started, rewards begin when they do. The miner source and images are published at launch. Run doctor and plan now; install waits for the published source (early access for named partners).',
+        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open; emissions have not started. The miner source and images are published at launch. Run doctor and plan now; install waits for the published source.',
         'OTHER_HOST': 'This machine cannot mine; rent or use another NVIDIA host',
         'GPU_NOTE': 'The miner software is published at launch; prepare hardware, wallet and ports now.',
-        'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92; registration open; emissions not started yet (rewards begin when they start). Source and images are published at launch; early access for named partners. Hardware check, rentals, wallets, rewards and the EU (GDPR) miner track are documented.',
+        'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92; registration open; emissions not started yet (planned with the public launch; rewards variable, can be zero). Source and images are published at launch. Hardware check, rentals, wallets, rewards mechanics and the EU (GDPR) miner track are documented.',
         'CHOOSE_MODE': 'Review the mainnet plan; install waits for the published source',
         'PLAN_VERIFY': 'Explain the hardware verdict, rental options and wallet plan; STOP before install while source and images are private.',
     },
@@ -206,11 +206,11 @@ def build():
         'rentals': {'page':'/rent.md','rule':'Suggest options with dated indicative prices; the person rents. Prefer VM/bare metal with Docker and a public port.'},
         'wallet': {'page':'/wallets.md','paths':[
             {'id':'talisman','summary':'Talisman browser extension: Polkadot/Substrate account, Bittensor enabled; person copies the public 5... address.'},
-            {'id':'btcli-local','summary':'btcli on the person\'s own computer, run by the person outside the agent session: pipx install bittensor-cli; btcli wallet new-coldkey --wallet.name reax; btcli wallet list.'}],
+            {'id':'btcli-local','summary':'btcli on the person\'s own computer, run by the person outside the agent session: pipx install bittensor-cli; btcli wallet new-coldkey --wallet-name reax; btcli wallet list.'}],
             'never':'Never ask for, read or store a recovery phrase, seed, private key or coldkey file. Only public addresses and the miner hotkey on the mining server.'},
         'rewards': {'page':'/rewards-and-risks.md','summary':'Validators score fresh answers against their reference run each round; the chain shares subnet emission by weight; miners receive alpha (subnet token) as stake on their hotkey. Starts when emissions start; variable; can be zero.'},
-        'options_for_alpha': {'page':'/rewards-and-risks.md#what-you-can-do-with-earned-alpha','wording':'You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.','convert':['btcli stake remove --netuid 92 (alpha -> TAO via the subnet pool; slippage)','send TAO to an exchange deposit address that lists TAO in the person\'s country (e.g. Kraken; check availability), test amount first','sell for EUR/USD on the exchange; fees; possible tax duty']},
-        'eu_track': {'page':'/eu.md','sign':'/eu/sign','api':'/api/eu/','requirements':['EU/EEA legal entity','GPUs in EU/EEA data centre','no transfer outside EU/EEA incl. remote admin and backups','signed Art. 28(4) GDPR sub-processing agreement with TOMs','no prompt/response logging or retention','breach notice within 24 h','own sub-processors disclosed'],'routing':'EU-tier routing to verified EU miners is switched off until the first verified EU miner, the 30-day customer notice and the operator decision.','signing':'An authorised signatory reviews and accepts; the agent may only prepare.'},
+        'options_for_alpha': {'page':'/rewards-and-risks.md#what-you-can-do-with-earned-alpha','wording':'You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.','convert':['btcli stake remove --netuid 92 (alpha -> TAO via the subnet pool; slippage)','send TAO to the deposit address of an exchange that lists TAO and is authorised in the person\'s country (examples, not recommendations: Kraken, Bitvavo, Coinbase; check MiCAR authorisation), test amount first','sell for EUR/USD on the exchange; fees; possible tax duty']},
+        'eu_track': {'page':'/eu.md','sign':'/eu/sign','api':'/api/eu/','requirements':['EU/EEA legal entity','GPUs in EU/EEA data centre','no transfer outside EU/EEA incl. remote admin and backups','signed Art. 28(4) GDPR sub-processing agreement with TOMs','no prompt/response logging or retention','breach notice within 24 h','own sub-processors disclosed'],'routing':'EU-tier routing is switched off until the first verified EU miner, the 30-day customer notice and the operator decision; routing and volume are not promised. When on, EU-tier requests go only to verified EU miners or the operator\'s own EU GPUs.','signing':'An authorised signatory reviews and accepts; the agent may only prepare.'},
         'contact': 'info@productivity-boost.com',
     }
     data = dict(guide=guide, state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
@@ -232,7 +232,7 @@ def build():
         '✓ Read the playbook (agent.md)',
         '✓ Checked hardware: Linux, NVIDIA RTX 4090 · 24 GB',
         '✓ Installed the miner kit (checksum verified)',
-        '✓ Rehearsal on a local chain: miner scored 1.000',
+        '✓ Rehearsal on a local chain: verification checks passed',
         '→ Needs you: create your wallet and approve registration. I never see your keys.'
     ]
     if not mainnet_ready and not release['source']['public']:

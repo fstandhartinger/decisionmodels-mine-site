@@ -1,6 +1,6 @@
-# EU miners: GDPR-compliant mining for Decision Models
+# EU miners: mining under a GDPR sub-processing agreement
 
-Decision Models sells an **EU tier**: API requests that must stay in the EU, under a data processing agreement (DPA / AVV) with zero payload retention. Today those requests run only on GPUs we rent in the EU. The EU miner track lets **EU companies with GPUs in EU data centres** take part as contracted sub-processors: they mine on the REAX subnet like everyone else, and in addition they can serve EU-tier traffic once they are verified.
+Decision Models sells an **EU tier**: API requests that must stay in the EU, under a data processing agreement (DPA / AVV) with zero payload retention. Today those requests run only on GPUs we rent in the EU. The EU miner track lets **EU companies with GPUs in EU data centres** take part as contracted sub-processors: they mine on the REAX subnet like everyone else, and in addition they may be able to serve EU-tier traffic once they are verified and EU routing is switched on; no volume is promised.
 
 {{HUMAN_NOTE}}
 
@@ -23,7 +23,7 @@ Decision Models sells an **EU tier**: API requests that must stay in the EU, und
 2. **Set up your miners** with the [agent playbook](/agent.md): register the hotkeys you named, start and verify.
 3. **Verification by us.** We check the company register entry, that your miners' public IPs belong to the named EU data centres (IP and network owner), and your statement. Where possible we add a technical attestation of the serving host.
 4. **Customer notice.** Our customer DPA requires us to announce a new sub-processor to EU-tier customers 30 days in advance. We send that notice after verification.
-5. **EU routing.** After the notice period, EU-tier requests can be routed to verified EU miners only. Every answer is still checked against our reference GPU, and our own EU GPUs answer if a miner is slow or unavailable. EU routing is currently **switched off** and starts with the first verified EU miner.
+5. **EU routing.** After the notice period, EU-tier requests can be routed to verified EU miners only. Every answer is still checked against our reference GPU, and our own EU GPUs answer if a miner is slow or unavailable. EU routing is currently **switched off** until the first verified EU miner, the 30-day customer notice and our own decision. We do not promise that any EU-tier traffic is routed to a given miner, or how much.
 
 Mining rewards work exactly as for every miner (see [rewards](/rewards-and-risks)). The agreement is about data protection; it creates no payment obligation in either direction. Any additional commercial arrangement for serving EU traffic is agreed individually.
 
@@ -31,7 +31,7 @@ Mining rewards work exactly as for every miner (see [rewards](/rewards-and-risks
 
 Factual notes, not legal advice (Regulation (EU) 2024/1689):
 
-- The **provider** of a general-purpose AI model is whoever develops it and places it on the market (Art. 3(63), 3(3)); the obligations for such models (Art. 53, 55) lie with them. A miner runs pinned, published model weights unchanged and does not become their provider by doing so.
+- The **provider** of a general-purpose AI model is whoever develops it and places it on the market (Art. 3(63), 3(3)); the obligations for such models (Art. 53, 55) lie with them. A miner runs pinned, published model weights unchanged. In our view that does not make the miner the provider of the model; each company should confirm this with its own adviser.
 - The **deployer** is whoever uses an AI system under its own authority (Art. 3(4)); for API traffic that is usually our customer, and Decision Models provides the inference service.
 - An EU miner acts as an infrastructure sub-processor on our instructions. Its practical part is supporting us: unchanged pinned models, no content retention, information when asked, and incident notice.
 - Whether a specific customer use is high-risk (Annex III) is assessed by that customer; the miner does not see or choose use cases.
@@ -47,6 +47,6 @@ If the person represents a company with EU hosting and data-protection practice,
 
 ## Contact {#contact}
 
-Not ready to sign, or need early access to the miner software before the public launch? Use the inquiry form on [/eu/sign](/eu/sign#eu-contact-title) or write to info@productivity-boost.com (subject "EU miner"). Every inquiry reaches a person directly.
+Not ready to sign, or need access to the miner software before its public release? Use the inquiry form on [/eu/sign](/eu/sign#eu-contact-title) or write to info@productivity-boost.com (subject "EU miner"). Inquiries are read by a person.
 
 [Agent playbook](/agent.md) · [Hardware](/hardware) · [Customer DPA](https://decisionmodels.io/legal/dpa) · [Sub-processors](https://decisionmodels.io/legal/subprocessors)
