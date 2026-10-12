@@ -168,7 +168,7 @@ class UnitTests(unittest.TestCase):
             self.assertIn('11111111-2222-4333-8444-555555555555', out)
             en = subprocess.run([tool, '-layout', '-', '-'], input=build_pdf(self._record('en'), s),
                                 capture_output=True, check=True).stdout.decode()
-            self.assertIn('Accepted electronically in text form (Art. 28(9) GDPR)', en)
+            self.assertIn("Accepted electronically by the Miner's authorised signatory (Art. 28(9) GDPR)", en)
             self.assertIn('https://mine.decisionmodels.io/eu', en)
 
     def test_pdf_handles_tables_and_long_text(self):
