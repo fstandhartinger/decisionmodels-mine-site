@@ -9,8 +9,8 @@ Decision Models sells an **EU tier**: API requests that must stay in the EU, und
 | Requirement | What it means in practice |
 |---|---|
 | EU/EEA legal entity | A company registered in the EU or EEA (for example GmbH, AG, SAS, BV, Oy), with register number and VAT ID. |
-| GPUs in an EU/EEA data centre | The mining servers run in a data centre located in the EU/EEA. You name the provider and city. |
-| No transfer outside the EU/EEA | Also no remote administration, support access or backups from outside the EU/EEA. |
+| GPUs in an EU data centre | The mining servers run in a data centre located in an EU member state. You name the provider and city. |
+| No transfer outside the EU | Also no remote administration, support access or backups from outside the EU. |
 | Signed sub-processing agreement | An agreement under Art. 28(4) GDPR with us (the AVV below), including technical and organisational measures (TOMs). |
 | No content logging | Requests and responses are processed in memory only; no logging, storage, training or other use of content. |
 | Incident notice | You tell us about any personal data breach without undue delay and at the latest within 24 hours. |
@@ -40,7 +40,7 @@ Factual notes, not legal advice (Regulation (EU) 2024/1689):
 
 If the person represents a company with EU hosting and data-protection practice, or asks to become "an EU miner on Decision Models":
 
-1. Walk through the requirements table above and ask about each point; stop and say so if one cannot be met (for example GPUs outside the EU/EEA).
+1. Walk through the requirements table above and ask about each point; stop and say so if one cannot be met (for example GPUs outside the EU).
 2. Collect the agreement data: legal name and form, address, register court and number, VAT ID, signatory name and role, signatory e-mail, privacy contact, data-centre provider and city per site, planned hotkeys (public SS58 addresses) and endpoints, their own sub-processors, a short TOM description.
 3. Open [/eu/sign](/eu/sign) with them. You may fill in the form or prepare the JSON for its API, but **an authorised signatory must read the agreement and click Accept**. Never accept on their behalf.
 4. Continue with the normal miner setup in the [agent playbook](/agent.md). Point out that EU routing starts only after our verification and the customer notice period.
