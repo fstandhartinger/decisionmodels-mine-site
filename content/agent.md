@@ -79,8 +79,8 @@ Explain the ordered steps, who does what (agent or person) and the open blockers
 
 **Step 3 — wallet (the person, outside your session).** The person creates their coldkey on their own trusted device, never on the mining server, and gives you only the public address. Offer two paths and let them choose ([/wallets.md](/wallets.md) has the click-by-click version):
 
-- **Talisman browser extension** (Chrome, Brave, Firefox): create a Polkadot/Substrate account (not an Ethereum account), enable Bittensor, write the recovery phrase on paper, copy the public address.
-- **btcli on their own computer** (Linux, macOS or WSL2): they run `pipx install bittensor-cli` and then `btcli wallet new-coldkey --wallet.name reax` **in their own terminal, not through you**, because it prints the recovery phrase. They store the phrase offline and give you only the `ss58` address shown by `btcli wallet list`.
+- **Talisman browser extension** (Chrome, Brave, Firefox): More → Add Account → new **Polkadot (Substrate)** account (not Ethereum), back up the recovery phrase on paper, copy the public address. Talisman shows TAO and subnet (alpha) stake.
+- **btcli on their own computer** (Linux, macOS or WSL2): they run `pipx install bittensor-cli` and then `btcli wallet new-coldkey --wallet-name reax` **in their own terminal, not through you**, because it prints the recovery phrase. They store the phrase offline and give you only the `ss58` address shown by `btcli wallet list`.
 
 Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. A Ledger hardware wallet is the strongest option for larger amounts.
 
@@ -99,7 +99,7 @@ Pass `--confirm-mainnet` only after the human explicitly approves a mainnet inst
 ./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json
 ```
 
-**Step 6 — registration (the person pays and signs).** `./reaxctl register --json --mode mainnet` prints the hotkey address and the registration page. Registration on netuid 92 costs a **non-refundable burn in TAO** (check the live amount; it has been well below 0.01 TAO before launch, and it changes with demand). The person signs it in their own wallet, for example with `btcli subnets register --netuid 92 --wallet.name reax --wallet.hotkey <hotkey>` on their device (which needs the hotkey's public file there, see [/wallets.md](/wallets.md)) or via the registration page. Show them the netuid, the hotkey address and the fee before they sign. You wait.
+**Step 6 — registration (the person pays and signs).** `./reaxctl register --json --mode mainnet` prints the hotkey address and the registration page. Registration on netuid 92 costs a **non-refundable burn in TAO** (check the live amount; it has been well below 0.01 TAO before launch, and it changes with demand). The person opens the registration page (https://reax.dev/register/) or uses btcli on their own device, checks netuid 92, the hotkey address and the live fee, and signs with their coldkey. You wait.
 
 **Step 7 — start and verify.**
 
@@ -126,7 +126,7 @@ Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json`
 Full version with commands: [/rewards-and-risks.md](/rewards-and-risks.md#what-you-can-do-with-earned-alpha). In short, all signed by the person with their coldkey:
 
 1. **Keep it as it is**, or **stake it to a validator** of the subnet: staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.
-2. **Convert alpha to TAO** by unstaking: the chain swaps alpha for TAO through the subnet's liquidity pool (`btcli stake remove --netuid 92 …`). The rate moves with the pool, so check the shown amount and slippage before signing.
+2. **Convert alpha to TAO** by unstaking: the chain swaps alpha for TAO through the subnet's liquidity pool (`btcli stake remove --netuid 92 --wallet-name reax`; btcli applies a 5 % default slippage tolerance). The rate moves with the pool, so check the shown amount and slippage before signing.
 3. **Convert TAO to euros or dollars** on an exchange that lists TAO and serves the person's country (for example Kraken; check current listing and availability yourself): send TAO from the wallet to the exchange's TAO deposit address (test with a small amount first), then sell there and withdraw to a bank account. Mention exchange fees, network fees and that mining rewards and disposals can be taxable; the person should check with a tax adviser.
 
 Do not tell the person when or whether to sell, and do not describe the token as a way to make a profit.

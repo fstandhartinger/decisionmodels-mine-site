@@ -10,20 +10,20 @@ Your wallet holds the **coldkey**. Create it on a device you trust, not on the m
 
 1. Install Talisman from [talisman.xyz](https://talisman.xyz) for Chrome, Brave or Firefox.
 2. Create a new wallet, set a password and back up the recovery phrase on paper.
-3. Add a **Polkadot (Substrate) account**, not an Ethereum account, and enable the Bittensor network if it is not shown.
+3. Open More → Add Account and create a new **Polkadot (Substrate)** account, not an Ethereum account. Bittensor is a Substrate chain; if TAO is not shown, enable Bittensor under the Polkadot networks in Manage Networks.
 4. Copy the account's public address (it starts with `5`). That address is all your agent needs.
 
 **Path B — btcli on your own computer (Linux, macOS or Windows via WSL2).**
 
 ```bash
 pipx install bittensor-cli          # or: python3 -m pip install --user bittensor-cli
-btcli wallet new-coldkey --wallet.name reax
+btcli wallet new-coldkey --wallet-name reax
 btcli wallet list                   # shows the public ss58 address
 ```
 
 Run these in your **own terminal**, not through the agent: `new-coldkey` prints the recovery phrase. Keep the `~/.bittensor/wallets/reax/coldkey` file on this computer only.
 
-Other wallets that hold Bittensor accounts: Nova Wallet (phone), the Polkadot.js extension, SubWallet. For larger amounts a Ledger hardware wallet is the strongest option. Our [verification table](#what-is-verified) below says what we tested.
+Other wallets listed on bittensor.com/wallet: Nova Wallet, SubWallet, Crucible, TAO.com and Taostats wallets, and the Polkadot.js extension. For larger amounts a Ledger hardware wallet is the strongest option. Our [verification table](#what-is-verified) below says what we tested.
 
 The **hotkey** is different: it is created by the kit directly on the mining server (`reaxctl wallet hotkey`) and only identifies your miner. A stolen hotkey cannot move your funds, but it can impersonate your miner, so protect it too.
 

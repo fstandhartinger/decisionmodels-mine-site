@@ -19,27 +19,27 @@ Every step below is signed by you with your coldkey (Talisman, btcli or another 
 **Keep or stake.** You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.
 
 ```bash
-btcli stake list --wallet.name reax                              # where your stake is
-btcli stake move --wallet.name reax                              # interactive: move alpha from your miner hotkey to a validator hotkey on netuid 92
+btcli stake list --wallet-name reax        # where your stake is
+btcli stake move --wallet-name reax        # interactive: move alpha from your miner hotkey to a validator hotkey on netuid 92
 ```
 
-**Convert alpha to TAO.** Unstaking swaps alpha for TAO through the subnet's liquidity pool. The amount you receive depends on the pool at that moment (slippage), and a small transaction fee applies. btcli shows the expected amount before you confirm; its safe-staking option lets you set a slippage tolerance.
+**Convert alpha to TAO.** Unstaking swaps alpha for TAO through the subnet's liquidity pool. The amount you receive depends on the pool at that moment (price impact and slippage), and a pool fee of about 0.05 % applies. There is no unbonding period. btcli shows the expected amount before you confirm and by default refuses if the price moves more than 5 % (`--tolerance`). Moving stake to another hotkey on the same subnet is not a swap.
 
 ```bash
-btcli stake remove --netuid 92 --wallet.name reax --wallet.hotkey <miner-hotkey-name>
-btcli wallet balance --wallet.name reax                          # TAO now in your coldkey
+btcli stake remove --netuid 92 --wallet-name reax --interactive   # choose the miner hotkey position and amount
+btcli wallet balance --wallet-name reax                           # TAO now in your coldkey
 ```
 
-**Convert TAO to euros or dollars.** Use an exchange that lists TAO and is available in your country (for example Kraken; listings and availability change, so check first):
+**Convert TAO to euros or dollars.** Use an exchange that lists TAO and is available in your country. Examples as of October 2026: Kraken (TAO/EUR), Bitvavo, Coinbase. Listings, licences and country availability change, so check first:
 
 1. Open and verify an account at the exchange (identity check).
 2. In the exchange, get your **TAO deposit address** (Bittensor network).
-3. Send a small test amount first: `btcli wallet transfer --dest <deposit-address> --amount <amount> --wallet.name reax`, or "Send" in Talisman. Wait for it to arrive, then send the rest.
+3. Send a small test amount first: `btcli wallet transfer --destination <deposit-address> --amount <amount> --wallet-name reax`, or "Send" in Talisman. Wait for it to arrive, then send the rest.
 4. Sell TAO for EUR or USD on the exchange and withdraw to your bank account.
 
 Costs to expect: pool slippage when unstaking, network fees, exchange trading and withdrawal fees.
 
-**Taxes.** Mining rewards, staking rewards and later disposals can be taxable, depending on your country and situation. Keep records (dates, amounts, transaction hashes) and ask a tax adviser.
+**Taxes.** Mining rewards, staking rewards and later disposals can be taxable, depending on your country and situation. Keep records (dates, amounts, transaction hashes) and ask a tax adviser. For Germany, the Federal Ministry of Finance's letter on crypto assets of 6 March 2025 is the official reference ([PDF, German](https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Steuerarten/Einkommensteuer/2025-03-06-einzelfragen-kryptowerte-bmf-schreiben.pdf)).
 
 ## Risks and costs
 
