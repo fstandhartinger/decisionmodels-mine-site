@@ -264,6 +264,8 @@ def build():
             raw = raw.replace('{{PRACTICE_NOTE}}', '{{HUMAN_NOTE}}')
         raw = fill(raw)
         text_source = raw
+        # Interactive form markup is HTML-only; the Markdown twin keeps the surrounding prose.
+        text_source = re.sub(r'<!--eu-form:start-->.*?<!--eu-form:end-->\n?', '', text_source, flags=re.S)
         for key,value in feature_md.items(): text_source = text_source.replace('{{'+key+'}}',value)
         # Markdown twins use the same words, stripped of presentation wrappers.
         text_source = re.sub(r'</?(?:div|section|details)\b[^>]*>','',text_source)
