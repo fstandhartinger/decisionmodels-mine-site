@@ -12,14 +12,15 @@ LABELS = {
     'en': dict(operator='Operator (processor)', miner='Miner (sub-processor)', acceptance='Acceptance record',
                id='Agreement ID', at='Accepted at (UTC)', signatory='Signatory', ip='IP address', version='Version',
                sha='Text SHA-256', page='Page', statement=(
-                   'Accepted electronically in text form (Art. 28(9) GDPR). The operator\'s acceptance is given by '
-                   'its standing offer published at ' + OFFER_URL + '.')),
+                   'Accepted electronically by the Miner\'s authorised signatory (Art. 28(9) GDPR) on the Operator\'s '
+                   'standing offer published at ' + OFFER_URL + '. The agreement was concluded when this acceptance '
+                   'was received.')),
     'de': dict(operator='Betreiber (Auftragsverarbeiter)', miner='Miner (Unterauftragsverarbeiter)',
                acceptance='Annahmeprotokoll', id='Vereinbarungs-ID', at='Angenommen am (UTC)',
                signatory='Unterzeichner', ip='IP-Adresse', version='Version', sha='Text-SHA-256', page='Seite',
-               statement=('Elektronisch in Textform angenommen (Art. 28 Abs. 9 DSGVO). Die Annahme durch den '
-                          'Betreiber erfolgt durch sein unter ' + OFFER_URL + ' veröffentlichtes dauerhaftes '
-                          'Angebot.')),
+               statement=('Elektronisch durch den vertretungsberechtigten Unterzeichner des Miners angenommen '
+                          '(Art. 28 Abs. 9 DSGVO), auf das unter ' + OFFER_URL + ' veröffentlichte dauerhafte '
+                          'Angebot des Betreibers. Der Vertrag kam mit Zugang dieser Annahme zustande.')),
 }
 
 
