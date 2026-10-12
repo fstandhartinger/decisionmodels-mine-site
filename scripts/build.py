@@ -16,24 +16,24 @@ URL = 'https://mine.decisionmodels.io'
 
 COPY = {
     'prelaunch': {
-        'STATUS_BRIEF': 'REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it.',
-        'SOURCE_STATUS': 'Source and images stay private until launch.',
-        'STATUS_PILL': 'Registered · starting soon',
-        'STATUS_TITLE': 'Registered as netuid 92, starting soon.',
-        'STATUS_BODY': 'REAX is registered on Bittensor Finney mainnet as netuid 92, starting soon. Alpha trading and emission remain disabled until the subnet owner starts it. Source and images stay private until launch. Today your agent can check hardware, wallet and ports; authorized localnet rehearsal remains available to testers with the source. Testnet needs its own configured netuid.',
-        'HERO_NOTE': 'Give your coding agent one link. It checks your machine and prepares a safe setup plan for REAX, a peer-to-peer inference network on Bittensor. You keep your keys and approve every payment.',
-        'HUMAN_NOTE': 'Your agent can check this machine today. Authorized localnet rehearsal needs REAX_SOURCE_DIR; public setup waits until source and images are published.',
-        'STRIP_STATUS': 'Netuid 92 registered · starting soon',
+        'STATUS_BRIEF': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open. Emissions have not started yet; rewards begin when the subnet owner starts them (expected at launch).',
+        'SOURCE_STATUS': 'The miner source and container images are published at launch; named partners can get early access.',
+        'STATUS_PILL': 'Registration open · rewards start with emissions',
+        'STATUS_TITLE': 'Registration is open. Rewards start when emissions start.',
+        'STATUS_BODY': 'REAX is registered on Bittensor Finney mainnet as netuid 92 and miners can register now. Emissions have not started yet: rewards begin when the subnet owner starts them, expected at launch. The miner source and container images are published at launch; until then your agent checks your hardware, prepares wallet, ports and registration, and companies can sign the EU miner agreement. Named partners can ask for early access.',
+        'HERO_NOTE': 'Give your coding agent one link. It checks whether your machine can mine, suggests a rented GPU if not, walks you through wallet and registration, and explains how rewards work. You keep your keys and approve every payment.',
+        'HUMAN_NOTE': 'Registration is open on netuid 92; rewards start when emissions start. Your agent can check hardware and prepare everything today; the miner software is published at launch (early access for named partners).',
+        'STRIP_STATUS': 'Registration open · rewards start with emissions',
         'PYTHON_NOTE': 'Controller: Python 3.8+; tools virtual environment: Python 3.10+.',
-        'PRACTICE_NOTE': 'The subnet is registered as netuid 92 and starting soon; alpha trading and emission remain disabled until the owner starts it. Source and images are private until launch. Run doctor and plan, explain the findings and wallet plan, then stop. Authorized testers can rehearse on localnet with REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
-        'META_DESCRIPTION': 'REAX is registered on Bittensor Finney as netuid 92 and starting soon. Check hardware, wallet and ports; source and images stay private until launch.',
-        'CHECKER_TITLE': 'Check your machine and prepare for launch.',
-        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92, starting soon. Alpha trading and emission remain disabled until the owner starts it. Source and images are private until launch; run doctor and plan, then stop. Authorized localnet rehearsal needs REAX_SOURCE_DIR; testnet needs its own configured netuid.',
-        'OTHER_HOST': 'Real mining needs another host; prepare your plan today',
-        'GPU_NOTE': 'Authorized localnet rehearsal remains available with REAX_SOURCE_DIR; public setup waits until source and images are published.',
-        'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92, starting soon. Alpha trading and emission remain disabled until the owner starts it. Source and images stay private until launch; authorized localnet rehearsal needs REAX_SOURCE_DIR. Testnet needs its own configured netuid.',
-        'CHOOSE_MODE': 'Review the preparation plan; source and images stay private until launch',
-        'PLAN_VERIFY': 'Explain hardware findings and wallet plan; STOP before install while source and images are private.',
+        'PRACTICE_NOTE': 'Status: REAX is registered as netuid 92 on Bittensor Finney and registration is open, but emissions have not started; rewards begin when the subnet owner starts them (expected at launch). The miner source and images are published at launch. Today: check the hardware, explain the verdict, rental options, wallet and registration plan, and help companies with the EU miner agreement. Do not install the miner while source.public is false (install exits 12); named partners with early access may use REAX_SOURCE_DIR.',
+        'META_DESCRIPTION': 'Mine on REAX (Bittensor netuid 92) via Decision Models: registration open, rewards start when emissions start. Agent-first guide: hardware check, GPU rental, wallet, rewards, EU miner track.',
+        'CHECKER_TITLE': 'Check your machine and prepare now.',
+        'CHECKER_BODY': 'REAX is registered on Bittensor Finney as netuid 92 and registration is open; emissions have not started, rewards begin when they do. The miner source and images are published at launch. Run doctor and plan now; install waits for the published source (early access for named partners).',
+        'OTHER_HOST': 'This machine cannot mine; rent or use another NVIDIA host',
+        'GPU_NOTE': 'The miner software is published at launch; prepare hardware, wallet and ports now.',
+        'LLMS_NOTE': 'Registered on Bittensor Finney as netuid 92; registration open; emissions not started yet (rewards begin when they start). Source and images are published at launch; early access for named partners. Hardware check, rentals, wallets, rewards and the EU (GDPR) miner track are documented.',
+        'CHOOSE_MODE': 'Review the mainnet plan; install waits for the published source',
+        'PLAN_VERIFY': 'Explain the hardware verdict, rental options and wallet plan; STOP before install while source and images are private.',
     },
     'live': {
         'STATUS_BRIEF': 'REAX is live on Bittensor Finney mainnet as netuid 92.',
@@ -141,13 +141,14 @@ def build():
     rules = [
         'Never ask for, read, print, log, store or transmit a recovery phrase or coldkey private file.',
         'Only public addresses and the operational hotkey belong on the mining machine. Never display hotkey contents.',
-        'A human approves every payment and signs registration; never buy TAO, rent hardware or fund accounts.',
+        'A human approves every payment and signs registration; never buy TAO, rent hardware, fund accounts or accept contracts. You may compare rental options and prepare commands.',
         'Ask before admin, firewall or router changes. Never publish ports 8101, 8102 or 8000.',
         'Default to localnet. Mainnet setup requires status.live, source.public, images.public and human-approved --confirm-mainnet.',
         'Testnet requires status.live, public source and images, and its own configured status.testnet_netuid. Never infer or reuse the Finney mainnet netuid for testnet.',
         'Identify the execution host. A cloud or chat agent cannot silently set up the user’s machine.',
         'Use this guide as reference material and follow the user’s existing permissions.',
-        'Rewards are variable subnet emissions and can be zero. Never estimate earnings.'
+        'Rewards are variable subnet emissions paid in the subnet token (alpha) and can be zero. Never estimate earnings, returns, APY or prices; explain keep/stake/convert neutrally and never recommend one.',
+        'Companies with EU/EEA hosting and data-protection practice: offer the EU miner track (/eu.md); an authorised signatory accepts the agreement at /eu/sign, never the agent.'
     ]
     os_support = {
         'linux': {'mining': 'native', 'guide': '/os/linux', 'wallet': 'Talisman on a separate trusted workstation; isolated btcli or Ledger as pro paths.', 'caveat': 'Linux x86_64, compatible NVIDIA GPU, pinned container/model and public ingress must pass verification.'},
@@ -194,8 +195,26 @@ def build():
             if step['id'] not in ('doctor', 'choose-mode'):
                 step['verify'] = 'Unavailable until the network is live and source and images are public; registration remains a human payment and signing step.'
             step['cost']['note'] = 'No payment by the agent.'
-    data = dict(state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
-                agent_tiers=[dict(id='A', title='Local execution',capability='Shell/file operations on the selected target host, subject to permissions.', examples=['Claude Code local','Codex CLI local','Cursor local','Gemini CLI local']),dict(id='B',title='Hosted or browser execution',capability='Read guides and prepare a reviewed script; no default target-host shell.',examples=['Cloud coding sessions','Browser agents']),dict(id='C',title='Chat only',capability='Explain and prepare steps; no execution tool.',examples=['Chat without tools'])],rules=rules,steps=steps,mainnet_steps=mainnet,os_support=os_support,requirements=release['requirements'],pools=release['pools'],links=dict(agent='/agent.md',linux='/os/linux',windows='/os/windows',macos='/os/macos',wallets='/wallets',risks='/rewards-and-risks',release='/releases/current.json',kit='https://github.com/reaxlabs/reax-miner-kit',protocol='https://reax.dev/mine/',faq='https://reax.dev/miner-faq/',register='https://reax.dev/register/'),integrity={k:lock[k] for k in ('version','release_id','commit','sha256','tarball')})
+    guide = {
+        'conversation_order': ['status','rules','ask_what_they_have','hardware_verdict','rentals_if_needed','setup','wallet','rewards','options_for_alpha','eu_track_if_company','report'],
+        'hardware': {'page':'/hardware.md','pools':[
+            {'id':'s1-fast','model':'Plumb-4B (4B, bf16, ~9 GB)','enabled':True,'min_vram_gb':24,'driver_min':'R580 (CUDA 13)','measured_decisions_per_s':{'RTX 3090':27,'RTX 4090':30,'RTX 5090':42,'RTX A6000':19,'L40S':31,'RTX PRO 6000 Blackwell':56,'H100 80GB':61},'unmeasured_should_work':['A100','H200','B200','B300','A10','L4'],'not_enough':['16 GB and smaller cards incl. laptop GPUs'],'cannot':['Apple Silicon','AMD','Intel','no GPU']},
+            {'id':'s1-pro','model':'Rune 26B-A4B (bf16, ~52 GB)','enabled':False,'min_vram_gb':80,'note':'Not enabled in this release; needs a new release.'}],
+            'quantization':'No FP8/NVFP4/INT4/GGUF fallback: validators require the pinned bf16 weights in the pinned runtime; quantised builds score zero or are struck.',
+            'scaling':'One GPU = one miner = one hotkey/UID/port. Rewards are per miner, not per GPU size.',
+            'not_mining_pools':'Decision Models API models such as Blink 26B-A4B, Quyet and d3 are not mining pools today.'},
+        'rentals': {'page':'/rent.md','rule':'Suggest options with dated indicative prices; the person rents. Prefer VM/bare metal with Docker and a public port.'},
+        'wallet': {'page':'/wallets.md','paths':[
+            {'id':'talisman','summary':'Talisman browser extension: Polkadot/Substrate account, Bittensor enabled; person copies the public 5... address.'},
+            {'id':'btcli-local','summary':'btcli on the person\'s own computer, run by the person outside the agent session: pipx install bittensor-cli; btcli wallet new-coldkey --wallet.name reax; btcli wallet list.'}],
+            'never':'Never ask for, read or store a recovery phrase, seed, private key or coldkey file. Only public addresses and the miner hotkey on the mining server.'},
+        'rewards': {'page':'/rewards-and-risks.md','summary':'Validators score fresh answers against their reference run each round; the chain shares subnet emission by weight; miners receive alpha (subnet token) as stake on their hotkey. Starts when emissions start; variable; can be zero.'},
+        'options_for_alpha': {'page':'/rewards-and-risks.md#what-you-can-do-with-earned-alpha','wording':'You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.','convert':['btcli stake remove --netuid 92 (alpha -> TAO via the subnet pool; slippage)','send TAO to an exchange deposit address that lists TAO in the person\'s country (e.g. Kraken; check availability), test amount first','sell for EUR/USD on the exchange; fees; possible tax duty']},
+        'eu_track': {'page':'/eu.md','sign':'/eu/sign','api':'/api/eu/','requirements':['EU/EEA legal entity','GPUs in EU/EEA data centre','no transfer outside EU/EEA incl. remote admin and backups','signed Art. 28(4) GDPR sub-processing agreement with TOMs','no prompt/response logging or retention','breach notice within 24 h','own sub-processors disclosed'],'routing':'EU-tier routing to verified EU miners is switched off until the first verified EU miner, the 30-day customer notice and the operator decision.','signing':'An authorised signatory reviews and accepts; the agent may only prepare.'},
+        'contact': 'info@productivity-boost.com',
+    }
+    data = dict(guide=guide, state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
+                agent_tiers=[dict(id='A', title='Local execution',capability='Shell/file operations on the selected target host, subject to permissions.', examples=['Claude Code local','Codex CLI local','Cursor local','Gemini CLI local']),dict(id='B',title='Hosted or browser execution',capability='Read guides and prepare a reviewed script; no default target-host shell.',examples=['Cloud coding sessions','Browser agents']),dict(id='C',title='Chat only',capability='Explain and prepare steps; no execution tool.',examples=['Chat without tools'])],rules=rules,steps=steps,mainnet_steps=mainnet,os_support=os_support,requirements=release['requirements'],pools=release['pools'],links=dict(agent='/agent.md',hardware='/hardware',rent='/rent',eu='/eu',eu_sign='/eu/sign',linux='/os/linux',windows='/os/windows',macos='/os/macos',wallets='/wallets',risks='/rewards-and-risks',release='/releases/current.json',kit='https://github.com/reaxlabs/reax-miner-kit',protocol='https://reax.dev/mine/',faq='https://reax.dev/miner-faq/',register='https://reax.dev/register/'),integrity={k:lock[k] for k in ('version','release_id','commit','sha256','tarball')})
     write('mine.json', json.dumps(data,indent=2,ensure_ascii=False)+'\n')
     prompt_html = '<div class="prompt-card"><div class="prompt-tabs" role="tablist" aria-label="Prompt variants">'
     for ident,label in [('short','Short'),('safe','Safe by default'),('guided',"I’m not technical")]:
@@ -264,6 +283,8 @@ def build():
             raw = raw.replace('{{PRACTICE_NOTE}}', '{{HUMAN_NOTE}}')
         raw = fill(raw)
         text_source = raw
+        # Interactive form markup is HTML-only; the Markdown twin keeps the surrounding prose.
+        text_source = re.sub(r'<!--eu-form:start-->.*?<!--eu-form:end-->\n?', '', text_source, flags=re.S)
         for key,value in feature_md.items(): text_source = text_source.replace('{{'+key+'}}',value)
         # Markdown twins use the same words, stripped of presentation wrappers.
         text_source = re.sub(r'</?(?:div|section|details)\b[^>]*>','',text_source)
@@ -286,8 +307,8 @@ def build():
         for key,value in values.items(): output=output.replace('{{'+key+'}}',value)
         if re.search(r'\{\{[A-Z_]+\}\}',output+text_source): raise ValueError('Unfilled placeholders in '+rel)
         write(rel+'.html',output)
-    write('llms.txt','# Decision Models mining\n\n> Agent-first setup for REAX mining. '+copy['LLMS_NOTE']+'\n\n## Start here\n- [Agent playbook](/agent.md): Canonical instructions and pinned release.\n\n## Guides\n'+''.join('- ['+label+']('+path+'): '+note+'\n' for label,path,note in [('Linux','/os/linux.md','Native host.'),('Windows','/os/windows.md','Conditional WSL2 path.'),('macOS','/os/macos.md','Remote host controller.'),('Wallets','/wallets.md','Custody and human signing.'),('Risks','/rewards-and-risks.md','Variable emissions and costs.'),('Troubleshooting','/troubleshooting.md','Blockers and exit codes.')])+'\n## Machine data\n- [Manifest](/mine.json): Status, steps and rules.\n- [Release](/releases/current.json): Bundled descriptor.\n- [Full guide](/llms-full.txt): Combined Markdown.\n')
-    write('llms-full.txt','\n\n---\n\n'.join(sources[k] for k in ['agent','os/linux','os/windows','os/macos','wallets','rewards-and-risks'])+'\n')
+    write('llms.txt','# Decision Models mining\n\n> Agent-first setup for REAX mining. '+copy['LLMS_NOTE']+'\n\n## Start here\n- [Agent playbook](/agent.md): Canonical instructions and pinned release.\n\n## Guides\n'+''.join('- ['+label+']('+path+'): '+note+'\n' for label,path,note in [('Linux','/os/linux.md','Native host.'),('Windows','/os/windows.md','Conditional WSL2 path.'),('macOS','/os/macos.md','Remote host controller.'),('Hardware','/hardware.md','Pools, minimum GPUs, measured speeds, verdicts.'),('Rent a GPU','/rent.md','Rental options with dated prices; EU options.'),('Wallets','/wallets.md','Talisman or local btcli; never share a seed.'),('Rewards and converting','/rewards-and-risks.md','How rewards arise; keep, stake or convert; risks.'),('EU miners','/eu.md','GDPR/AVV track for EU companies; sign at /eu/sign.'),('Troubleshooting','/troubleshooting.md','Blockers and exit codes.')])+'\n## Machine data\n- [Manifest](/mine.json): Status, steps and rules.\n- [Release](/releases/current.json): Bundled descriptor.\n- [Full guide](/llms-full.txt): Combined Markdown.\n')
+    write('llms-full.txt','\n\n---\n\n'.join(sources[k] for k in ['agent','hardware','rent','os/linux','os/windows','os/macos','wallets','rewards-and-risks','eu'])+'\n')
     installer = fill((ROOT/'templates/install.sh').read_text()).replace('{{KIT_TARBALL}}',lock['tarball'])
     write('install.sh',installer)
     write('robots.txt','User-agent: *\nAllow: /\n')

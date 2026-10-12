@@ -54,3 +54,13 @@ OS/wallet/agent guidance comes from the lead's October 9 research. Windows REAX 
 `content/samples/doctor-*.txt` contains the real CLI text emitted by the pinned kit with its `core_4090.json` and `core_no_gpu.json` fixture inputs, injected as in `tests/test_core_doctor.py`. `scripts/make-samples.py` verifies the archive checksum, extracts to a temporary directory and calls the actual CLI offline with an isolated home. Both samples retain the complete doctor report. The 4090 sample has no tolerance or larger-pool warning; the no-GPU sample includes the private-source note and hardware blockers. `provenance.json` records the kit commit, archive, fixture and output hashes. Regenerate after changing kit pins. These are recorded sample machines, not a live miner. The animated hero session is explicitly illustrative.
 
 Brand assets and fonts are copied unchanged from the supplied Decision Models kit. No third-party script, analytics, wallet bridge or registration UI runs here. Protocol/scoring/FAQ and registration link to reax.dev. Live Decision Models footer paths were read from the main site: `/legal/imprint` and `/legal/privacy`.
+
+## EU-miner agreement API
+
+`/eu/sign` (source `content/eu/sign.md`, script `site/assets/eu-sign.js`) lets an EU/EEA company accept the standing Art. 28(4) GDPR sub-processing offer electronically. The container runs nginx plus a small Python service (`api/mine_eu`, stdlib HTTP server, `psycopg`, `fpdf2`) on `127.0.0.1:8081`; nginx proxies `/api/`. Templates live in `legal/eu-miner-avv-v1.{en,de}.md`.
+
+Environment: `DATABASE_URL` (Postgres; unset means writes return 503), `ADMIN_TOKEN` (Bearer token for `/api/eu/admin/*`; unset means 503), optional `OPERATOR_NAME`, `OPERATOR_ADDRESS`, `RATE_PER_IP_HOUR` (5), `RATE_GLOBAL_DAY` (50). Rate limits for accept and contact are kept in the database (`eu_rate_events`, IP stored hashed).
+
+Endpoints under `/api/eu/`: `GET health`, `GET agreement?lang=`, `POST preview`, `POST accept`, `GET agreements/<id>.pdf?t=<token>`, `POST contact`; admin: `GET admin/events?after=`, `GET admin/agreements/<id>.pdf`, `POST admin/agreements/<id>/verification`, `POST admin/agreements/<id>/revoke`, `GET admin/registry`.
+
+Tests: `pip install -r requirements.txt -r requirements-api.txt`, then `python -m unittest tests.test_api`. Database tests create and drop a temporary database via `TEST_PG_ADMIN_URL` (default: local unix socket).

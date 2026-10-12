@@ -1,6 +1,6 @@
 <div class="hero" markdown="1">
 <div class="hero-copy" markdown="1">
-<p class="eyebrow">COMPUTE FOR REAX · POWERED BY YOUR GPU</p>
+<p class="eyebrow">BITTENSOR SUBNET 92 · REAX · DECISION MODELS</p>
 
 # Point your agent here. Mine with your own GPU.
 
@@ -8,11 +8,11 @@
 
 {{PROMPT_BOX}}
 
-<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+</span><span>Linux (Windows via WSL2)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
+<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+ (RTX 3090/4090/5090 and up)</span><span>Linux (Windows via WSL2)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
 
 <p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Tested with Claude Code; other coding agents that can run commands on your computer should work the same way. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
 
-<p class="agent-note">AI agent reading this page? Your instructions are in <a href="/agent.md">/agent.md</a>: follow its steps for the current launch status (pinned kit, checksum, doctor, plan).</p>
+<p class="agent-note">AI agent reading this page? Your instructions are in <a href="/agent.md">/agent.md</a>: status, hardware verdict, rental options, wallet without seeds, rewards, and the EU miner track.</p>
 
 [Prefer to do it yourself? Read the playbook →](/agent)
 </div>
@@ -48,17 +48,17 @@
 
 {{CHECKER}}
 
-These are the bundled release's requirements for s1-fast. Availability follows the release descriptor. Your agent still checks the exact GPU, driver, container, model and network.
+The fast pool serves a small 4-billion-parameter model, so a single **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 is enough. Your agent checks the exact GPU, driver, container, model and network. [Which cards work, measured speeds and why there is no low-precision mode →](/hardware)
 
 | Component | Requirement |
 | --- | --- |
-| GPU | One compatible NVIDIA GPU, ≥24 GB VRAM (GPU memory) |
+| GPU | One NVIDIA GPU with ≥24 GB VRAM (GPU memory); one GPU per miner |
 | Driver | R580+ for CUDA 13 |
 | Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |
-| OS | Linux x86_64; Windows via Windows Subsystem for Linux 2 (WSL2) is conditional and not yet tested by us end to end |
+| OS | Linux x86_64; Windows via WSL2 is conditional and not yet tested by us end to end |
 
-{{GPU_NOTE}} A Mac can control an authorized remote NVIDIA Linux host.
+No suitable GPU? Rent one by the hour; your agent compares options with you. [Rent a GPU →](/rent)
 </section>
 
 <section class="home-section keys-section" markdown="1">
@@ -84,13 +84,23 @@ These are the bundled release's requirements for s1-fast. Availability follows t
 
 ## Rewards and risks
 
-Mining receives variable rewards from the REAX subnet (a network within Bittensor), with risks. Emissions depend on competition and can be zero. Hardware, electricity, connection costs and a non-refundable registration burn are yours to weigh.
+Validators test every miner each round and score answers that match their reference run. The chain shares the subnet's emission by those scores; miners receive the subnet's token (alpha). Rewards start when emissions start, vary, and can be zero. Hardware, electricity, connection and a non-refundable registration burn are your costs.
 
-[Read the risks before paying →](/rewards-and-risks)
+[How rewards arise, converting to TAO or euros, and the risks →](/rewards-and-risks)
+</section>
+
+<section class="home-section" id="eu" markdown="1">
+<p class="eyebrow">05 / FOR COMPANIES</p>
+
+## EU miners: GDPR-compliant mining
+
+EU companies with GPUs in EU data centres can sign a sub-processing agreement (AVV, Art. 28 GDPR) online and, once verified, serve Decision Models' EU-tier traffic in addition to normal mining. Requirements, EU AI Act notes and the signing flow are on one page.
+
+[EU miner track →](/eu) · [Sign the agreement →](/eu/sign)
 </section>
 
 <section class="home-section" markdown="1">
-<p class="eyebrow">05 / MACHINE ENTRY POINTS</p>
+<p class="eyebrow">06 / MACHINE ENTRY POINTS</p>
 
 ## For agents
 
@@ -98,6 +108,9 @@ Mining receives variable rewards from the REAX subnet (a network within Bittenso
 | --- | --- |
 | [agent.md](/agent.md) | Canonical playbook, approvals and pinned commands |
 | [llms.txt](/llms.txt) | A short map of the docs |
+| [hardware.md](/hardware.md) | Pools, minimum GPUs, measured speeds |
+| [rent.md](/rent.md) | GPU rental options with dated prices |
+| [eu.md](/eu.md) | EU (GDPR) miner track and AVV signing |
 | [mine.json](/mine.json) | Status, steps, requirements and rules |
 | [releases/current.json](/releases/current.json) | The kit's bundled release descriptor |
 | [install.sh](/install.sh) | Readable pinned-archive download; read before running |
