@@ -39,19 +39,28 @@ def sha256_text(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 
-def _bullets(items, lang):
-    return '\n'.join(f'- {i}' for i in items) if items else f'- {NONE_STATED[lang]}'
+def _cell(value):
+    # Values land inside Markdown table cells: one line, no column separators.
+    return ' '.join(str(value).replace('|', '/').split())
+
+
+def _inline(items, lang):
+    return '; '.join(_cell(i) for i in items) if items else NONE_STATED[lang]
+
+
+SAFEGUARD = {'en': 'Contract under Art. 28(4) GDPR (section 8.4)', 'de': 'Vertrag nach Art. 28 Abs. 4 DSGVO (Ziffer 8.4)'}
 
 
 def field_values(fields, lang):
     """Placeholder -> text for the signer-supplied fields."""
-    v = {k: fields.get(k, '') for k in FIELD_KEYS}
-    v['miner_vat_id'] = fields.get('miner_vat_id') or NOT_PROVIDED[lang]
-    v['dc_locations'] = _bullets([f"{d['provider']}, {d['city']}, {d['country']}" for d in fields['dc_locations']], lang)
-    v['hotkeys'] = _bullets([f'`{h}`' for h in fields['hotkeys']], lang)
-    v['endpoints'] = _bullets([f'`{e}`' for e in fields['endpoints']], lang)
-    v['own_subprocessors'] = _bullets(
-        [f"{s['name']} — {s['service']} ({s['location']})" for s in fields['own_subprocessors']], lang)
+    v = {k: _cell(fields.get(k, '')) for k in FIELD_KEYS if k not in ('tom_statement',)}
+    v['miner_vat_id'] = _cell(fields.get('miner_vat_id') or NOT_PROVIDED[lang])
+    v['dc_locations'] = _inline([f"{d['provider']}, {d['city']}, {d['country']}" for d in fields['dc_locations']], lang)
+    v['hotkeys'] = _inline([f'`{h}`' for h in fields['hotkeys']], lang)
+    v['endpoints'] = _inline([f'`{e}`' for e in fields['endpoints']], lang)
+    rows = [f"| {_cell(s['name'])} | {_cell(s['service'])} | {_cell(s['location'])} | {SAFEGUARD[lang]} |"
+            for s in fields['own_subprocessors']]
+    v['own_subprocessors'] = '\n'.join(rows) if rows else f'| {NONE_STATED[lang]} | | | |'
     # Quoted line by line so a multi-line statement cannot inject headings or clauses.
     v['tom_statement'] = '\n'.join('> ' + line if line else '>' for line in fields['tom_statement'].split('\n'))
     return v
