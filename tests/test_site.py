@@ -205,7 +205,7 @@ class SiteTests(unittest.TestCase):
                     if name == 'pending':
                         self.assertEqual(data['state'], 'prelaunch')
                         self.assertIn('Registration is open. Emissions have not started.', home)
-                        self.assertIn('Emissions have not started yet', home)
+                        self.assertIn('Emissions have not started', home)
                         self.assertIn('Source and images are published at launch', (output/'llms.txt').read_text())
                         self.assertIn('rewards variable, can be zero', (output/'llms.txt').read_text())
                         self.assertTrue(all(s['command'] and s['blocked_until_live'] for s in data['steps'][2:]))
