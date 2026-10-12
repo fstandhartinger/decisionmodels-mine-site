@@ -12,7 +12,7 @@
 
 <p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Tested with Claude Code; other coding agents that can run commands on your computer may work, but we have not tested them. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
 
-<p class="agent-note">AI agent reading this page? Your instructions are in <a href="/agent.md">/agent.md</a>: status, hardware verdict, rental options, wallet without seeds, rewards, and the EU miner track.</p>
+<p class="agent-note">AI agent reading this page? The complete playbook is <a href="/agent.md">/agent.md</a> (also <a href="/llms-full.txt">/llms-full.txt</a>): status, hardware verdicts, rental prices, wallet without seeds, rewards and converting, and the EU miner track. The quick answers below summarise it.</p>
 
 [Prefer to do it yourself? Read the playbook →](/agent)
 </div>
@@ -26,6 +26,22 @@
 ## {{STATUS_TITLE}} {#status-title}
 
 {{STATUS_BODY}}
+</section>
+
+<section class="home-section" id="quick-answers" markdown="1">
+<p class="eyebrow">QUICK ANSWERS</p>
+
+## The short version
+
+| Question | Answer |
+| --- | --- |
+| Can my computer mine? | Yes with **one NVIDIA GPU of 24 GB or more** (RTX 3090, 4090, 5090, A6000, L40S, A100, H100, H200, B200, B300 …), driver R580+, Linux (Windows via WSL2 is conditional). **No** with 16 GB or less (most laptops), Apple, AMD, Intel or no GPU. Smaller quantised builds are not accepted. [Hardware details](/hardware) |
+| No suitable GPU? | Rent one with Docker and a reachable port, for example a Lium RTX 3090/4090 pod (from about $0.20–0.55 per hour, payable in TAO too), Scaleway L40S in Paris (about €1.40 per hour) or a Hetzner GPU server in Germany (from €889 per month); prices checked 12 October 2026. [All options](/rent) |
+| Which wallet? | Create the coldkey yourself, never through an agent: the **Talisman** browser extension (Polkadot/Substrate account) or **btcli** on your own computer (`btcli wallet new-coldkey`). Only the public address (starts with 5) goes to your agent; the miner's hotkey is created on the mining server. [Wallets](/wallets) |
+| How are rewards paid? | Validators test each miner every round; the chain shares the subnet's emission by score and pays miners in the subnet's token (alpha), credited as stake on the miner's hotkey. Variable, can be zero, and only once emissions run. [Rewards](/rewards-and-risks) |
+| How do I get euros? | Unstake alpha to TAO (`btcli stake remove --netuid 92`, a pool swap with slippage), send TAO to an exchange that lists TAO and is authorised in your country, sell for EUR and withdraw. Fees and taxes apply. You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice. [Step by step](/rewards-and-risks#what-you-can-do-with-earned-alpha) |
+| We are an EU company | Sign the sub-processing agreement (AVV, Art. 28 GDPR) online at [/eu/sign](/eu/sign); requirements and EU AI Act notes on [/eu](/eu). |
+| I use an AI coding agent | Point it at [/agent.md](/agent.md): the complete playbook with hardware verdicts, setup commands, wallet rules and the EU track. |
 </section>
 
 <section class="home-section" markdown="1">
