@@ -14,8 +14,8 @@ class Settings:
     font_dirs: tuple = ('/usr/share/fonts/dejavu', '/usr/share/fonts/truetype/dejavu', '/usr/share/fonts/TTF')
     host: str = '127.0.0.1'
     port: int = 8081
-    operator_name: str = 'Decision Models (operator of mine.decisionmodels.io)'
-    operator_address: str = ''
+    operator_name: str = 'productivity-boost.com Betriebs UG (haftungsbeschränkt) & Co. KG (Decision Models)'
+    operator_address: str = 'Reichenberger Str. 2, 94036 Passau, Germany · Amtsgericht Passau HRA 12725'
     rate_per_ip_hour: int = 5
     rate_global_day: int = 50
     max_body: int = 64 * 1024

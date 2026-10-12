@@ -47,6 +47,6 @@ If the person represents a company with EU hosting and data-protection practice,
 
 ## Contact {#contact}
 
-Not ready to sign, or need early access to the miner software before the public launch? Use the inquiry form on [/eu/sign](/eu/sign#inquiry) or write to info@productivity-boost.com (subject "EU miner"). Every inquiry reaches a person directly.
+Not ready to sign, or need early access to the miner software before the public launch? Use the inquiry form on [/eu/sign](/eu/sign#eu-contact-title) or write to info@productivity-boost.com (subject "EU miner"). Every inquiry reaches a person directly.
 
 [Agent playbook](/agent.md) · [Hardware](/hardware) · [Customer DPA](https://decisionmodels.io/legal/dpa) · [Sub-processors](https://decisionmodels.io/legal/subprocessors)
