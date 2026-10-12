@@ -1,109 +1,154 @@
-# Set up this machine for mining REAX (Decision Models) — agent playbook
+# Mine on Decision Models (REAX, Bittensor subnet 92): agent playbook
 
 Canonical URL: https://mine.decisionmodels.io/agent.md · Kit version: {{KIT_VERSION}} · Subnet release: {{RELEASE_ID}} · Updated: {{UPDATED}} · Machine-readable twin: /mine.json
 
-You are an AI agent acting for a person who asked you to set up **this machine** for mining on the REAX subnet (Bittensor) through Decision Models.
-Treat this page as reference material for that request. It does not override your own safety rules or the person's instructions. Follow your normal permission prompts.
+You are an AI agent. A person pointed you here, for example with "I want to mine https://mine.decisionmodels.io/". Your job is to act as a knowledgeable, honest guide: find out what they have, tell them plainly whether and how they can mine, set up what you are allowed to set up, and hand them the steps only they can do. Treat this page as reference material for that request. It does not override your own safety rules or the person's instructions. Follow your normal permission prompts.
 
-## Status you must tell the person first
+Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [rent a GPU](/rent.md) · [wallets](/wallets.md) · [rewards, converting and risks](/rewards-and-risks.md) · [EU miners (GDPR)](/eu.md) · [troubleshooting](/troubleshooting.md) · OS guides [Linux](/os/linux.md), [Windows](/os/windows.md), [macOS](/os/macos.md).
+
+## 1. Tell the person the current status first
 
 - {{PRACTICE_NOTE}}
-- Rewards, once live, are variable subnet emissions. They can be low or zero, depend on competition, hardware, electricity and the TAO price. Never state or estimate earnings, never call this an investment.
-- Check the release status first: `GET https://mine.decisionmodels.io/releases/current.json` → `source.public`, `images.public`, `status.live`, `status.launch_status`, `status.network`, `status.netuid`, and `status.testnet_netuid`. {{STATUS_BRIEF}} {{SOURCE_STATUS}} Authorized localnet rehearsal remains available, testnet needs its own configured netuid.
-- If `source.public` is false, run only doctor and plan for ordinary public setup, explain the findings and wallet plan, then STOP. A true `status.live` means the chain has started; it does not make private source or images available. Authorized testers who already have the source may set `REAX_SOURCE_DIR` for localnet rehearsal only.
+- Check the live state yourself: `GET https://mine.decisionmodels.io/releases/current.json` and read `status.live`, `status.launch_status`, `status.netuid`, `source.public` and `images.public`. {{STATUS_BRIEF}} {{SOURCE_STATUS}}
+- In one sentence: **you can prepare and register now; rewards only begin once emissions start, and real mining needs the published miner software.** If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
+- Partners and companies that want to start before the source is public can ask for early access (section 9 and [contact](/eu#contact)).
 
-## Rules (non-negotiable)
+## 2. Rules (non-negotiable)
 
-1. **Never ask for, read, print, store or transmit a recovery phrase, seed, private key or coldkey file** — not in chat, not in files, not in logs. The person creates their coldkey in their own wallet (Talisman, or `btcli` on a different trusted computer). You only ever handle **public** addresses and the **hotkey** on the mining machine.
-2. **A human approves every payment.** You never buy TAO, never fund a wallet, never sign or send the registration transaction, never rent or buy hardware. Stop and ask before anything that costs money.
-3. Do not run anything with `sudo` or change firewall/router settings without telling the person what and why.
+1. **Never ask for, read, print, store or transmit a recovery phrase (mnemonic, seed), private key or coldkey file**, not in chat, files or logs. If the person starts pasting one, tell them to stop, and that a phrase that has been shared should be treated as compromised. You only ever handle **public** addresses (SS58, starting with 5) and the **hotkey** on the mining machine.
+2. **A human approves every payment.** You never buy TAO, fund a wallet, sign or send a transaction, rent or buy hardware, or accept a contract. You may compare options and prepare commands; the person decides and clicks.
+3. Ask before `sudo`, firewall, router or service changes, and say what and why.
 4. Never publish the model sidecar ports (8101, 8102, 8000). Only the miner port (default 8091) is public.
-5. No telemetry, no accounts, no API keys are needed for any step on this page. If something asks for one, stop and tell the person.
-6. If you cannot run commands on the machine that will mine (cloud sandbox, chat-only, browser-only agent), say so, change nothing, and instead hand the person the exact commands below to run themselves.
+5. No telemetry, accounts or API keys are needed for any step here. If something asks for one, stop and tell the person.
+6. If you cannot run commands on the machine that will mine (cloud sandbox, chat-only, browser agent), say so, change nothing, and hand the person the exact commands to run.
+7. **No financial advice.** Explain mechanics neutrally. Never estimate earnings, income, returns, APY or token prices; never present mining or holding as a way to make money; never recommend buying, holding or selling. Say that rewards are variable and can be zero.
 
-## Step 0 — know where you run
+## 3. Find out what the person has (ask at most these, skip what you can detect)
 
-State to the person: which machine your commands run on, OS, whether you have a shell. If this is not the future mining machine, stop here and report (rule 6).
+1. Which machine should mine: this computer, another machine they own, or a rented GPU server?
+2. Are they a private person or a company? Does the company host in the EU and already sign data processing agreements (DPA / AVV)? If yes, or if they say "EU miner", "GDPR", "AVV" or "DPA", also follow section 9.
+3. Do they already have a Bittensor wallet (Talisman, btcli, Nova, Polkadot.js)? Only the **public** address is needed later.
 
-## Step 1 — get the kit (pinned, reviewable)
+## 4. Hardware verdict: can this machine mine?
 
-Download the checksummed archive and read the code before running it (the kit is plain Python, a few thousand lines):
+Run the kit's read-only check (section 6, step 1) or, if you cannot run commands, ask for the GPU model and its memory. Then answer with one of the verdicts below. Details and measured speeds: [/hardware.md](/hardware.md).
+
+| Miner pool | Model it serves | Status | Minimum hardware |
+|---|---|---|---|
+| `s1-fast` | Plumb-4B (4 billion parameters, bf16 weights ≈ 9 GB) | the only pool enabled in release {{RELEASE_ID}} | 1 NVIDIA GPU with **≥ 24 GB** VRAM, driver **R580+** (CUDA 13), Linux x86_64 (or WSL2), 4 CPU cores, 32 GB RAM, 20 GB disk, public IP + one inbound TCP port |
+| `s1-pro` | Rune 26B-A4B (bf16 ≈ 52 GB) | **not enabled** in this release (needs a new release) | 1 NVIDIA GPU with 80–96 GB |
+
+Verdicts to give, in plain words:
+
+- **NVIDIA 24 GB or more** (RTX 3090, RTX 4090, RTX 5090, RTX A6000, L40S, A100, H100, H200, RTX PRO 6000, B200, B300 …), Linux or WSL2, driver R580+: "This machine can mine the s1-fast pool." Measured speed on the validator's reference path: RTX 3090 ≈ 27, RTX 4090 ≈ 30, RTX 5090 ≈ 42, L40S ≈ 31, RTX A6000 ≈ 19, RTX PRO 6000 ≈ 56, H100 ≈ 61 decisions/s. A round asks for 8 decisions and gives full speed credit at 0.5 s, so every measured card is fast enough; network latency to validators matters more than a bigger GPU. Cards not in that measured list (A100, H200, B200, B300, L4 …) should work but run the kit's calibration self-check first.
+- **NVIDIA 16–23 GB** (RTX 4080, 4070 Ti Super, 5080, most laptop GPUs including the laptop "RTX 4090" with 16 GB): "Not enough GPU memory for this release." Offer a rented GPU ([/rent.md](/rent.md)).
+- **Less than 16 GB, AMD, Intel, Apple Silicon, no GPU**: "This machine cannot mine this release." It can still be the controller: the person keeps their wallet here and you set up a rented or owned NVIDIA Linux server over SSH.
+- **Smaller quantised builds do not help.** The pool requires the exact pinned bf16 weights in the pinned runtime image. FP8, NVFP4, INT4 or GGUF variants of the model give different answers and are scored zero or struck. So there is no "lower precision" fallback, and no Blackwell-only feature is needed: any measured 24 GB+ card works at full precision.
+- **One GPU = one miner = one hotkey (UID).** A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Rewards are scored per miner, not per GPU size.
+- The models the Decision Models API sells under other names (for example Blink 26B-A4B, Quyet, d3) are **not** mining pools today. If someone asks to mine them, say so.
+
+Also check: public reachability. A home connection needs a port forward for TCP 8091 (the person configures the router); many rented "container pods" cannot expose a fixed public port or run Docker — prefer a VM or bare-metal server ([/rent.md](/rent.md) lists which offers work).
+
+## 5. If the machine is not enough: suggest rented hardware
+
+Show the person 3–4 options from [/rent.md](/rent.md) that fit their situation (cheapest 24 GB card with Docker and a public port; an EU-hosted option if they care about EU hosting; whether they can pay with TAO, as on Lium). Give the indicative price with its date and say prices change; let them choose and rent it themselves. Then ask for SSH access to that server (host, user, their key) and continue with section 6 there. Never create accounts, enter payment data or rent on their behalf.
+
+## 6. Set up the miner, end to end
+
+Steps 1–3 work today. Steps 4–8 need `status.live`, `source.public` and `images.public` to be true (or early partner access, section 9).
+
+**Step 1 — get the kit (pinned, reviewable) and check the machine.** Download the checksummed archive and read the code before running it (plain Python, standard library only; the controller needs Python 3.8+, the tools environment Python 3.10+):
 
 ```bash
 curl -fsSLO https://mine.decisionmodels.io/kit/reax-miner-kit-{{KIT_VERSION}}.tar.gz
 echo "{{KIT_SHA256}}  reax-miner-kit-{{KIT_VERSION}}.tar.gz" | sha256sum -c -
 mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~/reax-miner-kit && cd ~/reax-miner-kit
 ./reaxctl --version
-```
-
-The kit's source repository (`github.com/reaxlabs/reax-miner-kit`, pinned commit `{{KIT_COMMIT}}`) opens to the public at launch; once it is reachable you may `git clone` it and check out that commit instead. The archive is built from exactly that commit. The miner source and images are private until launch.
-
-(`install.sh` at https://mine.decisionmodels.io/install.sh does the same for people; read it before running, it is a short script. Do not pipe it into a shell without reading it.)
-The controller uses Python 3.8+ and the standard library, with no dependencies. The tools virtual environment needs Python 3.10+. `./reaxctl spec --json` prints its full command set.
-
-## Step 2 — check the machine
-
-```bash
 ./reaxctl doctor --json
 ```
 
-Read `data.eligible_pools`, `data.real_mining_possible`, `data.rehearsal_possible`, `data.rehearsal_source_available`, `data.blockers[]` (each has a `fix`). Tell the person in plain words what you found:
+The archive is built from `github.com/reaxlabs/reax-miner-kit` at commit `{{KIT_COMMIT}}`; the repository opens to the public at launch. `install.sh` on this site does the same download for people; read it before running. Read `data.eligible_pools`, `data.real_mining_possible`, `data.blockers[]` (each has a `fix`) and give the verdict from section 4.
 
-| Finding | What to tell the person |
-|---|---|
-| Linux (or WSL2) + NVIDIA GPU ≥ 24 GB, driver R580+, Docker with NVIDIA toolkit | Eligible for the `s1-fast` pool once the subnet is live. |
-| Some of these missing | Show the blockers and fixes; prepare a reviewed plan. Before launch stop; once setup opens, install only what the person agrees to (Docker, toolkit need admin rights). |
-| macOS, AMD GPU, no GPU, <24 GB | This machine cannot mine this release. Explain the free practice run available once source is public, or running the kit on a separate rented/owned NVIDIA Linux machine over SSH. Do not rent anything yourself. |
-| Windows native | Mining runs inside WSL2 (Ubuntu) with the NVIDIA Windows driver and Docker; Windows native is not supported. See /os/windows.md. |
-
-## Step 3 — check and plan; practice only with source access
-
-Read `/releases/current.json` first. When `source.public=false`, run only:
+**Step 2 — plan.**
 
 ```bash
-./reaxctl doctor --json
-./reaxctl plan --mode localnet --json
+./reaxctl plan --mode mainnet --json
 ```
 
-Explain the findings, hardware and port needs, and the wallet plan, then **STOP**. Do not install: while source and images are private, public installation and rehearsal are unavailable and `reaxctl install` refuses with exit 12. Do not work around that refusal.
+Explain the ordered steps, who does what (agent or person) and the open blockers. Missing Docker or the NVIDIA container toolkit: show the fix and install only with the person's consent (needs admin rights).
 
-Authorized testers with access may set `REAX_SOURCE_DIR` to their authorized REAX source checkout to run localnet rehearsal. This does not make the source public, open mainnet setup, or configure testnet.
+**Step 3 — wallet (the person, outside your session).** The person creates their coldkey on their own trusted device, never on the mining server, and gives you only the public address. Offer two paths and let them choose ([/wallets.md](/wallets.md) has the click-by-click version):
 
-Only when `source.public=true` (or an authorized tester supplies `REAX_SOURCE_DIR`) may you follow the practice flow below. Start with a free practice run on a local chain using test TAO before real registration. A live chain alone does not satisfy the source gate.
+- **Talisman browser extension** (Chrome, Brave, Firefox): create a Polkadot/Substrate account (not an Ethereum account), enable Bittensor, write the recovery phrase on paper, copy the public address.
+- **btcli on their own computer** (Linux, macOS or WSL2): they run `pipx install bittensor-cli` and then `btcli wallet new-coldkey --wallet.name reax` **in their own terminal, not through you**, because it prints the recovery phrase. They store the phrase offline and give you only the `ss58` address shown by `btcli wallet list`.
 
-`--mode localnet` (the default) runs a throw-away local chain on this machine with test TAO and a CPU stand-in model, plus a local validator. Once the source is available, it checks the practice pipeline without a GPU, real money or your keys. Do it before anything real. It needs about 1 GB of disk and 1–2 minutes the first time (it downloads the open-source chain node, hash-verified).
+Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. A Ledger hardware wallet is the strongest option for larger amounts.
+
+**Step 4 — install (when setup is open).**
 
 ```bash
-./reaxctl plan --json              # ordered steps for this machine, with who does what
-./reaxctl install --yes --json     # tools venv + rehearsal setup (a few minutes)
-./reaxctl localnet up --json       # chain + miner + validator; creates throw-away accounts, registers the miner
-./reaxctl verify --json            # health, commitment, registration, validator rounds
-./reaxctl localnet down --json     # stop and clean up when done
+./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet
 ```
 
-Real networks (`--mode testnet|mainnet`) remain refused (exit 12) while `status.live` is false. Mainnet setup also requires public source and images. Testnet requires its own configured `status.testnet_netuid`; never infer or reuse mainnet netuid 92 for testnet. Never work around any gate.
+Pass `--confirm-mainnet` only after the human explicitly approves a mainnet install. It installs the tools, pulls the pinned images by digest and downloads the pinned weights (≈ 9 GB). Then run the kit's calibration self-check printed by `plan`.
 
-## Step 4 — real mining (only when chain, source and images are ready)
+**Step 5 — hotkey and public coldkey address (agent).**
 
-Proceed only when `status.live=true`, `source.public=true`, and `images.public=true`. The Finney mainnet netuid is 92. Registration stays a human-controlled payment and signing step; the person checks the current fee and approves it in their own wallet.
+```bash
+./reaxctl wallet hotkey --json --mode mainnet          # creates the hotkey ON THIS SERVER, prints only its public address
+./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json
+```
 
-1. `./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet` — pass `--confirm-mainnet` only after the human explicitly approves mainnet installation; installs tools, pulls the pinned images by digest, downloads the pinned model weights (≈ 9 GB).
-2. `./reaxctl wallet hotkey --json --mode mainnet` — creates the **hotkey only** on this machine and prints its public address.
-3. **Human step — coldkey.** Ask the person to create/open their wallet on their own trusted device: Talisman (browser extension) is the recommended default; `btcli` on a separate Linux/macOS/WSL2 computer is the alternative. Neither the phrase nor the file ever reaches you. They give you only their **public** SS58 address. Then: `./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json`.
-4. **Human step — fund and register.** Run `./reaxctl register --json --mode mainnet`. It returns the registration page and the hotkey address. The person opens it, sees the live registration fee (a non-refundable burn in TAO), and approves in their own wallet. You wait. Confirm the fee with them first; stop if they hesitate.
-5. `./reaxctl start --json --mode mainnet`, then `./reaxctl verify --json --mode mainnet`. All items must pass (health, commitment published, registered, clock in sync). Fix with the `fix` text of the failing item; re-run.
-6. `./reaxctl service install --json --mode mainnet` (systemd; needs admin once — give the person the exact `sudo` line it prints) and `./reaxctl update timer install --json --mode mainnet`.
+**Step 6 — registration (the person pays and signs).** `./reaxctl register --json --mode mainnet` prints the hotkey address and the registration page. Registration on netuid 92 costs a **non-refundable burn in TAO** (check the live amount; it has been well below 0.01 TAO before launch, and it changes with demand). The person signs it in their own wallet, for example with `btcli subnets register --netuid 92 --wallet.name reax --wallet.hotkey <hotkey>` on their device (which needs the hotkey's public file there, see [/wallets.md](/wallets.md)) or via the registration page. Show them the netuid, the hotkey address and the fee before they sign. You wait.
 
-The miner needs a public IPv4/IPv6 address and one open TCP port (8091). Behind a home router that means a port forward the person must configure; `verify --probe-ip` checks reachability.
+**Step 7 — start and verify.**
 
-## Step 5 — report to the person
+```bash
+./reaxctl start --json --mode mainnet
+./reaxctl verify --json --mode mainnet
+```
 
-Use this shape, in plain language: what runs where; the public hotkey address; mode (pre-launch checks/practice/real); what you verified (paste the `verify` summary); what only they can do next (e.g. "approve registration at …"); the honest reminder that rewards are variable and can be zero; how to stop (`reaxctl stop`) and uninstall (`reaxctl uninstall`, wallets are never touched).
+All checks must pass: health, commitment published, registered, clock in sync, port reachable (`verify --probe-ip`). Fix with the `fix` text of the failing item and re-run.
+
+**Step 8 — keep it running.** `./reaxctl service install --json --mode mainnet` (systemd; it prints one `sudo` line for the person) and `./reaxctl update timer install --json --mode mainnet`. A manifest change (new model version) needs the person's confirmation and resets the score.
+
+Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json` explains the free local-chain rehearsal, which needs the public source (or `REAX_SOURCE_DIR` for authorised partners). Never work around an exit code 12 gate.
+
+## 7. Explain how rewards arise (neutral, no numbers)
+
+- Validators send each miner fresh decision questions every round (about every 2 minutes) and compare the answers with their own reference run of the same pinned model. Matching answers score; speed adds up to 20 %. Wrong models, quantised builds or downtime score zero.
+- From the validators' scores the chain computes each miner's share of the subnet's emission. Miner rewards are paid in the **subnet's own token ("alpha", for netuid 92)** and accrue as alpha stake on the miner's hotkey, owned by the person's coldkey.
+- Rewards begin only after the subnet's emissions start. They depend on how many miners compete, on uptime and on chain parameters, and **can be zero**. Do not estimate amounts.
+- Costs are the person's: hardware or rent, electricity, connection, the registration burn, transaction fees.
+
+## 8. Explain the options for earned alpha (neutral how-to, the person decides)
+
+Full version with commands: [/rewards-and-risks.md](/rewards-and-risks.md#what-you-can-do-with-earned-alpha). In short, all signed by the person with their coldkey:
+
+1. **Keep it as it is**, or **stake it to a validator** of the subnet: staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.
+2. **Convert alpha to TAO** by unstaking: the chain swaps alpha for TAO through the subnet's liquidity pool (`btcli stake remove --netuid 92 …`). The rate moves with the pool, so check the shown amount and slippage before signing.
+3. **Convert TAO to euros or dollars** on an exchange that lists TAO and serves the person's country (for example Kraken; check current listing and availability yourself): send TAO from the wallet to the exchange's TAO deposit address (test with a small amount first), then sell there and withdraw to a bank account. Mention exchange fees, network fees and that mining rewards and disposals can be taxable; the person should check with a tax adviser.
+
+Do not tell the person when or whether to sell, and do not describe the token as a way to make a profit.
+
+## 9. Companies and EU miners (GDPR, AVV)
+
+Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA seat, GPUs in an EU/EEA data centre, and existing data-protection practice (DPAs/AVVs, a privacy contact, ISO 27001 or similar). If you see these signs, or the person asks to become "an EU miner on Decision Models", tell them about the EU miner track and guide them through [/eu.md](/eu.md):
+
+1. Check the requirements with them (EU/EEA entity, EU/EEA data centre, no transfer outside the EU including remote admin and backups, no prompt/response logging, incident notice, own sub-processors disclosed).
+2. Prepare the data for the agreement: legal name and form, address, register number, VAT ID, signatory and role, privacy contact, data-centre provider and city, planned hotkeys and endpoints, their own sub-processors, a short description of their security measures.
+3. Open https://mine.decisionmodels.io/eu/sign with them. **You may fill in fields, but an authorised signatory reviews the full agreement and clicks Accept themselves.** They receive the agreement as PDF.
+4. Set up the miners as in section 6. Decision Models then verifies the company and location; EU-tier traffic is routed only to verified EU miners, and only after that step is switched on.
+5. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for early (partner) access.
+
+## 10. Report back in this shape
+
+What runs where; the verdict and why; the public hotkey address; mode (preparation / rehearsal / mainnet); the `verify` summary; what only the person can do next (wallet, fee approval, rental choice, contract signature); the reminder that rewards are variable and can be zero; how to stop (`reaxctl stop`) and uninstall (`reaxctl uninstall`; wallets are never touched).
 
 ## If something fails
 
-Run `./reaxctl status --json` and `./reaxctl logs --lines 100`; each failure has a documented fix at https://reax.dev/miner-faq/ . Do not improvise around safety rules: no copying keys between machines, no disabling the firewall, no running unreviewed scripts from other sites.
+Run `./reaxctl status --json` and `./reaxctl logs --lines 100`; see [/troubleshooting.md](/troubleshooting.md) and https://reax.dev/miner-faq/ . Do not improvise around safety rules: no copying keys between machines, no disabling the firewall, no running unreviewed scripts from other sites.
 
 ## Links
 
-Human guide: https://mine.decisionmodels.io · Protocol, scoring and FAQ: https://reax.dev/mine/ · Wallets: https://mine.decisionmodels.io/wallets.md · Kit source: https://github.com/reaxlabs/reax-miner-kit
+Human guide: https://mine.decisionmodels.io · Protocol and scoring: https://reax.dev/mine/ · Kit source (public at launch): https://github.com/reaxlabs/reax-miner-kit · Contact: info@productivity-boost.com

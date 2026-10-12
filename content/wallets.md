@@ -2,17 +2,38 @@
 
 A coldkey controls funds and financial approvals. A hotkey identifies the miner and signs its operational messages. Keep the coldkey on a separate trusted device; only the hotkey belongs on the mining machine. A stolen hotkey can impersonate your miner, so protect it too.
 
-## Human step: choose your signer
+## Human step: create your wallet (two common paths)
 
-Our recommended default is **Talisman on a separate trusted workstation**, using a Substrate/Polkadot account. Use [REAX's wallet walkthrough](https://reax.dev/wallet/) for screenshots and [the registration tool](https://reax.dev/register/) when launch permits it. An EVM account is not the right account type.
+Your wallet holds the **coldkey**. Create it on a device you trust, not on the mining server, and never through an AI agent's session: the recovery phrase it shows must only ever be seen by you. Write it on paper, keep it offline, and never paste it into a chat, a form or a file.
+
+**Path A — Talisman browser extension (easiest).**
+
+1. Install Talisman from [talisman.xyz](https://talisman.xyz) for Chrome, Brave or Firefox.
+2. Create a new wallet, set a password and back up the recovery phrase on paper.
+3. Add a **Polkadot (Substrate) account**, not an Ethereum account, and enable the Bittensor network if it is not shown.
+4. Copy the account's public address (it starts with `5`). That address is all your agent needs.
+
+**Path B — btcli on your own computer (Linux, macOS or Windows via WSL2).**
+
+```bash
+pipx install bittensor-cli          # or: python3 -m pip install --user bittensor-cli
+btcli wallet new-coldkey --wallet.name reax
+btcli wallet list                   # shows the public ss58 address
+```
+
+Run these in your **own terminal**, not through the agent: `new-coldkey` prints the recovery phrase. Keep the `~/.bittensor/wallets/reax/coldkey` file on this computer only.
+
+Other wallets that hold Bittensor accounts: Nova Wallet (phone), the Polkadot.js extension, SubWallet. For larger amounts a Ledger hardware wallet is the strongest option. Our [verification table](#what-is-verified) below says what we tested.
+
+The **hotkey** is different: it is created by the kit directly on the mining server (`reaxctl wallet hotkey`) and only identifies your miner. A stolen hotkey cannot move your funds, but it can impersonate your miner, so protect it too.
 
 | Your OS | Default | Pro path and caveat |
 | --- | --- | --- |
-| Linux | Separate trusted Talisman workstation | Isolated `btcli` environment; optional Ledger with Linux USB/udev setup |
-| Windows | Separate trusted Talisman workstation | `btcli` in Windows Subsystem for Linux 2 (WSL2); Windows browser bridge is not yet tested by us end to end. Use a separate Linux/macOS signer if it fails |
-| macOS | Talisman on the controller, separate from the Linux miner | Native `btcli`; optional Ledger |
+| Linux | Talisman on a trusted workstation | `btcli` on that workstation; optional Ledger with Linux USB/udev setup |
+| Windows | Talisman on a trusted workstation | `btcli` in Windows Subsystem for Linux 2 (WSL2) |
+| macOS | Talisman or native `btcli` on the Mac, separate from the Linux miner | Optional Ledger |
 
-Windows host and WSL are one machine for custody. If you only have the mining computer, pause funded setup until you have a separate trusted signer. A phone wallet alone is not a verified REAX registration solution.
+If you only have the mining computer, pause funded setup until you have a separate trusted device for the coldkey.
 
 ## Agent step: public addresses only
 
@@ -22,7 +43,7 @@ The agent may prepare software, inspect compatibility and install an operational
 
 The registration burn is non-refundable. Verify the network, netuid (subnet number), public addresses, live fee and your approval before signing. Do not invent a `register_limit` CLI command; raw runtime support does not establish an approved signing flow or an all-in fee cap.
 
-## What is verified?
+## What is verified? {#what-is-verified}
 
 Documentation checked on October 9, 2026. **No funded registration or hardware signing was executed.** Documented support is not an end-to-end test.
 

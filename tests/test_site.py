@@ -204,10 +204,10 @@ class SiteTests(unittest.TestCase):
                     self.assertNotIn('Rehearse free today', pages)
                     if name == 'pending':
                         self.assertEqual(data['state'], 'prelaunch')
-                        self.assertIn('Registered as netuid 92, starting soon.', home)
-                        self.assertIn('Alpha trading and emission remain disabled until the subnet owner starts it.', home)
-                        self.assertIn('Source and images stay private until launch', (output/'llms.txt').read_text())
-                        self.assertIn('authorized localnet rehearsal needs REAX_SOURCE_DIR', (output/'llms.txt').read_text())
+                        self.assertIn('Registration is open. Rewards start when emissions start.', home)
+                        self.assertIn('Emissions have not started yet', home)
+                        self.assertIn('Source and images are published at launch', (output/'llms.txt').read_text())
+                        self.assertIn('early access for named partners', (output/'llms.txt').read_text())
                         self.assertTrue(all(s['command'] and s['blocked_until_live'] for s in data['steps'][2:]))
                         self.assertIn('stop before install', data['steps'][1]['verify'].lower())
                         self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
@@ -245,8 +245,8 @@ class SiteTests(unittest.TestCase):
     def test_agent_commands_match_manifest(self):
         import shlex
         agent = (DIST/'agent.md').read_text()
-        mainnet = agent.split('## Step 4')[1].split('## Step 5')[0]
-        commands = [shlex.split(c) for c in re.findall(r'`(\./reaxctl [^`]+)`', mainnet)]
+        mainnet = agent.split('## 6.')[1].split('## 7.')[0]
+        commands = [shlex.split(c.strip()) for c in re.findall(r'(\./reaxctl [^`\n#]+)', mainnet)]
         for step in self.data['mainnet_steps']:
             if step['command'] and step['id'] not in ('doctor', 'choose-mode'):
                 # Argument order is immaterial; exact values and approval flags are not.
@@ -277,7 +277,7 @@ class SiteTests(unittest.TestCase):
             self.assertIn('Network live', home)
             self.assertIn('source remains private', home.lower())
         else:
-            self.assertIn('Netuid 92 registered · starting soon', home)
+            self.assertIn('Registration open · rewards start with emissions', home)
         self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
         self.assertRegex(home, r'<form[^>]*class="checker"[^>]*hidden')
 
