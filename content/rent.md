@@ -8,8 +8,8 @@ No suitable NVIDIA card at home? You can rent one by the hour or month. Your age
 
 1. One NVIDIA GPU with **≥ 24 GB** per miner (see [hardware](/hardware)).
 2. **Docker inside the server.** The miner runs two containers (miner and model sidecar). A VM or bare-metal server works; many "container pods" do not allow Docker inside.
-3. **A reachable TCP port** from the internet. It does not have to be 8091: if the provider maps a different external port, the miner announces that one (`REAX_EXTERNAL_PORT`).
-4. Linux, driver R580+ (CUDA 13), 32 GB RAM, 20 GB disk.
+3. **A reachable TCP port** from the internet. The miner listens on port 8091 inside the server; if the provider maps another external port, set `REAX_EXTERNAL_PORT` to it.
+4. Linux, driver R580+ (CUDA 13), 4 CPU cores, 32 GB RAM, 20 GB free disk.
 
 ## Options (indicative prices, checked 12 October 2026)
 
@@ -31,11 +31,11 @@ The L4 is not among the cards we measured; run the kit's self-check before servi
 
 ## Quick picks
 
-- **Cheapest that we know works:** a Lium RTX 3090 or 4090 pod (Docker works, port is forwarded). Can be paid in TAO.
+- **Tested by us:** a Lium RTX 3090 or 4090 pod: Docker works and the port is forwarded. Lium accepts several payment methods, including TAO.
 - **EU-hosted, simple VM:** Scaleway L40S (Paris) or UpCloud L40S.
-- **EU bare metal, monthly:** Hetzner GEX131 (96 GB, also fits a future 80–96 GB pool).
+- **EU bare metal, monthly:** Hetzner GEX131 (96 GB, billed monthly).
 - **EU companies with their own data centre:** use your own hardware and see the [EU miner track](/eu).
 
-Renting costs money whether or not the miner earns rewards. Compare the rent with your own expectations before you start, and stop the server when you stop mining. Prices on this page are not offers by us; we have no affiliation with these providers.
+Renting costs money whether or not any rewards are paid; rewards are variable and can be zero. Check the rent and the registration burn against what you are willing to spend, and stop the server when you stop mining. Prices on this page are not offers by us; we have no affiliation with these providers.
 
 [Hardware](/hardware) · [Agent playbook](/agent.md)

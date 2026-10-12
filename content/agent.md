@@ -10,8 +10,8 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 
 - {{PRACTICE_NOTE}}
 - Check the live state yourself: `GET https://mine.decisionmodels.io/releases/current.json` and read `status.live`, `status.launch_status`, `status.netuid`, `source.public` and `images.public`. {{STATUS_BRIEF}} {{SOURCE_STATUS}}
-- In one sentence: **you can prepare and register now; rewards only begin once emissions start, and real mining needs the published miner software.** If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
-- Partners and companies that want to start before the source is public can ask for early access (section 9 and [contact](/eu#contact)).
+- In one sentence: **you can prepare now (hardware check, wallet, plan); registration is open on the network, but real mining needs the published miner software, and rewards exist only if and when emissions run — they are variable and can be zero.** Registering a hotkey only makes sense once its miner can run. If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
+- Partners and companies that want to start before the source is public can ask for access to the miner software before its public release (section 9 and [contact](/eu#contact)); this is software access only, with no advantage in rewards or routing.
 
 ## 2. Rules (non-negotiable)
 
@@ -82,7 +82,7 @@ Explain the ordered steps, who does what (agent or person) and the open blockers
 - **Talisman browser extension** (Chrome, Brave, Firefox): More → Add Account → new **Polkadot (Substrate)** account (not Ethereum), back up the recovery phrase on paper, copy the public address. Talisman shows TAO and subnet (alpha) stake.
 - **btcli on their own computer** (Linux, macOS or WSL2): they run `pipx install bittensor-cli` and then `btcli wallet new-coldkey --wallet-name reax` **in their own terminal, not through you**, because it prints the recovery phrase. They store the phrase offline and give you only the `ss58` address shown by `btcli wallet list`.
 
-Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. A Ledger hardware wallet is the strongest option for larger amounts.
+Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. A Ledger hardware wallet gives stronger protection for the keys.
 
 **Step 4 — install (when setup is open).**
 
@@ -99,7 +99,7 @@ Pass `--confirm-mainnet` only after the human explicitly approves a mainnet inst
 ./reaxctl wallet coldkeypub --ss58 <public-address> --mode mainnet --json
 ```
 
-**Step 6 — registration (the person pays and signs).** `./reaxctl register --json --mode mainnet` prints the hotkey address and the registration page. Registration on netuid 92 costs a **non-refundable burn in TAO** (check the live amount; it has been well below 0.01 TAO before launch, and it changes with demand). The person opens the registration page (https://reax.dev/register/) or uses btcli on their own device, checks netuid 92, the hotkey address and the live fee, and signs with their coldkey. You wait.
+**Step 6 — registration (the person pays and signs).** `./reaxctl register --json --mode mainnet` prints the hotkey address and the registration page. Registration on netuid 92 costs a **non-refundable burn in TAO** (check the live amount on the registration page; it changes over time). The person opens the registration page (https://reax.dev/register/) or uses btcli on their own device, checks netuid 92, the hotkey address and the live fee, and signs with their coldkey. You wait.
 
 **Step 7 — start and verify.**
 
@@ -125,9 +125,9 @@ Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json`
 
 Full version with commands: [/rewards-and-risks.md](/rewards-and-risks.md#what-you-can-do-with-earned-alpha). In short, all signed by the person with their coldkey:
 
-1. **Keep it as it is**, or **stake it to a validator** of the subnet: staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.
+1. **Keep or stake.** You can also keep your alpha staked to a validator; staked alpha takes part in validator emissions under the protocol rules. Whether you keep, stake or convert is your own decision; this is not financial or tax advice.
 2. **Convert alpha to TAO** by unstaking: the chain swaps alpha for TAO through the subnet's liquidity pool (`btcli stake remove --netuid 92 --wallet-name reax`; btcli applies a 5 % default slippage tolerance). The rate moves with the pool, so check the shown amount and slippage before signing.
-3. **Convert TAO to euros or dollars** on an exchange that lists TAO and serves the person's country (for example Kraken; check current listing and availability yourself): send TAO from the wallet to the exchange's TAO deposit address (test with a small amount first), then sell there and withdraw to a bank account. Mention exchange fees, network fees and that mining rewards and disposals can be taxable; the person should check with a tax adviser.
+3. **Convert TAO to euros or dollars** on an exchange that lists TAO and is authorised to serve the person's country (in the EU, check its MiCAR authorisation; examples seen listing TAO in October 2026, not recommendations: Kraken, Bitvavo, Coinbase): send TAO from the wallet to the exchange's TAO deposit address (test with a small amount first), then sell there and withdraw to a bank account. Mention exchange fees, network fees and that mining rewards and disposals can be taxable; the person should check with a tax adviser.
 
 Do not tell the person when or whether to sell, and do not describe the token as a way to make a profit.
 
@@ -138,8 +138,8 @@ Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA se
 1. Check the requirements with them (EU/EEA entity, EU/EEA data centre, no transfer outside the EU including remote admin and backups, no prompt/response logging, incident notice, own sub-processors disclosed).
 2. Prepare the data for the agreement: legal name and form, address, register number, VAT ID, signatory and role, privacy contact, data-centre provider and city, planned hotkeys and endpoints, their own sub-processors, a short description of their security measures.
 3. Open https://mine.decisionmodels.io/eu/sign with them. **You may fill in fields, but an authorised signatory reviews the full agreement and clicks Accept themselves.** They receive the agreement as PDF.
-4. Set up the miners as in section 6. Decision Models then verifies the company and location; EU-tier traffic is routed only to verified EU miners, and only after that step is switched on.
-5. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for early (partner) access.
+4. Set up the miners as in section 6. Decision Models then verifies the company and location. EU routing is switched off until the first verified EU miner, the 30-day customer notice and the operator's decision; routing and any traffic volume are not promised. When on, EU-tier requests go only to verified EU miners or Decision Models' own EU GPUs.
+5. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for access to the miner software before its public release.
 
 ## 10. Report back in this shape
 

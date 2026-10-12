@@ -204,10 +204,10 @@ class SiteTests(unittest.TestCase):
                     self.assertNotIn('Rehearse free today', pages)
                     if name == 'pending':
                         self.assertEqual(data['state'], 'prelaunch')
-                        self.assertIn('Registration is open. Rewards start when emissions start.', home)
+                        self.assertIn('Registration is open. Emissions have not started.', home)
                         self.assertIn('Emissions have not started yet', home)
                         self.assertIn('Source and images are published at launch', (output/'llms.txt').read_text())
-                        self.assertIn('early access for named partners', (output/'llms.txt').read_text())
+                        self.assertIn('rewards variable, can be zero', (output/'llms.txt').read_text())
                         self.assertTrue(all(s['command'] and s['blocked_until_live'] for s in data['steps'][2:]))
                         self.assertIn('stop before install', data['steps'][1]['verify'].lower())
                         self.assertTrue(all(s['blocked_until_live'] for s in data['mainnet_steps'][2:]))
@@ -277,7 +277,7 @@ class SiteTests(unittest.TestCase):
             self.assertIn('Network live', home)
             self.assertIn('source remains private', home.lower())
         else:
-            self.assertIn('Registration open · rewards start with emissions', home)
+            self.assertIn('Registration open · emissions not started', home)
         self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
         self.assertRegex(home, r'<form[^>]*class="checker"[^>]*hidden')
 

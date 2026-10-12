@@ -1,6 +1,6 @@
 # Accept the EU-miner agreement
 
-If your company is established in the EU or EEA and operates REAX miners, you can accept our standing offer of a sub-processing agreement under Art. 28(4) GDPR electronically. This page is the signing form; the requirements and the process are explained on the [EU miner page](/eu).
+If your company is established in the EU or EEA and operates REAX miners, you can accept our standing offer of a sub-processing agreement under Art. 28(4) GDPR electronically. This page is the signing form; the requirements and the process are explained on the [EU miner page](/eu). Accepting the agreement does not mean that EU-tier traffic will be routed to you; EU routing is switched off until the first verified EU miner.
 
 <!--eu-form:start-->
 <div id="eu-sign" class="eu-sign">
@@ -49,7 +49,7 @@ If your company is established in the EU or EEA and operates REAX miners, you ca
 <h2 id="eu-done-title" tabindex="-1">Agreement accepted</h2>
 <p>Agreement ID: <code id="eu-done-id"></code></p>
 <p><a id="eu-done-pdf" class="eu-primary" href="#" download>Download your PDF copy</a></p>
-<p><strong>Save this PDF; it is your copy.</strong> The link is private to you and is not shown again. We verify the company, the data-centre locations and your hotkeys before any EU-tier traffic is routed to you, and contact you at the signatory e-mail address.</p>
+<p><strong>Save this PDF; it is your copy.</strong> The link is private to you and is not shown again. We verify the company, the data-centre locations and your hotkeys before any EU-tier traffic could be routed to you (routing is switched off until the first verified EU miner and is not promised), and contact you at the signatory e-mail address.</p>
 </section>
 <section class="eu-panel" aria-labelledby="eu-contact-title">
 <h2 id="eu-contact-title">Not ready to sign? Talk to us</h2>

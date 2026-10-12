@@ -7,10 +7,10 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 ## How rewards arise
 
 - **Validators test every miner.** Each round (about every 2 minutes) a validator sends your miner 8 fresh decision questions and compares your answers with its own reference run of the same pinned model. Answers that match score; speed adds up to 20 % of a round's score. A wrong or quantised model, a modified prompt or downtime scores zero, and serious mismatches reset your score.
-- **Scores become weights.** Validators submit weights for all miners; the chain combines them, weighted by validator stake (Yuma consensus).
+- **Scores become weights.** Validators submit weights for all miners; the chain combines them, weighted by validator stake (the chain's consensus method, called Yuma consensus).
 - **Emission is shared by weight.** Each block the subnet's emission is split between the subnet owner, validators and miners under the chain's rules. Your miner's share follows its weight.
 - **Paid in the subnet's token.** Miner rewards on netuid 92 are paid in the subnet's own token, called **alpha**, and accrue as alpha stake on your miner's hotkey, owned by your coldkey.
-- **Variable, and can be zero.** Rewards begin only after the subnet's emissions start. They depend on the number of competing miners, your score and uptime, and chain parameters that can change. A new miner starts at score 0 and needs about an hour of good rounds to approach its full score.
+- **Variable, and can be zero.** Rewards begin only after the subnet's emissions start. They depend on the number of competing miners, your score and uptime, and chain parameters that can change. A new miner starts at score 0 and its score builds up over about an hour of good rounds; no score is promised.
 
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 
@@ -23,14 +23,14 @@ btcli stake list --wallet-name reax        # where your stake is
 btcli stake move --wallet-name reax        # interactive: move alpha from your miner hotkey to a validator hotkey on netuid 92
 ```
 
-**Convert alpha to TAO.** Unstaking swaps alpha for TAO through the subnet's liquidity pool. The amount you receive depends on the pool at that moment (price impact and slippage), and a pool fee of about 0.05 % applies. There is no unbonding period. btcli shows the expected amount before you confirm and by default refuses if the price moves more than 5 % (`--tolerance`). Moving stake to another hotkey on the same subnet is not a swap.
+**Convert alpha to TAO.** Unstaking swaps alpha for TAO through the subnet's liquidity pool. The amount you receive depends on the pool at that moment (price impact and slippage), and a pool fee of about 0.05 % applies (October 2026). At the time of writing there is no unbonding period. btcli shows the expected amount before you confirm and by default refuses if the price moves more than 5 % (`--tolerance`). Moving stake to another hotkey on the same subnet is not a swap.
 
 ```bash
 btcli stake remove --netuid 92 --wallet-name reax --interactive   # choose the miner hotkey position and amount
 btcli wallet balance --wallet-name reax                           # TAO now in your coldkey
 ```
 
-**Convert TAO to euros or dollars.** Use an exchange that lists TAO and is available in your country. Examples as of October 2026: Kraken (TAO/EUR), Bitvavo, Coinbase. Listings, licences and country availability change, so check first:
+**Convert TAO to euros or dollars.** Use an exchange that lists TAO and is authorised to serve customers in your country (in the EU, check the provider's MiCAR authorisation in the ESMA register). We do not recommend and are not affiliated with any exchange; examples seen listing TAO in October 2026 include Kraken, Bitvavo and Coinbase. Listings and availability change:
 
 1. Open and verify an account at the exchange (identity check).
 2. In the exchange, get your **TAO deposit address** (Bittensor network).
@@ -46,7 +46,7 @@ Costs to expect: pool slippage when unstaking, network fees, exchange trading an
 - You pay for hardware or rent, electricity and your connection.
 - Registration burns TAO and is **non-refundable**. Check the live fee before signing.
 - Rewards can be low or zero: competition, downtime, chain parameter changes or a new model version (which resets scores) all affect them.
-- Token exchange rates change; converting at a different time gives a different amount.
+- Token exchange rates change, so the amount you receive when you convert depends on the time and on the pool. We make no statement about future value.
 - Keys: whoever holds your recovery phrase controls your funds. Nobody from Decision Models or REAX will ever ask for it.
 
 A human approves every payment. Never buy hardware or fund an account just because an agent says setup succeeded.
