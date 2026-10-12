@@ -3,9 +3,10 @@ import ipaddress
 import re
 import unicodedata
 
-EU_EEA = frozenset(
-    'AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT LV LT LU MT NL PL PT RO SK SI ES SE '  # EU 27
-    'IS LI NO'.split())  # EEA (non-EU)
+EU = frozenset('AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT LV LT LU MT NL PL PT RO SK SI ES SE'.split())  # EU 27
+EU_EEA = EU | frozenset('IS LI NO'.split())  # EEA (non-EU): allowed for the company seat only
+DC_MESSAGE = ('{field} must be an EU member state ISO 3166-1 alpha-2 code. Processing under this agreement takes '
+              'place only in data centres in EU member states.')
 LANGS = ('en', 'de')
 
 SS58_RE = re.compile(r'^5[1-9A-HJ-NP-Za-km-z]{47}$')  # base58, 48 chars, starts with 5 (no checksum)
@@ -70,12 +71,12 @@ def _reject_unknown(data, allowed, errors):
             errors[str(key)[:60]] = 'Unknown field.'
 
 
-def _country(value, field, errors):
+def _country(value, field, errors, allowed=EU_EEA, message=None):
     if value is None or value == '':
         errors[field] = 'This field is required.'
         return ''
-    if not isinstance(value, str) or value.strip().upper() not in EU_EEA:
-        errors[field] = COUNTRY_MESSAGE.format(field=field)
+    if not isinstance(value, str) or value.strip().upper() not in allowed:
+        errors[field] = (message or COUNTRY_MESSAGE).format(field=field)
         return ''
     return value.strip().upper()
 
@@ -142,7 +143,7 @@ def validate_agreement_fields(data):
         before = len(errors)
         dcs.append({'provider': _text(item.get('provider'), key + '.provider', LIMITS['provider'], errors),
                     'city': _text(item.get('city'), key + '.city', LIMITS['city'], errors),
-                    'country': _country(item.get('country'), key + '.country', errors)})
+                    'country': _country(item.get('country'), key + '.country', errors, EU, DC_MESSAGE)})
         if len(errors) > before:
             dcs.pop()
     out['dc_locations'] = dcs

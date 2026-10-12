@@ -133,9 +133,9 @@ Do not tell the person when or whether to sell, and do not describe the token as
 
 ## 9. Companies and EU miners (GDPR, AVV)
 
-Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA seat, GPUs in an EU/EEA data centre, and existing data-protection practice (DPAs/AVVs, a privacy contact, ISO 27001 or similar). If you see these signs, or the person asks to become "an EU miner on Decision Models", tell them about the EU miner track and guide them through [/eu.md](/eu.md):
+Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA seat, GPUs in a data centre in an EU member state, and existing data-protection practice (DPAs/AVVs, a privacy contact, ISO 27001 or similar). If you see these signs, or the person asks to become "an EU miner on Decision Models", tell them about the EU miner track and guide them through [/eu.md](/eu.md):
 
-1. Check the requirements with them (EU/EEA entity, EU/EEA data centre, no transfer outside the EU including remote admin and backups, no prompt/response logging, incident notice, own sub-processors disclosed).
+1. Check the requirements with them (EU/EEA entity, data centre in an EU member state, no transfer outside the EU including remote admin and backups, no prompt/response logging, incident notice, own sub-processors disclosed).
 2. Prepare the data for the agreement: legal name and form, address, register number, VAT ID, signatory and role, privacy contact, data-centre provider and city, planned hotkeys and endpoints, their own sub-processors, a short description of their security measures.
 3. Open https://mine.decisionmodels.io/eu/sign with them. **You may fill in fields, but an authorised signatory reviews the full agreement and clicks Accept themselves.** They receive the agreement as PDF.
 4. Set up the miners as in section 6. Decision Models then verifies the company and location. EU routing is switched off until the first verified EU miner, the 30-day customer notice and the operator's decision; routing and any traffic volume are not promised. When on, EU-tier requests go only to verified EU miners or Decision Models' own EU GPUs.

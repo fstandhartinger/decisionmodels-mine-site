@@ -44,8 +44,9 @@
       var input;
       if (col[0] === 'country') {
         input = el('select', { 'aria-label': col[1] });
+        // Data centres: EU member states only (the company seat may also be IS/LI/NO).
         Array.prototype.forEach.call(document.getElementById('miner_country').options, function (o) {
-          input.appendChild(el('option', { value: o.value }, o.text));
+          if (['IS', 'LI', 'NO'].indexOf(o.value) === -1) input.appendChild(el('option', { value: o.value }, o.text));
         });
       } else {
         input = el('input', { type: 'text', 'aria-label': col[1], placeholder: col[1], maxlength: String(col[2]) });
