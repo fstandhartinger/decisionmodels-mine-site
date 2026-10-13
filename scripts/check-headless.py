@@ -34,7 +34,7 @@ def main():
                     with get('/healthz') as response: assert response.read()==b'ok\n';break
                 except OSError: time.sleep(.1)
             else: raise RuntimeError('nginx did not start')
-            for route in ['/','/agent','/os/linux','/os/windows','/os/macos','/wallets','/rewards-and-risks','/troubleshooting']:
+            for route in ['/','/agent','/os/linux','/os/windows','/os/macos','/wallets','/rewards-and-risks','/security','/troubleshooting']:
                 with get(route) as response:
                     assert response.status==200 and response.headers.get_content_type()=='text/html',route
                     assert response.headers['X-Robots-Tag']=='noindex, nofollow'

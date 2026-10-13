@@ -38,7 +38,14 @@ Quantised versions of the model (FP8, NVFP4, INT4, GGUF) answer slightly differe
 
 ## Several GPUs, big nodes
 
-One GPU runs one miner, and each miner has its own hotkey, registration (UID) and port. A server with 8 GPUs can run up to 8 miners. Rewards are scored per miner; a larger GPU does not receive a larger share per miner. A server with several GPUs (for example H100/H200/B200/B300 ×8) can run several s1-fast miners once the miner software is published. No pool beyond s1-fast is enabled in this release. For multi-GPU setups, give each miner its own GPU (do not share a GPU with other work) and its own public port.
+One GPU runs one miner, and each miner has its own hotkey, registration (UID) and port. Rewards are scored per miner; a larger GPU does not receive a larger share per miner. A server with several GPUs (for example H100/H200/B200/B300 ×8) runs one s1-fast miner per GPU: one `--home` per GPU, each with `--gpu N`, its own `--miner-port` and `--hotkey-name`, and one shared weights copy via `--weights-dir`:
+
+```bash
+reaxctl install --home ~/.reax-miner-gpu1 --gpu 1 --miner-port 8092 --hotkey-name miner2 \
+  --weights-dir /srv/reax-weights --mode mainnet --confirm-mainnet
+```
+
+Example, 8x B300: 8 miners, 8 hotkeys (each registered separately), ports 8091 to 8098, GPUs 0 to 7, one weights copy. Give each miner its own GPU and its own public port; do not share a GPU with other work. One hotkey spread over many GPUs is planned but not active, and no extra reward exists for it today. For what runs on such a node and which rights it needs, see [Security](/security). No pool beyond s1-fast is enabled in this release.
 
 ## Network
 
