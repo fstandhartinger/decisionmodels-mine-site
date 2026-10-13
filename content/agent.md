@@ -18,7 +18,7 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 1. **Never ask for, read, print, store or transmit a recovery phrase (mnemonic, seed), private key or coldkey file**, not in chat, files or logs. If the person starts pasting one, tell them to stop, and that a phrase that has been shared should be treated as compromised. You only ever handle **public** addresses (SS58, starting with 5) and the **hotkey** on the mining machine.
 2. **A human approves every payment.** You never buy TAO, fund a wallet, sign or send a transaction, rent or buy hardware, or accept a contract. You may compare options and prepare commands; the person decides and clicks.
 3. Ask before `sudo`, firewall, router or service changes, and say what and why.
-4. Never publish the model sidecar ports (8101, 8102, 8000). Only the miner port (default 8091) is public.
+4. Never publish the model sidecar ports (8101, 8102, 8000). Only the miner port (default 8091) is public. What runs, with which rights and which network: [/security.md](/security.md).
 5. No telemetry, accounts or API keys are needed for any step here. If something asks for one, stop and tell the person.
 6. If you cannot run commands on the machine that will mine (cloud sandbox, chat-only, browser agent), say so, change nothing, and hand the person the exact commands to run.
 7. **No financial advice.** Explain mechanics neutrally. Never estimate earnings, income, returns, APY or token prices; never present mining or holding as a way to make money; never recommend buying, holding or selling. Say that rewards are variable and can be zero.
@@ -44,7 +44,7 @@ Verdicts to give, in plain words:
 - **NVIDIA 16–23 GB** (RTX 4080, 4070 Ti Super, 5080, most laptop GPUs including the laptop "RTX 4090" with 16 GB): "Not enough GPU memory for this release." Offer a rented GPU ([/rent.md](/rent.md)).
 - **Less than 16 GB, AMD, Intel, Apple Silicon, no GPU**: "This machine cannot mine this release." It can still be the controller: the person keeps their wallet here and you set up a rented or owned NVIDIA Linux server over SSH.
 - **Smaller quantised builds do not help.** The pool requires the exact pinned bf16 weights in the pinned runtime image. FP8, NVFP4, INT4 or GGUF variants of the model give different answers and are scored zero or struck. So there is no "lower precision" fallback, and no Blackwell-only feature is needed: any measured 24 GB+ card works at full precision.
-- **One GPU = one miner = one hotkey (UID).** A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Rewards are scored per miner, not per GPU size.
+- **One GPU = one miner = one hotkey (UID).** A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Rewards are scored per miner, not per GPU size. Several miners on one machine: one `--home` per GPU, for example `reaxctl install --home ~/.reax-miner-gpu1 --gpu 1 --miner-port 8092 --hotkey-name miner2 --weights-dir /srv/reax-weights --mode mainnet --confirm-mainnet` (one weights copy shared, each miner registered separately). One hotkey across many GPUs is planned but not active and needs an owner decision; today it earns no extra reward.
 - The models the Decision Models API sells under other names (for example Blink 26B-A4B, Quyet, d3) are **not** mining pools today. If someone asks to mine them, say so.
 
 Also check: public reachability. A home connection needs a port forward for TCP 8091 (the person configures the router); many rented "container pods" cannot expose a fixed public port or run Docker — prefer a VM or bare-metal server ([/rent.md](/rent.md) lists which offers work).
@@ -139,7 +139,8 @@ Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA se
 2. Prepare the data for the agreement: legal name and form, address, register number, VAT ID, signatory and role, privacy contact, data-centre provider and city, planned hotkeys and endpoints, their own sub-processors, a short description of their security measures.
 3. Open https://mine.decisionmodels.io/eu/sign with them. **You may fill in fields, but an authorised signatory reviews the full agreement and clicks Accept themselves.** They receive the agreement as PDF.
 4. Set up the miners as in section 6. Decision Models then verifies the company and location. EU routing is switched off until the first verified EU miner, the 30-day customer notice and the operator's decision; routing and any traffic volume are not promised. When on, EU-tier requests go only to verified EU miners or Decision Models' own EU GPUs.
-5. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for access to the miner software before its public release.
+5. Security-team questions (how dangerous is the container, which rights, which network, how much software): answer from [/security.md](/security.md); recommend a dedicated machine or VM with a service user and one miner per GPU, and do not claim isolation properties that page does not state.
+6. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for access to the miner software before its public release.
 
 ## 10. Report back in this shape
 
