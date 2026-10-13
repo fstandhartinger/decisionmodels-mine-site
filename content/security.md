@@ -49,7 +49,7 @@ Registration is paid and signed by a person in their own wallet; the kit cannot 
 |---|---|---|---|---|
 | **Hardened containers (default)** | baseline | none | yes, one miner per GPU | **default** |
 | Rootless Docker / Podman + CDI | daemon not root | medium | yes | documented option |
-| gVisor `runsc` + nvproxy | user-space kernel, filtered NVIDIA ioctls | medium; driver must be on gVisor's list (R580 is) | not checked for NVLink/NCCL; B300 and 5090 not on its official list | optional; not run end to end by us |
+| gVisor `runsc` + nvproxy (`reaxctl install --isolation gvisor`) | user-space kernel for every container, filtered NVIDIA ioctls | medium: install runsc, one Docker config entry; driver must be on gVisor's list (R580 is) | one miner per GPU works; NVLink/NCCL not checked; B300 and 5090 not on its official list | optional profile, tested end to end: same answers, about 2 % slower |
 | Firecracker microVM | strong VM boundary | n/a | n/a | **not possible today**: no released GPU/PCI passthrough |
 | Kata Containers (VFIO) | VM boundary, GPU owned by the guest | high: Kubernetes, GPU Operator, IOMMU, bare metal | supported on HGX | for Kubernetes shops only |
 | **Dedicated VM per miner** (QEMU/libvirt or a cloud VM with GPU passthrough) | VM boundary; the miner never sees your other systems | medium to high (IOMMU, vfio-pci, guest driver) | yes, one 8-GPU VM per node | **recommended for companies** |
@@ -61,14 +61,15 @@ RTX 5090 and RTX PRO 6000 (GB202) have a reported VFIO reset bug: after a VM shu
 
 1. **Everyone:** the kit's hardened default. Nothing to do.
 2. **Companies with their own hardware (for example an 8x B300 node):** a dedicated machine or VM with the GPUs passed through, a service user, one miner per GPU (`reaxctl install --gpu N`), one hotkey each. The miner then has nothing of yours to reach.
-3. **A sandbox inside the machine, and you control the Docker daemon:** gVisor, then run `reaxctl selfcheck`; a pass with the same distances means scores are unchanged.
+3. **A sandbox kernel inside the machine, and you control the Docker daemon:** `reaxctl install --isolation gvisor` (the kit checks the gVisor setup and prints the steps if something is missing), then `reaxctl selfcheck`; a pass with the same distances means scores are unchanged.
 
 ## Measured (13 Oct 2026)
 
-Two RTX 3090 on a rented node in Frankfurt, driver 580.178.04, s1-fast pool, 640-item reference self-check with a SHA-256 over every returned probability:
+Two RTX 3090 on a rented node in Frankfurt and four RTX A6000 on a rented VM in Finland, driver 580.178.04, s1-fast pool, 640-item reference self-check with a SHA-256 over every returned probability:
 
 * **Identical answers, bit for bit:** legacy host network, hardened default, and a second miner on GPU 1 all give the same hash and pass 640/640.
 * **Same speed:** 25.4 decisions/s legacy, 25.3 hardened; 24.4 for the second miner running at the same time.
+* **gVisor** (4x RTX A6000 VM in Finland): same answer hash as without gVisor, 32.5 vs 33.2 decisions/s, same start-up time.
 * **Isolation held:** the sidecar port was not reachable from the host, a host-loopback listener was not reachable from the miner, writes outside `/tmp` failed, and each runtime saw exactly its one GPU.
 
 **Not yet measured:** the s1-pro runtime (vLLM) under the read-only layout, and a registered miner serving validators on a real chain under the read-only layout. After registration run `reaxctl verify --selfcheck`; a file-system error in `reaxctl logs` is a bug to report.
