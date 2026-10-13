@@ -65,11 +65,11 @@ RTX 5090 and RTX PRO 6000 (GB202) have a reported VFIO reset bug: after a VM shu
 
 ## Measured (13 Oct 2026)
 
-Two RTX 3090 on a rented node in Frankfurt and four RTX A6000 on a rented VM in Finland, driver 580.178.04, s1-fast pool, 640-item reference self-check with a SHA-256 over every returned probability:
+Two RTX 3090 on a rented node in Frankfurt and four RTX A6000 on a rented VM in the EU, driver 580.178.04, s1-fast pool, 640-item reference self-check with a SHA-256 over every returned probability:
 
 * **Identical answers, bit for bit:** legacy host network, hardened default, and a second miner on GPU 1 all give the same hash and pass 640/640.
 * **Same speed:** 25.4 decisions/s legacy, 25.3 hardened; 24.4 for the second miner running at the same time.
-* **gVisor** (4x RTX A6000 VM in Finland): same answer hash as without gVisor, 32.5 vs 33.2 decisions/s, same start-up time.
+* **gVisor** (4x RTX A6000 VM): same answer hash as without gVisor, 32.5 vs 33.2 decisions/s, same start-up time.
 * **Isolation held:** the sidecar port was not reachable from the host, a host-loopback listener was not reachable from the miner, writes outside `/tmp` failed, and each runtime saw exactly its one GPU.
 
 **Not yet measured:** the s1-pro runtime (vLLM) under the read-only layout, and a registered miner serving validators on a real chain under the read-only layout. After registration run `reaxctl verify --selfcheck`; a file-system error in `reaxctl logs` is a bug to report.
