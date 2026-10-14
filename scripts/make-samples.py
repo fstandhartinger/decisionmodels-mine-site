@@ -8,6 +8,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -45,7 +46,7 @@ def generate():
         with tarfile.open(archive) as tar:
             tar.extractall(kit, filter='data')
         for ident, fixture in [('4090', 'core_4090.json'), ('no-gpu', 'core_no_gpu.json')]:
-            output = subprocess.check_output([sys.executable, str(Path(__file__).resolve()), '--render', str(kit), fixture], text=True)
+            output = subprocess.check_output([sys.executable, str(Path(__file__).resolve()), '--render', str(kit), fixture], text=True, env=dict(os.environ, REAX_OFFLINE='1'))
             (samples/('doctor-'+ident+'.txt')).write_text(output)
             receipts[ident] = {'fixture': 'tests/fixtures/'+fixture, 'fixture_sha256': hashlib.sha256((kit/'tests/fixtures'/fixture).read_bytes()).hexdigest(), 'output_sha256': hashlib.sha256(output.encode()).hexdigest(), 'excerpt': False}
     (samples/'provenance.json').write_text(json.dumps({'kit_commit': lock['commit'], 'kit_version': lock['version'], 'archive_sha256': lock['sha256'], 'path': 'reaxlib.cli.main → cmd_doctor.diagnose → result.emit (fixture sysprobe injection)', 'samples': receipts}, indent=2)+'\n')

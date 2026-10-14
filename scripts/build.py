@@ -90,7 +90,12 @@ def state_copy(release):
                     CHECKER_BODY='Localnet rehearsal with test TAO is available because source is public. Mainnet is registered as netuid '+str(netuid)+' and remains blocked until status.live is true.',
                     LLMS_NOTE='Practice free on localnet with test TAO because source is public. Mainnet is registered as netuid '+str(netuid)+' and remains blocked until status.live is true.',
                     CHOOSE_MODE='Choose a free localnet rehearsal before real registration',
-                    PLAN_VERIFY='Review the ordered localnet practice plan; mainnet remains blocked while starting soon.')
+                    PLAN_VERIFY='Review the ordered localnet practice plan; mainnet remains blocked while starting soon.',
+                    PRACTICE_NOTE='The subnet is registered as netuid '+str(netuid)+' and starting soon; alpha trading and emission remain disabled until the owner starts it. Source is public, so start with a free localnet practice run using test TAO and throw-away accounts; real networks stay refused until status.live is true. Testnet needs its own configured netuid.',
+                    META_DESCRIPTION='REAX source is public and Bittensor Finney registration is starting soon as netuid '+str(netuid)+'. Check hardware, wallet and ports, or practice on localnet with test TAO.',
+                    GPU_NOTE='Localnet rehearsal with test TAO is available because source is public; mainnet setup waits until status.live is true.')
+        if release.get('images', {}).get('public', False):
+            copy['SOURCE_STATUS'] = 'Source and container images are public.'
     if release['source']['public'] and not release.get('images', {}).get('public', False):
         copy['SOURCE_STATUS'] = 'Source is public; container images remain private until published.'
     # Live chain copy still reflects image visibility; private images block real setup.
@@ -259,12 +264,12 @@ def build():
     sample_meta = json.loads((ROOT/'content/samples/provenance.json').read_text())
     if sample_meta['kit_commit'] != lock['commit'] or sample_meta['archive_sha256'] != lock['sha256']:
         raise ValueError('Doctor samples do not match pinned kit; run scripts/make-samples.py')
-    doctor = '<div class="doctor-samples"><p class="sample-label">Real output of reaxctl doctor on recorded pre-launch sample machines — not a live miner.</p><div class="doctor-tabs" role="tablist" aria-label="Recorded sample machines">'
+    doctor = '<div class="doctor-samples"><p class="sample-label">Real output of reaxctl doctor on recorded sample machines — not a live miner.</p><div class="doctor-tabs" role="tablist" aria-label="Recorded sample machines">'
     samples = [('4090','24 GB NVIDIA GPU'),('no-gpu','No GPU (hardware check)')]
     for ident,label in samples:
         doctor += '<button type="button" role="tab" id="sample-tab-'+ident+'" data-sample="'+ident+'" aria-selected="'+str(ident=='4090').lower()+'" aria-controls="doctor-'+ident+'" hidden>'+label+'</button>'
     doctor += '</div>'
-    doctor_md = 'Real output of reaxctl doctor on recorded pre-launch sample machines — not a live miner.\n\n'
+    doctor_md = 'Real output of reaxctl doctor on recorded sample machines — not a live miner.\n\n'
     for ident,label in samples:
         sample=(ROOT/('content/samples/doctor-'+ident+'.txt')).read_text().rstrip()
         doctor += '<div class="doctor-panel" role="tabpanel" aria-labelledby="sample-tab-'+ident+'" id="doctor-'+ident+'"><h3>'+label+'</h3><pre><code>$ ./reaxctl doctor\n'+html.escape(sample)+'</code></pre></div>'

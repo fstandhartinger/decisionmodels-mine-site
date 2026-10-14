@@ -67,7 +67,7 @@ mkdir -p ~/reax-miner-kit && tar -xzf reax-miner-kit-{{KIT_VERSION}}.tar.gz -C ~
 ./reaxctl doctor --json
 ```
 
-The archive is built from `github.com/reaxlabs/reax-miner-kit` at commit `{{KIT_COMMIT}}`; the repository opens to the public at launch. `install.sh` on this site does the same download for people; read it before running. Read `data.eligible_pools`, `data.real_mining_possible`, `data.blockers[]` (each has a `fix`) and give the verdict from section 4.
+The archive is built from `github.com/reaxlabs/reax-miner-kit` at commit `{{KIT_COMMIT}}`; the repository is public once `source.public` is true in `/releases/current.json`. `install.sh` on this site does the same download for people; read it before running. Read `data.eligible_pools`, `data.real_mining_possible`, `data.blockers[]` (each has a `fix`) and give the verdict from section 4.
 
 **Step 2 — plan.**
 
@@ -151,4 +151,4 @@ Run `./reaxctl status --json` and `./reaxctl logs --lines 100`; see [/troublesho
 
 ## Links
 
-Human guide: https://mine.decisionmodels.io · Protocol and scoring: https://reax.dev/mine/ · Kit source (public at launch): https://github.com/reaxlabs/reax-miner-kit · Contact: info@productivity-boost.com
+Human guide: https://mine.decisionmodels.io · Protocol and scoring: https://reax.dev/mine/ · Kit source: https://github.com/reaxlabs/reax-miner-kit · Contact: info@productivity-boost.com

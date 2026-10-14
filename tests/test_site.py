@@ -89,14 +89,16 @@ class SiteTests(unittest.TestCase):
         self.assertIs(type(self.data['status']['live']), bool)
         self.assertEqual(self.data['status']['launch_status'], 'live' if self.data['status']['live'] else 'registered_starting_soon')
         self.assertEqual(self.data['status']['netuid'], 92)
-        self.assertFalse(self.data['source']['public'])
-        self.assertFalse(release['images']['public'])
+        self.assertEqual(self.data['source']['public'], release['source']['public'])
+        if not release['source']['public']:
+            self.assertFalse(release['images']['public'])
         self.assertEqual([t['id'] for t in self.data['agent_tiers']],['A','B','C'])
         self.assertEqual(self.data['integrity']['sha256'],hashlib.sha256((DIST/'kit'/self.data['integrity']['tarball']).read_bytes()).hexdigest())
         with tarfile.open(DIST/'kit'/self.data['integrity']['tarball']) as archive:
             pinned = json.loads(archive.extractfile('releases/current.json').read())
             # Site onboarding status is intentionally newer than the kit archive.
-            # All immutable release data must still match; only status is overlaid.
+            # All immutable release data must still match; only status and its
+            # `updated` stamp (both rewritten by the start watcher) are overlaid.
             site_release = json.loads(json.dumps(release))
             pinned['status'] = site_release['status']
             # The start watcher also stamps `updated` when it flips status; everything else must still match.
@@ -109,8 +111,9 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(self.data['integrity']['version'],kit_version)
             self.assertEqual(self.data['integrity']['tarball'],'reax-miner-kit-'+kit_version+'.tar.gz')
             self.assertEqual(self.data['integrity']['release_id'],release['release_id'])
+        mainnet_ready = bool(self.data['status']['live'] and release['source']['public'] and release['images']['public'])
         for step in self.data['mainnet_steps']:
-            self.assertEqual(step['blocked_until_live'],step['id'] not in ['doctor','choose-mode'])
+            self.assertEqual(step['blocked_until_live'],not mainnet_ready and step['id'] not in ['doctor','choose-mode'])
             if step['cost']['kind']=='tao': self.assertEqual(step['who'],'human')
         self.assertIs(type(self.data['status']['live']), bool)
 
@@ -140,7 +143,13 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(archive.extractfile(receipt['fixture']).read()).hexdigest(),receipt['fixture_sha256'])
                 output=(ROOT/('content/samples/doctor-'+ident+'.txt')).read_bytes()
                 self.assertEqual(hashlib.sha256(output).hexdigest(),receipt['output_sha256'])
-        self.assertIn('Host checked. The free rehearsal needs the REAX source, which is private until launch.', (ROOT/'content/samples/doctor-no-gpu.txt').read_text())
+        no_gpu = (ROOT/'content/samples/doctor-no-gpu.txt').read_text()
+        if self.data['source']['public']:
+            # Rendered offline from the pinned kit; a stale or network-fetched descriptor would print the private wording.
+            self.assertIn('Localnet rehearsal is possible', no_gpu)
+            self.assertNotRegex(no_gpu, r'private until launch|does not yet mark')
+        else:
+            self.assertRegex(no_gpu, r'Host checked\. The free rehearsal needs the REAX source, which (is private until launch|the release descriptor does not yet mark as available)\.')
         self.assertNotIn('warning:', (ROOT/'content/samples/doctor-4090.txt').read_text())
         self.assertNotIn('80 GB', (ROOT/'content/samples/doctor-4090.txt').read_text())
         self.assertNotIn('our build host',(DIST/'index.html').read_text())
@@ -257,7 +266,7 @@ class SiteTests(unittest.TestCase):
         self.assertIn('only after the human explicitly approves', mainnet)
         self.assertIn('Python 3.8+', agent)
         self.assertIn('Python 3.10+', agent)
-        for step in self.data['steps'][2:]:
+        for step in self.data['steps'][2:] if not self.data['source']['public'] else []:
             self.assertTrue(step['blocked_until_live'])
             self.assertIn('Authorized localnet rehearsal may use REAX_SOURCE_DIR', step['verify'])
 
@@ -275,7 +284,12 @@ class SiteTests(unittest.TestCase):
         home = (DIST/'index.html').read_text()
         if self.data['status']['live']:
             self.assertIn('Network live', home)
-            self.assertIn('source remains private', home.lower())
+            if not self.data['source']['public']:
+                self.assertIn('source remains private', home.lower())
+            else:
+                self.assertNotIn('source remains private', home.lower())
+        elif self.data['source']['public']:
+            self.assertIn('Practice run available', home)
         else:
             self.assertIn('Registration open · emissions not started', home)
         self.assertRegex(home, r'<div[^>]*aria-label="Prompt variants"[^>]*role="tablist"')
