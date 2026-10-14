@@ -12,6 +12,14 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 - **Paid in the subnet's token.** Miner rewards on netuid 92 are paid in the subnet's own token, called **alpha**, and accrue as alpha stake on your miner's hotkey, owned by your coldkey.
 - **Variable, and can be zero.** Rewards begin only after the subnet's emissions start. They depend on the number of competing miners, your score and uptime, and chain parameters that can change. A new miner starts at score 0 and its score builds up over about an hour of good rounds; no score is promised.
 
+## How miner rewards are split {#how-miner-rewards-are-split}
+
+The plan is to share miner emissions between two kinds of work. As the norm, about **80 %** is for **serving inference**: hosting the pinned decision models, scored on correct answers and speed. About **20 %** is for **competitions**, for example making the REAX Engine faster or training specialised, Jev-compatible models for specific use cases.
+
+This is a planned norm, not a fixed rule, and it can change. While paid inference demand is still ramping up, we may give competitions a larger share, because their results (faster inference, new use-case models) make the network more useful. Any change is announced in advance on this site, with the date it takes effect.
+
+Competitions are not live yet (see [REAX: coming soon](https://reax.co/#loop)). Until the first one starts, hosting is the only way to be scored. No amount is promised, and rewards can be zero.
+
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 
 Every step below is signed by you with your coldkey (Talisman, btcli or another wallet). An agent can explain the commands; it cannot and must not sign for you.

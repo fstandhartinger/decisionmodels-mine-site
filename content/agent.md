@@ -118,6 +118,7 @@ Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json`
 
 - Validators send each miner fresh decision questions every round (about every 2 minutes) and compare the answers with their own reference run of the same pinned model. Matching answers score; speed adds up to 20 %. Wrong models, quantised builds or downtime score zero.
 - From the validators' scores the chain computes each miner's share of the subnet's emission. Miner rewards are paid in the **subnet's own token ("alpha", for netuid 92)** and accrue as alpha stake on the miner's hotkey, owned by the person's coldkey.
+- Planned split of miner emissions: about 80 % for serving inference (hosting the pinned models, scored on correct answers and speed), about 20 % for competitions (for example a faster REAX Engine or specialised Jev-compatible models; not live yet). This is a planned norm and can change, for example more for competitions while paid inference demand ramps up; changes are announced in advance on the site with their start date. Until a competition starts, hosting is the only way to be scored. Details: [/rewards-and-risks.md](/rewards-and-risks.md#how-miner-rewards-are-split).
 - Rewards begin only after the subnet's emissions start. They depend on how many miners compete, on uptime and on chain parameters, and **can be zero**. Do not estimate amounts.
 - Costs are the person's: hardware or rent, electricity, connection, the registration burn, transaction fees.
 

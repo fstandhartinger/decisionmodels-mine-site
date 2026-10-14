@@ -161,6 +161,15 @@ class SiteTests(unittest.TestCase):
         bad=json.loads(json.dumps(self.data)); bad['integrity']['sha256']='fake'
         with self.assertRaises(AssertionError): validate(bad,schema,schema)
 
+    def test_reward_split_section(self):
+        page=(DIST/'rewards-and-risks.html').read_text()
+        for needle in ('How miner rewards are split','80 %','20 %','not a fixed rule','announced in advance','Jev-compatible'):
+            self.assertIn(needle,page)
+        self.assertIn('How miner rewards are split',(DIST/'rewards-and-risks.md').read_text())
+        for name in ('index.md','agent.md'):
+            text=(DIST/name).read_text()
+            self.assertIn('80 %',text); self.assertIn('can change',text)
+
     def test_wording_and_placeholders(self):
         forbidden=['earn per day','guaranteed','helsinki','finland','to the moon','passive income']
         for source in [*DIST.rglob('*.html'),*DIST.rglob('*.md'),DIST/'mine.json',DIST/'llms-full.txt']:
