@@ -16,9 +16,9 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 
 The plan is to share miner emissions between two kinds of work. As the norm, about **80 %** is for **serving inference**: hosting the pinned decision models, scored on correct answers and speed. About **20 %** is for **competitions**, for example making the REAX Engine faster or training specialised, Jev-compatible models for specific use cases.
 
-This is a planned norm, not a fixed rule, and it can change. While paid inference demand is still ramping up, we may give competitions a larger share, because their results (faster inference, new use-case models) make the network more useful. Any change is announced in advance on this site, with the date it takes effect.
+This is a planned norm, not a fixed rule, and it can change. While paid inference demand is still ramping up, we may give competitions a larger share, because their results (faster inference, new use-case models) make the network more useful. Any change is announced in advance on this site and on reax.co, with the date it takes effect.
 
-Competitions are not live yet (see [REAX: coming soon](https://reax.co/#loop)). Until the first one starts, hosting is the only way to be scored. No amount is promised, and rewards can be zero.
+Competitions are not live yet (see [REAX: coming soon](https://reax.co/#loop)). Until the first one starts, miner rewards are for hosting only. No amount is promised, and rewards can be zero.
 
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 
