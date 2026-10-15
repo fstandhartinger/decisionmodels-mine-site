@@ -18,7 +18,7 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 1. **Never ask for, read, print, store or transmit a recovery phrase (mnemonic, seed), private key or coldkey file**, not in chat, files or logs. If the person starts pasting one, tell them to stop, and that a phrase that has been shared should be treated as compromised. You only ever handle **public** addresses (SS58, starting with 5) and the **hotkey** on the mining machine.
 2. **A human approves every payment.** You never buy TAO, fund a wallet, sign or send a transaction, rent or buy hardware, or accept a contract. You may compare options and prepare commands; the person decides and clicks.
 3. Ask before `sudo`, firewall, router or service changes, and say what and why.
-4. Never publish the model sidecar ports (8101, 8102, 8000). Only the miner port (default 8091) is public.
+4. Never publish the model sidecar ports (8101, 8102, 8103, 8104, 8000). Only the miner port (default 8091) is public.
 5. No telemetry, accounts or API keys are needed for any step here. If something asks for one, stop and tell the person.
 6. If you cannot run commands on the machine that will mine (cloud sandbox, chat-only, browser agent), say so, change nothing, and hand the person the exact commands to run.
 7. **No financial advice.** Explain mechanics neutrally. Never estimate earnings, income, returns, APY or token prices; never present mining or holding as a way to make money; never recommend buying, holding or selling. Say that rewards are variable and can be zero.
@@ -33,25 +33,31 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 
 Run the kit's read-only check (section 6, step 1) or, if you cannot run commands, ask for the GPU model and its memory. Then answer with one of the verdicts below. Details and measured speeds: [/hardware.md](/hardware.md).
 
-| Miner pool | Model it serves | Status | Minimum hardware |
+| Miner pool | Model it serves | Minimum hardware | Share of the inference part |
 |---|---|---|---|
-| `s1-fast` | Plumb-4B (4 billion parameters, bf16 weights ≈ 9 GB) | the only pool enabled in release {{RELEASE_ID}} | 1 NVIDIA GPU with **≥ 24 GB** VRAM, driver **R580+** (CUDA 13), Linux x86_64 (or WSL2), 4 CPU cores, 32 GB RAM, 20 GB disk, public IP + one inbound TCP port |
-| `s1-pro` | Rune 26B-A4B (bf16 ≈ 52 GB) | **not enabled** in this release (needs a new release) | 1 NVIDIA GPU with 80–96 GB |
+| `s1-fast` | Plumb-4B (bf16 weights ≈ 9 GB) | 1 NVIDIA GPU with **≥ 24 GB** VRAM, driver **R580+** (CUDA 13), Linux x86_64 (or WSL2), 4 CPU cores, 32 GB RAM, 20 GB disk, public IP + one inbound TCP port | GPU tier 80 %, 35 % of it |
+| `s1-pro` | Rune 26B-A4B v3 (bf16 ≈ 52 GB, gated on Hugging Face) | 1 NVIDIA GPU with **80–96 GB**, 80 GB disk, deterministic runtime required | GPU tier 80 %, 65 % of it |
+| `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
+| `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
+
+All four pools are enabled in release {{RELEASE_ID}}. Shares are of the inference part of miner emissions; the average per miner in a tier is at most half of the tier above; an empty pool passes its share to the other pools. One hotkey serves one pool. Use `./reaxctl doctor --json` to read `recommended_pool`, or `--pool <id>` to check a specific pool.
 
 Verdicts to give, in plain words:
 
+- **NVIDIA 80–96 GB** (RTX PRO 6000 96 GB and H100 80 GB are measured; H200, B200 expected; A100 80 GB not measured, at the person's own risk): "This machine can mine the s1-pro pool", and s1-fast also fits. s1-pro needs the deterministic runtime, the person's own accepted Hugging Face gate (`surogate/rune-26b-a4b-GGUF`; never ask for or handle their token) and, on confidential-compute cloud GPUs, the `REAX_VLLM_DISABLE_UVA=1` fix from [/hardware.md](/hardware.md).
 - **NVIDIA 24 GB or more** (RTX 3090, RTX 4090, RTX 5090, RTX A6000, L40S, A100, H100, H200, RTX PRO 6000, B200, B300 …), Linux or WSL2, driver R580+: "This machine can mine the s1-fast pool." Measured speed on the validator's reference path: RTX 3090 ≈ 27, RTX 4090 ≈ 30, RTX 5090 ≈ 42, L40S ≈ 31, RTX A6000 ≈ 19, RTX PRO 6000 ≈ 56, H100 ≈ 61 decisions/s. A round asks for 8 decisions and gives full speed credit at 0.5 s, so every measured card is fast enough; network latency to validators matters more than a bigger GPU. Cards not in that measured list (A100, H200, B200, B300, L4 …) should work but run the kit's calibration self-check first.
-- **NVIDIA 16–23 GB** (RTX 4080, 4070 Ti Super, 5080, most laptop GPUs including the laptop "RTX 4090" with 16 GB): "Not enough GPU memory for this release." Offer a rented GPU ([/rent.md](/rent.md)).
-- **Less than 16 GB, AMD, Intel, Apple Silicon, no GPU**: "This machine cannot mine this release." It can still be the controller: the person keeps their wallet here and you set up a rented or owned NVIDIA Linux server over SSH.
-- **Smaller quantised builds do not help.** The pool requires the exact pinned bf16 weights in the pinned runtime image. FP8, NVFP4, INT4 or GGUF variants of the model give different answers and are scored zero or struck. So there is no "lower precision" fallback, and no Blackwell-only feature is needed: any measured 24 GB+ card works at full precision.
-- **One GPU = one miner = one hotkey (UID).** A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Rewards are scored per miner, not per GPU size.
+- **NVIDIA 8–23 GB** (RTX 4080, 4070 Ti Super, 5080, laptop GPUs, Jetson Orin with 8 GB or more): "This machine can mine the s1-lite pool, not s1-fast." Small-GPU and Jetson hardware is not yet calibrated on real hardware; say so. The Orin Nano 4 GB is too small.
+- **No NVIDIA GPU, or Apple Silicon, AMD, Intel** with an x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores and 4 GB RAM: "This machine can mine the s1-cpu pool", at the lowest tier. It can also be the controller for a remote NVIDIA server if the person wants a GPU pool.
+- **Less than 4 cores or 4 GB RAM**: "This machine cannot mine this release." Offer a rented server ([/rent.md](/rent.md)).
+- **Other quantised builds do not help.** Each pool requires its exact pinned weights (bf16 for s1-fast and s1-pro, the pinned Q8_0 GGUF for s1-lite and s1-cpu) in the pinned runtime image. Any other quantisation gives different answers and is scored badly or struck.
+- **One hotkey (UID) = one pool = one port.** A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Inside a pool the weight is score × verified capacity, capped at the pool target, measured by surprise load probes on all UIDs of the pool at once; many hotkeys on one machine share its throughput and add nothing, while one hotkey with more GPUs behind it counts more, up to the target.
 - The models the Decision Models API sells under other names (for example Blink 26B-A4B, Quyet, d3) are **not** mining pools today. If someone asks to mine them, say so.
 
 Also check: public reachability. A home connection needs a port forward for TCP 8091 (the person configures the router); many rented "container pods" cannot expose a fixed public port or run Docker — prefer a VM or bare-metal server ([/rent.md](/rent.md) lists which offers work).
 
 ## 5. If the machine is not enough: suggest rented hardware
 
-Show the person 3–4 options from [/rent.md](/rent.md) that fit their situation (cheapest 24 GB card with Docker and a public port; an EU-hosted option if they care about EU hosting; whether they can pay with TAO, as on Lium). Give the indicative price with its date and say prices change; let them choose and rent it themselves. Then ask for SSH access to that server (host, user, their key) and continue with section 6 there. Never create accounts, enter payment data or rent on their behalf.
+Show the person 3–4 options from [/rent.md](/rent.md) that fit their situation (cheapest card for the person's pool with Docker and a public port; an EU-hosted option if they care about EU hosting; whether they can pay with TAO, as on Lium). Give the indicative price with its date and say prices change; let them choose and rent it themselves. Then ask for SSH access to that server (host, user, their key) and continue with section 6 there. Never create accounts, enter payment data or rent on their behalf.
 
 ## 6. Set up the miner, end to end
 
@@ -90,7 +96,7 @@ Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. 
 ./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet
 ```
 
-Pass `--confirm-mainnet` only after the human explicitly approves a mainnet install. It installs the tools, pulls the pinned images by digest and downloads the pinned weights (≈ 9 GB). Then run the kit's calibration self-check printed by `plan`.
+Use the pool from the hardware verdict (`--pool s1-fast`, `s1-pro`, `s1-lite` or `s1-cpu`). Pass `--confirm-mainnet` only after the human explicitly approves a mainnet install. It installs the tools, pulls the pinned images by digest and downloads the pinned weights (≈ 9 GB for s1-fast, ≈ 52 GB for s1-pro, 4.5 GB for s1-lite, 0.8 GB for s1-cpu; s1-pro needs the person to accept the Hugging Face gate first). Then run the kit's calibration self-check printed by `plan`.
 
 **Step 5 — hotkey and public coldkey address (agent).**
 
@@ -118,7 +124,7 @@ Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json`
 
 - Validators send each miner fresh decision questions every round (about every 2 minutes) and compare the answers with their own reference run of the same pinned model. Matching answers score; speed adds up to 20 % of a round's score (separate from the competition share below). Wrong models, quantised builds or downtime score zero.
 - From the validators' scores the chain computes each miner's share of the subnet's emission. Miner rewards are paid in the **subnet's own token ("alpha", for netuid 92)** and accrue as alpha stake on the miner's hotkey, owned by the person's coldkey.
-- Split of miner emissions, effective when the competitions go live (planned for 16 October 2026; until then 100 % goes to inference miners): 50 % inference (hosting the pinned models, distributed by contribution), 20 % REAX Engine competition (permanent), 15 % use-case fine-tune track A and 15 % track B (the two tracks rotate every 2 weeks). Each competition is winner-takes-most with decay; an unclaimed or decayed share flows back to inference miners, nothing is burned. The split can change; changes are announced in advance on the site with their start date. Details: [/rewards-and-risks.md](/rewards-and-risks.md#how-miner-rewards-are-split), [reax.co/mining](https://reax.co/mining/).
+- Split of miner emissions, effective when the competitions open on 16 October 2026 at 12:00 UTC (until then 100 % goes to inference miners; engine measurements start when the dedicated measurement machine is live): 50 % inference (hosting the pinned models, distributed by contribution), 20 % REAX Engine competition (permanent), 15 % use-case fine-tune track A and 15 % track B (the two tracks rotate every 2 weeks). Each competition is winner-takes-most with decay; an unclaimed or decayed share flows back to inference miners, nothing is burned. The split can change; changes are announced in advance on the site with their start date. Details: [/rewards-and-risks.md](/rewards-and-risks.md#how-miner-rewards-are-split), [reax.co/mining](https://reax.co/mining/).
 - Rewards depend on how many miners compete, on uptime and on chain parameters, and **can be zero**. Do not estimate amounts.
 - Costs are the person's: hardware or rent, electricity, connection, the registration burn, transaction fees.
 

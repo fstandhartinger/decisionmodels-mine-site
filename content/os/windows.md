@@ -32,7 +32,7 @@ Recommended default: Talisman on a separate trusted workstation. `btcli` runs in
 
 ## Start with checks; practice once source is public
 
- The [playbook](/agent.md) explains the practice flow once source is public. NVIDIA below 24 GB, AMD and no-GPU machines cannot mine this release.
+ The [playbook](/agent.md) explains the practice flow once source is public. Under WSL2, an NVIDIA GPU with 8 GB or more can serve s1-lite and one with 24 GB or more s1-fast; AMD GPUs are not supported. A machine without a supported GPU can serve the s1-cpu pool if it meets the CPU requirements in [hardware](/hardware).
 
 [Wallet guide](/wallets) · [NVIDIA WSL guidance](https://docs.nvidia.com/cuda/wsl-user-guide/index.html) · [Docker GPU guidance](https://docs.docker.com/desktop/features/gpu/)
 

@@ -168,7 +168,7 @@ class SiteTests(unittest.TestCase):
         self.assertIn('How miner rewards are split',(DIST/'rewards-and-risks.md').read_text())
         for name in ('index.md','agent.md'):
             text=(DIST/name).read_text()
-            self.assertIn('50 %',text); self.assertIn('can change',text); self.assertNotIn('80 %',text)
+            self.assertIn('50 %',text); self.assertIn('can change',text); self.assertNotIn('80/20',text); self.assertNotIn('80 % inference',text)
 
     def test_wording_and_placeholders(self):
         forbidden=['earn per day','guaranteed','helsinki','finland','to the moon','passive income']

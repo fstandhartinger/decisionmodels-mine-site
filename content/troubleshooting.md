@@ -27,9 +27,10 @@ Start with the read-only machine check (the `doctor` command). Each blocker incl
 | `miner_port` | Resolve the conflicting listener or choose an unused miner port. Keep the model’s supporting services (sidecars) private |
 | `cpu_cores`, `ram_gb` | Use a host meeting the release capacity or practice once source is public |
 | `python` | Controller: Python 3.8+; tools virtual environment: Python 3.10+ |
-| `gpu_capacity_s1-fast` | s1-fast needs a compatible NVIDIA GPU with 24 GB VRAM (GPU memory) and R580+ |
-| `gpu_capacity_s1-pro` | s1-pro needs 80–96 GB NVIDIA VRAM; this pool comes with the next release |
-| `disk_s1-fast`, `disk_s1-pro` | Free space in your own REAX directory or choose a larger disk; follow the release's per-pool minimum |
+| `gpu_capacity_s1-fast` | s1-fast needs a compatible NVIDIA GPU with 24 GB or more VRAM (GPU memory) and R580+ |
+| `gpu_capacity_s1-pro` | s1-pro needs 80–96 GB NVIDIA VRAM; cards below 80 GB cannot hold the weights and cache |
+| `gpu_capacity_s1-lite` | s1-lite needs an NVIDIA GPU with 8 GB or more (or a Jetson Orin with 8 GB or more unified memory) |
+| `disk_s1-fast`, `disk_s1-pro`, `disk_s1-lite`, `disk_s1-cpu` | Free space in your own REAX directory or choose a larger disk; follow the release's per-pool minimum |
 
 ## Exit codes
 
@@ -39,7 +40,7 @@ Start with the read-only machine check (the `doctor` command). Each blocker incl
 | `2` | Usage error | Read `./reaxctl spec --json` and correct arguments |
 | `10` | Requirement unmet | Read `data.blockers` and their fixes |
 | `11` | Needs a human | Complete only the listed human step; never share secrets |
-| `12` | Not available yet | A gate is still closed (for example a pool that is not enabled yet); do not override the hold |
+| `12` | Not available yet | A gate is still closed (for example a gate that is not open yet); do not override the hold |
 | `13` | Network/download failure | Check connection and pinned release; do not substitute arbitrary mirrors |
 | `20` | Verification failed | Fix each failing checklist item, then rerun `verify` |
 | `1` | Unexpected error | Keep a redacted diagnostic summary; consult the FAQ |
