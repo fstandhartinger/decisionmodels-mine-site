@@ -21,13 +21,13 @@ Follow the [agent playbook](/agent.md).
 
 Approve admin changes before Docker/toolkit installation. Keep the funded coldkey (funds key) on a separate trusted device. The miner gets only the operational hotkey (miner’s work key) and public coldkey address. See [wallet guidance](/wallets).
 
-## Networking at launch
+## Networking
 
 A public IP and inbound TCP 8091 are required. Approve any router/firewall changes. Never expose the model’s supporting services (sidecars) on ports 8101, 8102 or 8000. Carrier-grade NAT may prevent inbound connections; do not assume port forwarding fixes it. Check actual external reachability before a payment.
 
 ## AMD or no GPU
 
-This CUDA release does not support AMD GPUs or CPU mining. {{GPU_NOTE}} A separately owned or approved remote NVIDIA Linux host is another route; the agent must never rent it itself.
+This release does not support AMD GPUs or CPU mining; CPU-only and Jetson pools are coming. {{GPU_NOTE}} A separately owned or approved remote NVIDIA Linux host is another route; the agent must never rent it itself.
 
 [Protocol and scoring](https://reax.dev/mine/) · [Troubleshooting](/troubleshooting)
 

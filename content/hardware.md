@@ -8,7 +8,7 @@ A REAX miner serves one pinned model exactly as the validators run it. Validator
 
 | Pool | Model | Status | GPU | Rest of the machine |
 |---|---|---|---|---|
-| `s1-fast` | Plumb-4B, 4 B parameters, bf16 weights ≈ 9 GB | **enabled**, the only pool at launch | 1 NVIDIA GPU, **≥ 24 GB** VRAM, driver R580+ (CUDA 13) | Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM, 20 GB free disk, Docker + NVIDIA container toolkit, public IP with inbound TCP 8091, synchronised clock |
+| `s1-fast` | Plumb-4B, 4 B parameters, bf16 weights ≈ 9 GB | **live**, the only pool today | 1 NVIDIA GPU, **≥ 24 GB** VRAM, driver R580+ (CUDA 13) | Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM, 20 GB free disk, Docker + NVIDIA container toolkit, public IP with inbound TCP 8091, synchronised clock |
 | `s1-pro` | Rune 26B-A4B, bf16 ≈ 52 GB | **not enabled** in this release; switching it on needs a new release | 1 NVIDIA GPU, 80–96 GB | 80 GB free disk |
 
 Is the fast model easy to run at home? **Yes, if you have a 24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090. It is a small 4-billion-parameter model. It does not fit on cards with 16 GB or less, and it does not run on Apple, AMD or Intel GPUs, because the runtime is a pinned CUDA build.

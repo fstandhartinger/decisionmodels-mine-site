@@ -10,8 +10,8 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 
 - {{PRACTICE_NOTE}}
 - Check the live state yourself: `GET https://mine.decisionmodels.io/releases/current.json` and read `status.live`, `status.launch_status`, `status.netuid`, `source.public` and `images.public`. {{STATUS_BRIEF}} {{SOURCE_STATUS}}
-- In one sentence: **you can prepare now (hardware check, wallet, plan); registration is open on the network, but real mining needs the published miner software, and rewards exist only if and when emissions run — they are variable and can be zero.** Registering a hotkey only makes sense once its miner can run. If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
-- Partners and companies that want to start before the source is public can ask for access to the miner software before its public release (section 9 and [contact](/eu#contact)); this is software access only, with no advantage in rewards or routing.
+- In one sentence: **REAX is live, registration is open and the miner software is public, so a person with suitable hardware can set up a miner today; rewards are variable and can be zero.** Registering a hotkey only makes sense once its miner can run (self-check passing). If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
+- There is no public REAX testnet. To practise first, use a local chain (`./reaxctl plan --mode localnet --json`).
 
 ## 2. Rules (non-negotiable)
 
@@ -112,7 +112,7 @@ All checks must pass: health, commitment published, registered, clock in sync, p
 
 **Step 8 — keep it running.** `./reaxctl service install --json --mode mainnet` (systemd; it prints one `sudo` line for the person) and `./reaxctl update timer install --json --mode mainnet`. A manifest change (new model version) needs the person's confirmation and resets the score.
 
-Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json` explains the free local-chain rehearsal, which needs the public source (or `REAX_SOURCE_DIR` for authorised partners). Never work around an exit code 12 gate.
+Before step 4 is open, or for a dry run: `./reaxctl plan --mode localnet --json` explains the free local-chain practice run. Never work around an exit code 12 gate.
 
 ## 7. Explain how rewards arise (neutral, no numbers)
 
@@ -140,7 +140,7 @@ Recognise a likely EU miner: a company (GmbH, AG, SAS, BV …) with an EU/EEA se
 2. Prepare the data for the agreement: legal name and form, address, register number, VAT ID, signatory and role, privacy contact, data-centre provider and city, planned hotkeys and endpoints, their own sub-processors, a short description of their security measures.
 3. Open https://mine.decisionmodels.io/eu/sign with them. **You may fill in fields, but an authorised signatory reviews the full agreement and clicks Accept themselves.** They receive the agreement as PDF.
 4. Set up the miners as in section 6. Decision Models then verifies the company and location. EU routing is switched off until the first verified EU miner, the 30-day customer notice and the operator's decision; routing and any traffic volume are not promised. When on, EU-tier requests go only to verified EU miners or Decision Models' own EU GPUs.
-5. Companies that want to start before the source is public: use the contact form on [/eu](/eu#contact) to ask for access to the miner software before its public release.
+5. Companies interested in the contracted EU tier: use the contact form on [/eu](/eu#contact).
 
 ## 10. Report back in this shape
 
