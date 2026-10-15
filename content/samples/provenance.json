@@ -1,7 +1,7 @@
 {
-  "kit_commit": "1047333a31f4b457ae7d965ac2f5c8ad566f3aec",
+  "kit_commit": "3ede5f46f99066c397e8e2e9cd1fc028cad4fdbb",
   "kit_version": "0.1.5",
-  "archive_sha256": "8832eccabcbed7369c506c5e4f0073a271ffd500e2dc166d5ed7a3df93470130",
+  "archive_sha256": "54ef404efb8e1496e5484f52ee7ae06efee4e6f676e292cdd4f04765c82ebc3d",
   "path": "reaxlib.cli.main \u2192 cmd_doctor.diagnose \u2192 result.emit (fixture sysprobe injection)",
   "samples": {
     "4090": {
