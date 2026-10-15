@@ -10,15 +10,20 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 - **Scores become weights.** Validators submit weights for all miners; the chain combines them, weighted by validator stake (the chain's consensus method, called Yuma consensus).
 - **Emission is shared by weight.** Each block the subnet's emission is split between the subnet owner, validators and miners under the chain's rules. Your miner's share follows its weight.
 - **Paid in the subnet's token.** Miner rewards on netuid 92 are paid in the subnet's own token, called **alpha**, and accrue as alpha stake on your miner's hotkey, owned by your coldkey.
-- **Variable, and can be zero.** Rewards begin only after the subnet's emissions start. They depend on the number of competing miners, your score and uptime, and chain parameters that can change. A new miner starts at score 0 and its score builds up over about an hour of good rounds; no score is promised.
+- **Variable, and can be zero.** Rewards depend on the number of competing miners, your score and uptime, and chain parameters that can change. A new miner starts at score 0 and its score builds up over about an hour of good rounds; no score is promised.
 
 ## How miner rewards are split {#how-miner-rewards-are-split}
 
-The plan is to share miner emissions between two kinds of work. As the norm, about **80 %** is for **serving inference**: hosting the pinned decision models, scored on correct answers and speed. About **20 %** is for **competitions**, for example making the REAX Engine faster or training specialised, Jev-compatible models for specific use cases.
+Miner emissions are split between inference and competitions. From the day the competitions go live (planned for **16 October 2026**), the split is:
 
-This is a planned norm, not a fixed rule, and it can change. While paid inference demand is still ramping up, we may give competitions a larger share, because their results (faster inference, new use-case models) make the network more useful. Any change is announced in advance on this site and on reax.co, with the date it takes effect.
+- **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
+- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster.
+- **15 %**: **Use-case fine-tune track A.** Rotates every 2 weeks.
+- **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
 
-Competitions are not live yet (see [REAX: coming soon](https://reax.co/#loop)). Until the first one starts, miner rewards are for hosting only. No amount is promised, and rewards can be zero.
+Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. Use-case tracks take open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
+
+Until the competitions go live, **100 %** of miner emissions goes to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
 
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 
