@@ -1,9 +1,8 @@
 Verdict
-  [ok] Host checked. The free rehearsal needs the REAX source, which the release descriptor does not yet mark as available.
+  [ok] Localnet rehearsal is possible; see mining requirements.
 What works today (rehearsal)
-  The practice run needs the REAX source, which the release descriptor does not yet mark as available.
+  Localnet rehearsal is possible with the pinned source and tools.
 What is needed for real mining
   Check the release descriptor: the network must be live, with a netuid and public images.
-  Note: This release descriptor still has placeholder image digests (miner, s1_cpu_runtime, s1_fast_runtime, s1_lite_runtime, s1_lite_runtime_jetson, s1_pro_runtime); it is a release candidate in preparation. Do not use it for real mining.
 Next
-  reaxctl plan  # Review what you can prepare today.
+  reaxctl plan --mode localnet  # Review the rehearsal steps.
