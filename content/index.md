@@ -102,7 +102,7 @@ No suitable GPU? Rent one by the hour; your agent compares options with you. [Re
 
 Validators test every miner each round and score answers that match their reference run. The chain shares the subnet's emission by those scores; miners receive the subnet's token (alpha). Rewards vary and can be zero. Hardware, electricity, connection and a non-refundable registration burn are your costs.
 
-Once the competitions go live (planned for 16 October 2026), miner emissions are split 50 % for inference miners (by contribution), 20 % for the permanent REAX Engine competition and 15 % each for two use-case fine-tune tracks that rotate every 2 weeks. Until then, all miner emissions go to inference miners. Nothing is burned: an unclaimed or decayed competition share flows back to inference miners. The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
+From the day the competitions open (16 October 2026, 12:00 UTC), miner emissions are split 50 % for inference miners (by contribution), 20 % for the permanent REAX Engine competition and 15 % each for two use-case fine-tune tracks that rotate every 2 weeks. Until then, all miner emissions go to inference miners. Engine measurements start when the dedicated measurement machine is live. Nothing is burned: an unclaimed or decayed competition share flows back to inference miners. The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
 
 [How rewards arise, how they are split, converting to TAO or euros, and the risks →](/rewards-and-risks)
 </section>

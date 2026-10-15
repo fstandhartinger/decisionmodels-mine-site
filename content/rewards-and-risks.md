@@ -14,10 +14,10 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 
 ## How miner rewards are split {#how-miner-rewards-are-split}
 
-Miner emissions are split between inference and competitions. From the day the competitions go live (planned for **16 October 2026**), the split is:
+Miner emissions are split between inference and competitions. From the day the competitions open (**16 October 2026, 12:00 UTC**), the split is:
 
 - **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
-- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster.
+- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (measurements start when the dedicated measurement machine is live).
 - **15 %**: **Use-case fine-tune track A.** Rotates every 2 weeks.
 - **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
 
@@ -35,7 +35,7 @@ The inference part is split by hardware tier, with the average per miner in a ti
 
 Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool passes its share to the other pools. Tiers and shares are release constants; a change needs a new release and is announced in advance. See [hardware](/hardware).
 
-Until the competitions go live, **100 %** of miner emissions goes to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
+Until the competitions open, **100 %** of miner emissions goes to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
 
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 

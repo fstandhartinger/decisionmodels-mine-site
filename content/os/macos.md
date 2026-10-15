@@ -15,7 +15,7 @@ Follow the [agent playbook](/agent.md).
 
 A Mac can control an existing NVIDIA Linux machine over SSH. Tell the agent exactly which host you authorize. The agent must identify where every command runs, then inspect that host before installing anything. A hosted coding-agent sandbox is not automatically your GPU server.
 
-Do not rent hardware or approve a paid service through an agent without a specific human decision. The remote host needs at least 24 GB NVIDIA VRAM (GPU memory) for s1-fast, R580+, 4 CPU cores, 32 GB RAM, 20 GB disk and public TCP 8091. Keep the model’s supporting services (sidecars) private.
+Do not rent hardware or approve a paid service through an agent without a specific human decision. The remote host needs an NVIDIA GPU matching its pool (24 GB or more VRAM for s1-fast, 80 to 96 GB for s1-pro, 8 GB or more for s1-lite) or, for the s1-cpu pool, an x86-64 AVX2 or ARMv8.2 CPU with 4 or more cores; R580+ for GPU pools, 4 CPU cores, 4 to 32 GB RAM depending on the pool, and public TCP 8091. Keep the model’s supporting services (sidecars) private.
 
 ## Human step: keep the coldkey (funds key) separate
 

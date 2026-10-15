@@ -6,16 +6,16 @@ No suitable NVIDIA card at home? You can rent one by the hour or month. Your age
 
 ## What the rented server must offer
 
-1. One NVIDIA GPU with **≥ 24 GB** per miner (see [hardware](/hardware)).
+1. One NVIDIA GPU per miner: **≥ 24 GB** for s1-fast, **80 to 96 GB** for s1-pro, **≥ 8 GB** for the small-GPU pool s1-lite. The s1-cpu pool needs no GPU at all, only an x86-64 AVX2 or ARMv8.2 server with 4 or more cores (see [hardware](/hardware)).
 2. **Docker inside the server.** The miner runs two containers (miner and model sidecar). A VM or bare-metal server works; many "container pods" do not allow Docker inside.
 3. **A reachable TCP port** from the internet. The miner listens on port 8091 inside the server; if the provider maps another external port, set `REAX_EXTERNAL_PORT` to it.
-4. Linux, driver R580+ (CUDA 13), 4 CPU cores, 32 GB RAM, 20 GB free disk.
+4. Linux, driver R580+ (CUDA 13), 4 CPU cores, 32 GB RAM, 20 GB free disk (s1-fast; s1-pro needs about 80 GB disk, s1-lite 8 GB, s1-cpu 3 GB and 4 GB RAM).
 
 ## Options (indicative prices, checked 12 October 2026)
 
 Prices are list prices or live marketplace asks on that date, per GPU-hour unless stated, and change often. "Not confirmed" means we could not verify it from the provider's own documentation; check it before renting.
 
-| Provider | EU? | Cards ≥ 24 GB | Indicative price | Docker inside / reachable port | Payment |
+| Provider | EU? | Cards | Indicative price | Docker inside / reachable port | Payment |
 |---|---|---|---|---|---|
 | [Lium](https://lium.io) (a Bittensor subnet) | hosts worldwide, choose by location | RTX 3090, 4090, 5090, A100, H100, H200, B200, B300 | RTX 3090 from ≈ $0.20, RTX 4090 ≈ $0.55, H100 ≈ $3.75 (live asks vary widely) | **Yes, tested by us**: we ran this miner on a Lium RTX 4090 pod with Docker; ports are forwarded host ports (external number differs) | card, stablecoin, **TAO or alpha** (`lium fund`) |
 | [Hetzner](https://www.hetzner.com/dedicated-rootserver/matrix-gpu/) GPU servers | **EU** (Germany; also FI) | RTX PRO 6000 Blackwell 96 GB (GEX131); 24 GB RTX PRO 4000 (GEX45) | GEX131 from €889/month or ≈ €1.42/hour incl. IPv4 | yes: bare metal, root, public IPv4 | card, SEPA |
