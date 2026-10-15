@@ -40,7 +40,7 @@ COPY = {
         'SOURCE_STATUS': 'Source and images are public.',
         'STATUS_PILL': 'Network live',
         'STATUS_TITLE': 'The network is open. Practice before registering.',
-        'STATUS_BODY': 'REAX (Bittensor subnet 92) is live on the main network since 14 October 2026 and registration is open. Release 1.2.0-rc1 has four pools: s1-fast (NVIDIA GPU with 24 GB or more), s1-pro (80 to 96 GB), s1-lite (NVIDIA GPU with 8 GB or more, including Jetson Orin) and s1-cpu (x86-64 or ARMv8.2 CPU). There is no public REAX testnet: practise for free on a local chain with test TAO before real registration. A human approves every payment.',
+        'STATUS_BODY': 'REAX (Bittensor subnet 92) is live on the main network since 14 October 2026 and registration is open. Release 1.2.0-rc3 has four pools: s1-fast (NVIDIA GPU with 24 GB or more), s1-pro (80 to 96 GB), s1-lite (NVIDIA GPU with 8 GB or more, including Jetson Orin) and s1-cpu (x86-64 or ARMv8.2 CPU). There is no public REAX testnet: practise for free on a local chain with test TAO before real registration. A human approves every payment.',
         'HERO_NOTE': 'Give your coding agent one link. It checks your machine, starts with a free local-chain practice run using test TAO, then prepares real registration. You keep your keys and approve every payment.',
         'HUMAN_NOTE': 'Start with a free practice run using test TAO (the network’s currency) before real registration.',
         'STRIP_STATUS': 'Network live',
