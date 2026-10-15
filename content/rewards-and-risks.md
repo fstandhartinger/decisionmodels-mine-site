@@ -6,7 +6,7 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 
 ## How rewards arise
 
-- **Validators test every miner.** Each round (about every 2 minutes) a validator sends your miner 8 fresh decision questions and compares your answers with its own reference run of the same pinned model. Answers that match score; speed adds up to 20 % of a round's score. A wrong or quantised model, a modified prompt or downtime scores zero, and serious mismatches reset your score.
+- **Validators test every miner.** Each round (about every 2 minutes) a validator sends your miner fresh decision questions (8 for s1-fast and s1-pro, 4 for s1-lite and s1-cpu) and compares your answers with its own reference run of the same pinned model. Answers that match score; speed adds up to 20 % of a round's score. A wrong or quantised model, a modified prompt or downtime scores zero, and serious mismatches reset your score.
 - **Scores become weights.** Validators submit weights for all miners; the chain combines them, weighted by validator stake (the chain's consensus method, called Yuma consensus).
 - **Emission is shared by weight.** Each block the subnet's emission is split between the subnet owner, validators and miners under the chain's rules. Your miner's share follows its weight.
 - **Paid in the subnet's token.** Miner rewards on netuid 92 are paid in the subnet's own token, called **alpha**, and accrue as alpha stake on your miner's hotkey, owned by your coldkey.
@@ -22,6 +22,18 @@ Miner emissions are split between inference and competitions. From the day the c
 - **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
 
 Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. Use-case tracks take open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
+
+### Inference tiers and pools
+
+The inference part is split by hardware tier, with the average per miner in a tier at most half of the tier above:
+
+| Tier | Pools | Share of the inference part |
+|---|---|---|
+| GPU | `s1-fast` 35 %, `s1-pro` 65 % of the tier | 80 % |
+| Small GPU | `s1-lite` (NVIDIA ≥ 8 GB, incl. Jetson Orin) | 15 % |
+| CPU | `s1-cpu` (AVX2 or ARMv8.2 CPU) | 5 % |
+
+Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool passes its share to the other pools. Tiers and shares are release constants; a change needs a new release and is announced in advance. See [hardware](/hardware).
 
 Until the competitions go live, **100 %** of miner emissions goes to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
 

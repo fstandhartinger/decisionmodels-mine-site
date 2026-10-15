@@ -8,7 +8,7 @@
 
 {{PROMPT_BOX}}
 
-<div class="requirements-strip"><span>NVIDIA GPU · 24 GB+ (RTX 3090/4090/5090 and up)</span><span>Linux (Windows via WSL2 is conditional)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
+<div class="requirements-strip"><span>NVIDIA GPU 8 GB+ or any AVX2 CPU · four pools</span><span>Linux (Windows via WSL2 is conditional)</span><span class="status-pill">{{STRIP_STATUS}}</span></div>
 
 <p class="compatibility">A coding agent is an AI tool that can run commands on the computer you authorize. Tested with Claude Code; other coding agents that can run commands on your computer may work, but we have not tested them. <a href="/wallets#glossary">New to coding agents? Start here.</a></p>
 
@@ -35,7 +35,7 @@
 
 | Question | Answer |
 | --- | --- |
-| Can my computer mine? | Yes with **one NVIDIA GPU of 24 GB or more** (RTX 3090, 4090, 5090, A6000, L40S, A100, H100, H200, B200, B300 …), driver R580+, Linux (Windows via WSL2 is conditional). **No** with 16 GB or less (most laptops), Apple, AMD, Intel or no GPU. Smaller quantised builds are not accepted. [Hardware details](/hardware) |
+| Can my computer mine? | Yes, in one of four pools. **NVIDIA 24 GB or more** (RTX 3090, 4090, 5090, A6000, L40S, H100, RTX PRO 6000 …) serves `s1-fast`; **NVIDIA 80–96 GB** (H100, RTX PRO 6000) can serve the larger `s1-pro`; **any NVIDIA GPU with 8 GB or more**, including a Jetson Orin, serves `s1-lite`; **any x86-64 AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Linux (Windows via WSL2 is conditional). Apple, AMD and Intel GPUs are not used. Each pool requires its pinned weights; other quantisations are not accepted. [Hardware details](/hardware) |
 | No suitable GPU? | Rent one with Docker and a reachable port, for example a Lium RTX 3090/4090 pod (from about $0.20–0.55 per hour, payable in TAO too), Scaleway L40S in Paris (about €1.40 per hour) or a Hetzner GPU server in Germany (from €889 per month); prices checked 12 October 2026. [All options](/rent) |
 | Which wallet? | Create the coldkey yourself, never through an agent: the **Talisman** browser extension (Polkadot/Substrate account) or **btcli** on your own computer (`btcli wallet new-coldkey`). Only the public address (starts with 5) goes to your agent; the miner's hotkey is created on the mining server. [Wallets](/wallets) |
 | How are rewards paid? | Validators test each miner every round; the chain shares the subnet's emission by score and pays miners in the subnet's token (alpha), credited as stake on the miner's hotkey. Variable, can be zero, and only once emissions run. [Rewards](/rewards-and-risks) |
@@ -64,11 +64,11 @@
 
 {{CHECKER}}
 
-The fast pool serves a small 4-billion-parameter model, so a single **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 is enough. Your agent checks the exact GPU, driver, container, model and network. [Which cards work, measured speeds and why there is no low-precision mode →](/hardware)
+There are four pools. A **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 serves `s1-fast`; an **80–96 GB card** (H100, RTX PRO 6000) serves the larger `s1-pro`; any NVIDIA GPU with **8 GB or more**, including a Jetson Orin, serves `s1-lite`; and **any AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Bigger machines sit in higher tiers (GPU 80 %, small GPU 15 %, CPU 5 % of the inference part). Your agent checks the exact hardware, driver, container, model and network. [Pools, measured cards and speeds →](/hardware)
 
 | Component | Requirement |
 | --- | --- |
-| GPU | One NVIDIA GPU with ≥24 GB VRAM (GPU memory); one GPU per miner |
+| GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: 80–96 GB; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One hotkey per pool |
 | Driver | R580+ for CUDA 13 |
 | Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |

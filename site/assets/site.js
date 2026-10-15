@@ -94,7 +94,7 @@
         verdict.replaceChildren(); verdict.hidden = !os.value || !gpu.value;
         if (verdict.hidden) return;
         const value = gpu.value;
-        const sizes = { none: 0, lt16: 8, '16': 16, '24': 24, '48': 48, amd: 0, apple: 0 };
+        const sizes = { none: 0, lt8: 4, '8': 8, '24': 24, '80': 80, amd: 0, apple: 0 };
         const vendor = value === 'amd' ? 'AMD' : value === 'apple' ? 'Apple' : 'NVIDIA';
         const result = window.MiningRequirements.check(data, os.value, sizes[value], vendor);
         const sentence = document.createElement('p');
@@ -104,8 +104,8 @@
           : result.hardware_candidate
             ? (os.value === 'windows'
               ? `This GPU is a conditional WSL2 candidate, not yet tested by us end to end; ${status}.`
-              : `This GPU meets the capacity requirement; ${status}.`)
-            : `Mining needs another host with a compatible NVIDIA GPU of at least 24 GB; ${status}.`;
+              : `This GPU meets the capacity requirement for ${result.eligible_pools.filter(id => id !== 's1-cpu').join(', ')}; ${status}.`)
+            : `A GPU pool needs an NVIDIA GPU of at least 8 GB. Without one, the s1-cpu pool needs only an AVX2 or ARMv8.2 CPU with 4 cores; ${status}.`;
         verdict.append(sentence);
         const link = document.createElement('a'); link.id = 'os-guide'; link.href = result.guide; link.textContent = `Read the ${os.options[os.selectedIndex].text} guide →`; verdict.append(link);
         checker.action = result.guide;

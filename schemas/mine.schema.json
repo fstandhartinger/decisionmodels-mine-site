@@ -253,11 +253,11 @@
               },
               "min_vram_gb": {
                 "type": "number",
-                "minimum": 1
+                "minimum": 0
               },
               "count": {
                 "type": "integer",
-                "minimum": 1
+                "minimum": 0
               }
             }
           },
