@@ -11,7 +11,7 @@ Run the pinned kit's read-only check:
 ./reaxctl plan --mode localnet --json
 ```
 
-Release 1.2.0-rc3 has four pools. For s1-fast, the bundled release requires one NVIDIA GPU with 24 GB or more VRAM (GPU memory), R580+ driver for CUDA 13, 4 CPU cores, 32 GB RAM and 20 GB free disk; s1-pro needs 80 to 96 GB and about 80 GB of disk, s1-lite an NVIDIA GPU with 8 GB or more (Jetson Orin 8 to 64 GB is not yet calibrated on real hardware), and s1-cpu any x86-64 CPU with AVX2 or an ARMv8.2 CPU with 4 or more cores and 4 GB RAM (no GPU). See [hardware](/hardware) for each pool. Docker Engine, Compose and the NVIDIA Container Toolkit must work together. A reported CUDA version alone does not prove the pinned model runs. Other NVIDIA cards need calibration; see the [release descriptor](/releases/current.json).
+Release 1.2.0rc9.post6 has four pools. For s1-fast, the bundled release requires one NVIDIA GPU with 24 GB or more VRAM (GPU memory), R580+ driver for CUDA 13, 4 CPU cores, 32 GB RAM and 20 GB free disk; s1-pro needs 80 to 96 GB and about 80 GB of disk, s1-lite an NVIDIA GPU with 8 GB or more (Jetson Orin 8 to 64 GB is not yet calibrated on real hardware), and s1-cpu any x86-64 CPU with AVX2 or an ARMv8.2 CPU with 4 or more cores and 4 GB RAM (no GPU). See [hardware](/hardware) for each pool. Docker Engine, Compose and the NVIDIA Container Toolkit must work together. A reported CUDA version alone does not prove the pinned model runs. Other NVIDIA cards need calibration; see the [release descriptor](/releases/current.json).
 
 ## Agent step: practice when source is public
 
