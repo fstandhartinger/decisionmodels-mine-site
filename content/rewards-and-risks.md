@@ -17,9 +17,11 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 Miner emissions are split between inference and competitions. From the day the competitions open (**16 October 2026, 12:00 UTC**), the split is:
 
 - **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
-- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (measurements start when the dedicated measurement machine is live).
+- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (open since 20 October 2026, 18:00 UTC; until its first champion is crowned, its share goes to inference miners; [live queue](https://reax.co/competitions/live/)).
 - **15 %**: **Use-case fine-tune track A.** Rotates every 2 weeks.
 - **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
+
+One generalist decision-model track is planned soon to replace the two use-case tracks; the date is to be announced. Until it opens, both tracks keep running unchanged.
 
 Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. Use-case tracks take open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
 
