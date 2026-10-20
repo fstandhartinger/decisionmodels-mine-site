@@ -24,7 +24,7 @@ Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM
 
 Is the fast model easy to run at home? **Yes, if you have a 24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090. With a smaller NVIDIA card (8 GB or more) or no GPU, use `s1-lite` or `s1-cpu`. Apple, AMD and Intel GPUs are not used; the GPU runtimes are pinned CUDA builds.
 
-Since 1.2.0rc3 your pay inside a pool follows the throughput the validator verifies; set `REAX_PER_CALLER_CONCURRENCY=16` and `REAX_PER_CALLER_PER_MINUTE=240` (the defaults of the 1.2.0rc3 miner image) so a probe can measure your full speed.
+Since 1.2.0rc3 your pay inside a pool follows the throughput the validator verifies; set `REAX_PER_CALLER_CONCURRENCY=32` and `REAX_PER_CALLER_PER_MINUTE=456` (the defaults of the 1.2.0rc9.post6 miner image) so a probe can measure your full speed.
 
 ## s1-pro: Rune 26B-A4B v3 (80–96 GB)
 
