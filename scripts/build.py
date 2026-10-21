@@ -40,7 +40,7 @@ COPY = {
         'SOURCE_STATUS': 'Source and images are public.',
         'STATUS_PILL': 'Network live',
         'STATUS_TITLE': 'The network is open. Practice before registering.',
-        'STATUS_BODY': 'REAX (Bittensor subnet 92) is live on the main network since 14 October 2026 and registration is open. Release 1.2.0rc9.post6 has four pools: s1-fast (NVIDIA GPU with 24 GB or more), s1-pro (80 to 96 GB), s1-lite (NVIDIA GPU with 8 GB or more, including Jetson Orin) and s1-cpu (x86-64 or ARMv8.2 CPU). There is no public REAX testnet: practise for free on a local chain with test TAO before real registration. A human approves every payment.',
+        'STATUS_BODY': 'REAX (Bittensor subnet 92) is live on the main network since 14 October 2026 and registration is open. Release 1.2.0rc10.post1 has four pools: s1-fast (NVIDIA GPU with 24 GB or more), s1-pro (80 to 96 GB), s1-lite (NVIDIA GPU with 8 GB or more, including Jetson Orin) and s1-cpu (x86-64 or ARMv8.2 CPU). There is no public REAX testnet: practise for free on a local chain with test TAO before real registration. A human approves every payment.',
         'HERO_NOTE': 'Give your coding agent one link. It checks your machine, starts with a free local-chain practice run using test TAO, then prepares real registration. You keep your keys and approve every payment.',
         'HUMAN_NOTE': 'Start with a free practice run using test TAO (the network’s currency) before real registration.',
         'STRIP_STATUS': 'Network live',
@@ -209,7 +209,7 @@ def build():
             {'id':'s1-cpu','model':'Gutsy 0.8B v0.4 GGUF Q8_0 (0.81 GB)','enabled':True,'min_vram_gb':0,'accelerator':'none','cpu':'x86-64 AVX2 or ARMv8.2, 4+ cores, 4 GB RAM'}],
             'tiers':{'inference_part_share':{'gpu':0.80,'small_gpu':0.15,'cpu':0.05},'inside_gpu_tier':{'s1-fast':0.35,'s1-pro':0.65},'rule':'Average per miner in a tier is at most half of the tier above; an empty pool passes its share to the other pools.'},
             'quantization':'Each pool requires its exact pinned weights (bf16 for s1-fast and s1-pro, the pinned Q8_0 GGUF for s1-lite and s1-cpu); any other quantisation is scored badly or struck.',
-            'scaling':'One hotkey serves one pool. Inside a pool weight = score x verified capacity, capped at the pool target; capacity is measured by surprise load probes on all UIDs of the pool at once, so many hotkeys on one machine add nothing.',
+            'scaling':'One hotkey serves one pool (from block 9331987, about 13:00 UTC on 21 October 2026, several pools: see /hardware). Inside a pool weight = score x verified capacity, capped at the pool target; capacity is measured by surprise load probes on all UIDs of the pool at once, so many hotkeys on one machine add nothing.',
             'not_mining_pools':'Decision Models API models such as Blink 26B-A4B, Quyet and d3 are not mining pools today.'},
         'rentals': {'page':'/rent.md','rule':'Suggest options with dated indicative prices; the person rents. Prefer VM/bare metal with Docker and a public port.'},
         'wallet': {'page':'/wallets.md','paths':[
