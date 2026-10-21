@@ -2,7 +2,7 @@
 
 {{HUMAN_NOTE}}
 
-A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. Release {{RELEASE_ID}} has four pools, from an 80 GB datacenter GPU down to a plain CPU. One hotkey serves one pool and commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. From block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can serve several pools, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
+A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. Release {{RELEASE_ID}} has four pools, from an 80 GB datacenter GPU down to a plain CPU. Each model serves one pool, and a single-model hotkey commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. Since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
 
 ## Miner pools in release {{RELEASE_ID}}
 
@@ -83,7 +83,7 @@ Each pool has exactly one pinned build. `s1-fast` and `s1-pro` require the bf16 
 
 ## Several GPUs, big nodes
 
-One hotkey (UID) serves one pool (several pools from block 9331987, see below) and has its own registration and public port. Inside a pool, weight = score × **verified capacity**, capped at the pool's target. Capacity is measured by surprise load probes (about one round in ten, at a time you cannot predict) that hit **all UIDs of a pool at the same moment**. So many hotkeys on one machine share that machine's throughput and add nothing, while one hotkey with more GPUs behind it counts more, up to the target. A UID that was never measured has capacity 0 until its first probe, which comes in the next round it answers. A bad answer is a strike and resets the moving average and the capacity. Give each miner its own GPU (do not share a GPU with other work) and its own public port.
+One hotkey (UID) serves one pool, or several pools since block 9331987 (see below), and has its own registration and public port. Inside a pool, weight = score × **verified capacity**, capped at the pool's target. Capacity is measured by surprise load probes (about one round in ten, at a time you cannot predict) that hit **all UIDs of a pool at the same moment**. So many hotkeys on one machine share that machine's throughput and add nothing, while one hotkey with more GPUs behind it counts more, up to the target. A UID that was never measured has capacity 0 until its first probe, which comes in the next round it answers. A bad answer is a strike and resets the moving average and the capacity. Give each miner its own GPU (do not share a GPU with other work) and its own public port.
 
 ### Several machines in different places behind one hotkey (opt-in)
 
@@ -91,18 +91,18 @@ Since subnet release 1.2.0rc9.post5, machines that are not in one private networ
 
 ## Several models and a competition entry on one hotkey (from block 9331987)
 
-From chain block **9331987** (about **13:00 UTC on 21 October 2026**, release 1.2.0rc10) one hotkey can
+Since chain block **9331987** (about **13:00 UTC on 21 October 2026**, release 1.2.0rc10) one hotkey can
 
 - serve **several pools** behind one public port (`REAX_MODELS`, for example `s1-lite,s1-cpu`), and
-- hold **one competition entry** (use-case/generalist track or engine track) next to its inference commitment.
+- hold **one competition entry** (generalist track or engine track) next to its inference commitment.
 
-Before that block validators read neither, so keep one pool per hotkey until then. The miner refuses to start with two or more models before the block, and `reax-commit` refuses to write a second element before it.
+Validators read both since that block. Before it, the miner refused to start with two or more models and `reax-commit` refused to write a second element.
 
 What it does and does not change:
 
 - Every model is scored as its own slot with its own pool cap, its own score and its own strikes, exactly like a separate hotkey. You save registrations, not hardware: each model still needs its own runtime on your machine, its own weights and its own free disk, and the pool hardware above applies per model.
 - Each model has its own runtime (ports 8101 s1-fast, 8102 s1-pro, 8103 s1-lite, 8104 s1-cpu; loopback only, never published) and its own limits. The miner publishes one commitment, `reax-s1m/1:<pool>:<manifest_id>,<pool>:<manifest_id>`.
-- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.7, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner, started after the block.
+- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.7, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner.
 - Write the competition entry with the tools in the miner image, never with a hand-made `btcli` commit, because every commitment write replaces all fields and would delete your inference commitment. With the miner's compose file (`C="docker compose -f <compose file> run --rm --no-deps"`):
 
 ```bash
@@ -112,7 +112,7 @@ $C --entrypoint reax-commit miner set "reax-spec/1:<track_id>:<owner>/<repo>@<40
 $C --entrypoint reax-commit miner withdraw competition        # removes only the competition entry
 ```
 
-  Run `--dry-run` first and read the fields it would write: the first one must be your inference commitment. The competition entry is evaluated on the subnet's own worker, never on your serving GPU. Track ids, deadlines and rules are on [reax.co/competitions](https://reax.co/competitions). Engine entries use `reax-engine-submit <image>@sha256:<digest>` in the same way once the engine track is open.
+  Run `--dry-run` first and read the fields it would write: the first one must be your inference commitment. The competition entry is evaluated on the subnet's own worker, never on your serving GPU. Track ids, deadlines and rules are on [reax.co/competitions](https://reax.co/competitions). Engine entries use `reax-engine-submit <image>@sha256:<digest>` in the same way; the engine track is open since 20 October 2026, 18:00 UTC.
 - The subnet documentation is the source of truth: [docs/MINER.md, "Several models on one hotkey"](https://github.com/reaxlabs/reax-subnet/blob/main/docs/MINER.md#several-models-on-one-hotkey-and-a-competition-entry-next-to-it) and [docs/DESIGN-MULTIROLE.md](https://github.com/reaxlabs/reax-subnet/blob/main/docs/DESIGN-MULTIROLE.md).
 
 ## Network

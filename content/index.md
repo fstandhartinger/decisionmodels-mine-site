@@ -68,7 +68,7 @@ There are four pools. A **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 
 
 | Component | Requirement |
 | --- | --- |
-| GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: 80–96 GB; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One hotkey per pool |
+| GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: 80–96 GB; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One pool per model; one hotkey can carry several models (from block 9331987) |
 | Driver | R580+ for CUDA 13 |
 | Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |
@@ -102,7 +102,7 @@ No suitable GPU? Rent one by the hour; your agent compares options with you. [Re
 
 Validators test every miner each round and score answers that match their reference run. The chain shares the subnet's emission by those scores; miners receive the subnet's token (alpha). Rewards vary and can be zero. Hardware, electricity, connection and a non-refundable registration burn are your costs.
 
-From the day the competitions open (16 October 2026, 12:00 UTC), miner emissions are split 50 % for inference miners (by contribution), 20 % for the permanent REAX Engine competition and 15 % each for two use-case fine-tune tracks that rotate every 2 weeks. The REAX Engine track is open since 20 October 2026, 18:00 UTC; the part of the engine share without an approved award goes to inference miners ([live queue](https://reax.co/competitions/live/)). One generalist decision-model track is planned soon to replace the two use-case tracks; the date is to be announced. Nothing is burned: an unclaimed or decayed competition share flows back to inference miners. The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
+From the day the competitions open (16 October 2026, 12:00 UTC), miner emissions are split 50 % for inference miners (by contribution), 20 % for the permanent REAX Engine competition and 30 % for the generalist decision-model track. The REAX Engine track is open since 20 October 2026, 18:00 UTC; the part of the engine share without an approved award goes to inference miners ([live queue](https://reax.co/competitions/live/)). The generalist track is open since 21 October 2026, 13:00 UTC (official base model [REAX 1](https://huggingface.co/decisionmodels/reax-1)); it replaced the two use-case tracks, which ended then. Nothing is burned: an unclaimed or decayed competition share flows back to inference miners. The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
 
 [How rewards arise, how they are split, converting to TAO or euros, and the risks →](/rewards-and-risks)
 </section>

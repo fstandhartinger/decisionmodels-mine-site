@@ -30,9 +30,9 @@ Only TCP 8091 may be public. Ports 8101, 8102 and 8000 stay private. Ask before 
 
 Recommended default: Talisman on a separate trusted workstation. `btcli` runs in WSL2, but the WSL2-to-Windows-browser extension bridge is **not yet tested by us** end to end. If it fails, use a supported separate Linux/macOS signer. Never export the seed to solve a bridge problem. Ledger over WSL USB attachment is documented, not device-tested here.
 
-## Start with checks; practice once source is public
+## Start with checks, then practice
 
- The [playbook](/agent.md) explains the practice flow once source is public. Under WSL2, an NVIDIA GPU with 8 GB or more can serve s1-lite and one with 24 GB or more s1-fast; AMD GPUs are not supported. A machine without a supported GPU can serve the s1-cpu pool if it meets the CPU requirements in [hardware](/hardware).
+ The [playbook](/agent.md) explains the practice flow. Under WSL2, an NVIDIA GPU with 8 GB or more can serve s1-lite and one with 24 GB or more s1-fast; AMD GPUs are not supported. A machine without a supported GPU can serve the s1-cpu pool if it meets the CPU requirements in [hardware](/hardware).
 
 [Wallet guide](/wallets) · [NVIDIA WSL guidance](https://docs.nvidia.com/cuda/wsl-user-guide/index.html) · [Docker GPU guidance](https://docs.docker.com/desktop/features/gpu/)
 
