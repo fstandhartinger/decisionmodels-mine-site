@@ -17,7 +17,7 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 Miner emissions are split between inference and competitions. From the day the competitions open (**16 October 2026, 12:00 UTC**), the split is:
 
 - **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
-- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (open since 20 October 2026, 18:00 UTC; until its first champion is crowned, its share goes to inference miners; [live queue](https://reax.co/competitions/live/)).
+- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (open since 20 October 2026, 18:00 UTC; until an engine award is approved, its share goes to inference miners; [live queue](https://reax.co/competitions/live/)).
 - **15 %**: **Use-case fine-tune track A.** Rotates every 2 weeks.
 - **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
 
