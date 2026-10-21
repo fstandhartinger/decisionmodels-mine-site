@@ -18,12 +18,11 @@ Miner emissions are split between inference and competitions. From the day the c
 
 - **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
 - **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (open since 20 October 2026, 18:00 UTC; the part of the engine share without an approved award goes to inference miners; [live queue](https://reax.co/competitions/live/)).
-- **15 %**: **Use-case fine-tune track A.** Rotates every 2 weeks.
-- **15 %**: **Use-case fine-tune track B.** Rotates every 2 weeks.
+- **30 %**: **Generalist decision-model track** (open since 21 October 2026, 13:00 UTC). One track for a decision model scored across ten areas; it replaced the two use-case tracks. The official base model is [REAX 1](https://huggingface.co/decisionmodels/reax-1). Inside it rank 1 gets 75 %, rank 2 17 % and rank 3 8 %.
 
-One generalist decision-model track is planned soon to replace the two use-case tracks; the date is to be announced. Until it opens, both tracks keep running unchanged.
+The two use-case tracks (demand forecasting and risk assessment, 15 % each) ran from 16 October 2026, 12:00 UTC and ended when the generalist track opened on 21 October 2026, 13:00 UTC. For 7 days their champions and approved former champions keep a bounded keep-alive as pure entrants.
 
-Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. Use-case tracks take open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
+Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. The generalist track takes open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
 
 ### Inference tiers and pools
 
