@@ -1,13 +1,13 @@
 {
-  "kit_commit": "24628c64b55eee4e5e7263505caf5e1f44d977cf",
-  "kit_version": "0.1.6",
-  "archive_sha256": "ebae940b1a5afddaf52cdea7e10e31e6fa7c387edf33896e419835e67375af64",
+  "kit_commit": "e5b0f265220bf6a754f98cecfebc63127bd0966e",
+  "kit_version": "0.1.7",
+  "archive_sha256": "9ed2307f9bb5dff61a8cbedf74dca2f5dd59ccdc9a1aa21882cf698f364d966f",
   "path": "reaxlib.cli.main \u2192 cmd_doctor.diagnose \u2192 result.emit (fixture sysprobe injection)",
   "samples": {
     "4090": {
       "fixture": "tests/fixtures/core_4090.json",
       "fixture_sha256": "abd0f0e1a322a3e1c3463cc61c682b56186a7ce7f7d5250c520e8eb316e98bb7",
-      "output_sha256": "4c58a438a99c6b6645fdd77a8e173926dad99f39b933eb73532e509a7fd4c614",
+      "output_sha256": "616ea106f28225edd37eaf124ad1d26acca3777d30dc4f2a8277f28f6f6f92eb",
       "excerpt": false
     },
     "no-gpu": {
