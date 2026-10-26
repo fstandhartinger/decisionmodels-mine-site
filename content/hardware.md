@@ -24,7 +24,17 @@ Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM
 
 Is the fast model easy to run at home? **Yes, if you have a 24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090. With a smaller NVIDIA card (8 GB or more) or no GPU, use `s1-lite` or `s1-cpu`. Apple, AMD and Intel GPUs are not used; the GPU runtimes are pinned CUDA builds.
 
-Since 1.2.0rc3 your pay inside a pool follows the throughput the validator verifies; set `REAX_PER_CALLER_CONCURRENCY=32` and `REAX_PER_CALLER_PER_MINUTE=456` (the defaults of the 1.2.0rc10.post1 miner image) so a probe can measure your full speed.
+Release 1.2.0rc11.post7 uses these single-backend miner defaults so capacity probes can measure the full speed:
+
+| Pool | `REAX_PER_CALLER_CONCURRENCY` | `REAX_PER_CALLER_PER_MINUTE` | `REAX_MAX_CONCURRENT` | `REAX_MAX_PENDING_PER_IP` |
+|---|---|---|---|---|
+| `s1-pro` | 64 | 728 | 16 | 128 |
+| `s1-fast` | 64 | 888 | 16 | 128 |
+| `s1-lite`, `s1-cpu` | 32 | 456 | 8 | 64 |
+
+`reaxctl install` inherits these defaults from the pinned miner image. Update the images and remove older, lower overrides in your existing `miner.env` or Compose environment. For several models, leave the overrides unset: the first three limits apply per model, while pending per IP is shared and follows the largest caller concurrency. Several backends can raise the defaults automatically.
+
+The per-hotkey caps are **640 decisions/s for s1-pro** and **2560 decisions/s for s1-fast**, both **from Tue 27 Oct 2026 16:00 UTC**, when REAX validators switch. The s1-lite and s1-cpu caps stay unchanged.
 
 ## s1-pro: Rune 26B-A4B v3 (80–96 GB)
 
@@ -102,7 +112,7 @@ What it does and does not change:
 
 - Every model is scored as its own slot with its own pool cap, its own score and its own strikes, exactly like a separate hotkey. You save registrations, not hardware: each model still needs its own runtime on your machine, its own weights and its own free disk, and the pool hardware above applies per model.
 - Each model has its own runtime (ports 8101 s1-fast, 8102 s1-pro, 8103 s1-lite, 8104 s1-cpu; loopback only, never published) and its own limits. The miner publishes one commitment, `reax-s1m/1:<pool>:<manifest_id>,<pool>:<manifest_id>`.
-- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.7, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner.
+- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.8, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner.
 - Write the competition entry with the tools in the miner image, never with a hand-made `btcli` commit, because every commitment write replaces all fields and would delete your inference commitment. With the miner's compose file (`C="docker compose -f <compose file> run --rm --no-deps"`):
 
 ```bash
