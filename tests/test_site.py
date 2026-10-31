@@ -163,12 +163,12 @@ class SiteTests(unittest.TestCase):
 
     def test_reward_split_section(self):
         page=(DIST/'rewards-and-risks.html').read_text()
-        for needle in ('How miner rewards are split','50 %','20 %','15 %','Nothing is burned','100 %','announced in advance','Jev-compatible'):
+        for needle in ('How miner rewards are split','40 %','20 %','30 %','burned','100 %','announced in advance','Jev-compatible'):
             self.assertIn(needle,page)
         self.assertIn('How miner rewards are split',(DIST/'rewards-and-risks.md').read_text())
         for name in ('index.md','agent.md'):
             text=(DIST/name).read_text()
-            self.assertIn('50 %',text); self.assertIn('can change',text); self.assertNotIn('80/20',text); self.assertNotIn('80 % inference',text)
+            self.assertIn('40 %',text); self.assertIn('can change',text); self.assertNotIn('80/20',text); self.assertNotIn('80 % inference',text)
 
     def test_wording_and_placeholders(self):
         forbidden=['earn per day','guaranteed','helsinki','finland','to the moon','passive income']

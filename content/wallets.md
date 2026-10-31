@@ -72,7 +72,7 @@ Stop on metadata/hash rejection. Check the chain runtime and tool versions. Do n
 - **TAO:** Bittensor’s network currency, used for registration fees.
 - **Subnet:** a network within Bittensor that handles a particular task; REAX serves inference requests.
 - **Miner:** a computer contributing compute to that network.
-- **VRAM:** memory on your GPU; the pools need 8 GB or more (s1-lite), 24 GB or more (s1-fast) or 80 to 96 GB (s1-pro) on a compatible NVIDIA GPU; the s1-cpu pool needs none.
+- **VRAM:** memory on your GPU; the pools need 8 GB or more (s1-lite), 24 GB or more (s1-fast) or 48 GB or more (s1-pro) on a compatible NVIDIA GPU; the s1-cpu pool needs none.
 - **WSL2:** Windows Subsystem for Linux 2, which runs a Linux environment on Windows.
 - **Coding agent:** an AI tool that can read files and run commands on the computer you authorize.
 

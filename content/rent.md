@@ -6,7 +6,7 @@ No suitable NVIDIA card at home? You can rent one by the hour or month. Your age
 
 ## What the rented server must offer
 
-1. One NVIDIA GPU per miner: **≥ 24 GB** for s1-fast, **80 to 96 GB** for s1-pro, **≥ 8 GB** for the small-GPU pool s1-lite. The s1-cpu pool needs no GPU at all, only an x86-64 AVX2 or ARMv8.2 server with 4 or more cores (see [hardware](/hardware)).
+1. One NVIDIA GPU per miner: **≥ 24 GB** for s1-fast, **48 GB or more** for s1-pro, **≥ 8 GB** for the small-GPU pool s1-lite. The s1-cpu pool needs no GPU at all, only an x86-64 AVX2 or ARMv8.2 server with 4 or more cores (see [hardware](/hardware)).
 2. **Docker inside the server.** The miner runs two containers (miner and model sidecar). A VM or bare-metal server works; many "container pods" do not allow Docker inside.
 3. **A reachable TCP port** from the internet. The miner listens on port 8091 inside the server; if the provider maps another external port, set `REAX_EXTERNAL_PORT` to it.
 4. Linux, driver R580+ (CUDA 13), 4 CPU cores, 32 GB RAM, 20 GB free disk (s1-fast; s1-pro needs about 80 GB disk, s1-lite 8 GB, s1-cpu 3 GB and 4 GB RAM).

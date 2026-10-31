@@ -35,7 +35,7 @@
 
 | Question | Answer |
 | --- | --- |
-| Can my computer mine? | Yes, in one of four pools. **NVIDIA 24 GB or more** (RTX 3090, 4090, 5090, A6000, L40S, H100, RTX PRO 6000 …) serves `s1-fast`; **NVIDIA 80–96 GB** (H100, RTX PRO 6000) can serve the larger `s1-pro`; **any NVIDIA GPU with 8 GB or more**, including a Jetson Orin, serves `s1-lite`; **any x86-64 AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Linux (Windows via WSL2 is conditional). Apple, AMD and Intel GPUs are not used. Each pool requires its pinned weights; other quantisations are not accepted. [Hardware details](/hardware) |
+| Can my computer mine? | Yes, in one of four pools. **NVIDIA 24 GB or more** (RTX 3090, 4090, 5090, A6000, L40S, H100, RTX PRO 6000 …) serves `s1-fast`; **NVIDIA GPU with 48 GB or more** can serve s1-pro; only the RTX PRO 6000 Blackwell Server Edition is measured, and other cards must pass the mammoth self-check; **any NVIDIA GPU with 8 GB or more**, including a Jetson Orin, serves `s1-lite`; **any x86-64 AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Linux (Windows via WSL2 is conditional). Apple, AMD and Intel GPUs are not used. Each pool requires its pinned weights; other quantisations are not accepted. [Hardware details](/hardware) |
 | No suitable GPU? | Rent one with Docker and a reachable port, for example a Lium RTX 3090/4090 pod (from about $0.20–0.55 per hour, payable in TAO too), Scaleway L40S in Paris (about €1.40 per hour) or a Hetzner GPU server in Germany (from €889 per month); prices checked 12 October 2026. [All options](/rent) |
 | Which wallet? | Create the coldkey yourself, never through an agent: the **Talisman** browser extension (Polkadot/Substrate account) or **btcli** on your own computer (`btcli wallet new-coldkey`). Only the public address (starts with 5) goes to your agent; the miner's hotkey is created on the mining server. [Wallets](/wallets) |
 | How are rewards paid? | Validators test each miner every round; the chain shares the subnet's emission by score and pays miners in the subnet's token (alpha), credited as stake on the miner's hotkey. Variable, can be zero, and only once emissions run. [Rewards](/rewards-and-risks) |
@@ -64,11 +64,11 @@
 
 {{CHECKER}}
 
-There are four pools. A **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 serves `s1-fast`; an **80–96 GB card** (H100, RTX PRO 6000) serves the larger `s1-pro`; any NVIDIA GPU with **8 GB or more**, including a Jetson Orin, serves `s1-lite`; and **any AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Bigger machines sit in higher tiers (GPU 80 %, small GPU 15 %, CPU 5 % of the inference part). Your agent checks the exact hardware, driver, container, model and network. [Pools, measured cards and speeds →](/hardware)
+There are four pools. A **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 serves `s1-fast`; an **NVIDIA card with 48 GB or more** serves s1-pro; only the RTX PRO 6000 Blackwell Server Edition is measured, and other cards must pass the mammoth self-check; any NVIDIA GPU with **8 GB or more**, including a Jetson Orin, serves `s1-lite`; and **any AVX2 or ARMv8.2 CPU** with 4 cores serves `s1-cpu`. Bigger machines sit in higher tiers (GPU 80 %, small GPU 15 %, CPU 5 % of the inference part). Your agent checks the exact hardware, driver, container, model and network. [Pools, measured cards and speeds →](/hardware)
 
 | Component | Requirement |
 | --- | --- |
-| GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: 80–96 GB; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One pool per model; one hotkey can carry several models (from block 9331987) |
+| GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: NVIDIA 48 GB or more; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One pool per model; one hotkey can carry several models (from block 9331987) |
 | Driver | R580+ for CUDA 13 |
 | Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |
@@ -102,7 +102,7 @@ No suitable GPU? Rent one by the hour; your agent compares options with you. [Re
 
 Validators test every miner each round and score answers that match their reference run. The chain shares the subnet's emission by those scores; miners receive the subnet's token (alpha). Rewards vary and can be zero. Hardware, electricity, connection and a non-refundable registration burn are your costs.
 
-From the day the competitions open (16 October 2026, 12:00 UTC), miner emissions are split 50 % for inference miners (by contribution), 20 % for the permanent REAX Engine competition and 30 % for the generalist decision-model track. The REAX Engine track is open since 20 October 2026, 18:00 UTC; the part of the engine share without an approved award goes to inference miners ([live queue](https://reax.co/competitions/live/)). The generalist track is open since 21 October 2026, 13:00 UTC (official base model [REAX 1](https://huggingface.co/decisionmodels/reax-1)); it replaced the two use-case tracks, which ended then. Nothing is burned: an unclaimed or decayed competition share flows back to inference miners. The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
+The current starting allocation is 40 % for inference, adjusted with measured customer demand; 20 % for REAX Engine and 30 % for the generalist track. The remaining 10 % is not allocated to a track. Unpaid portions are burned. Both competition tracks are paused after their Friday 30 October 2026 slots, with no next crowning scheduled. The rules and run-out status are on [reax.co](https://reax.co/competitions/). The split can change; changes are announced in advance on this site and reax.co, with their start date. [How mining works on reax.co →](https://reax.co/mining/)
 
 [How rewards arise, how they are split, converting to TAO or euros, and the risks →](/rewards-and-risks)
 </section>
