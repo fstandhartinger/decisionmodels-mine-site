@@ -14,16 +14,13 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 
 ## How miner rewards are split {#how-miner-rewards-are-split}
 
-Miner emissions are split between inference and competitions. From the day the competitions open (**16 October 2026, 12:00 UTC**), the split is:
+The current starting allocation is 40 % for inference, adjusted with measured customer demand; 20 % for REAX Engine and 30 % for the generalist decision-model track. The remaining 10 % is not allocated to a track. Every part that is not paid is burned. Both competition tracks are paused after their Friday 30 October 2026 slots; no next crowning is scheduled. During a pause, the published run-out rule applies to the champion. Check the [live queue and status](https://reax.co/competitions/live/) before acting.
 
-- **50 %**: **Inference.** Hosting the pinned decision models, distributed by contribution (scored on correct answers and speed).
-- **20 %**: **REAX Engine competition** (permanent). Make the engine that serves the model faster (open since 20 October 2026, 18:00 UTC; the part of the engine share without an approved award goes to inference miners; [live queue](https://reax.co/competitions/live/)).
-- **30 %**: **Generalist decision-model track** (open since 21 October 2026, 13:00 UTC). One track for a decision model scored across ten areas; it replaced the two use-case tracks. The official base model is [REAX 1](https://huggingface.co/decisionmodels/reax-1). Inside it rank 1 gets 75 %, rank 2 17 % and rank 3 8 %.
+- **40 %:** inference, distributed by contribution across the pinned models.
+- **20 %:** REAX Engine competition, a permanent track currently paused.
+- **30 %:** generalist decision-model track for open-weight Jev-compatible models, currently paused; the official base is [REAX 1](https://huggingface.co/decisionmodels/reax-1), and rank shares within the track are 75 %, 17 % and 8 %.
 
-The two use-case tracks (demand forecasting and risk assessment, 15 % each) ran from 16 October 2026, 12:00 UTC and ended when the generalist track opened on 21 October 2026, 13:00 UTC. For 7 days their champions and approved former champions keep a bounded keep-alive as pure entrants.
-
-Each competition is winner-takes-most with decay (similar to Affine, subnet 120). **Nothing is burned:** a competition share that nobody wins, or that has decayed, flows back to the inference miners. The generalist track takes open-weight Jev-compatible models, evaluated on sealed items, trained on any hardware. Rules are published before a competition starts. See [How mining works on reax.co](https://reax.co/mining/).
-
+The two use-case tracks (demand forecasting and risk assessment, 15 % each) ran from 16 October 2026, 12:00 UTC until the generalist track opened on 21 October 2026, 13:00 UTC. Their former champions keep the published bounded keep-alive as pure entrants.
 ### Inference tiers and pools
 
 The inference part is split by hardware tier, with the average per miner in a tier at most half of the tier above:
@@ -34,9 +31,9 @@ The inference part is split by hardware tier, with the average per miner in a ti
 | Small GPU | `s1-lite` (NVIDIA ≥ 8 GB, incl. Jetson Orin) | 15 % |
 | CPU | `s1-cpu` (AVX2 or ARMv8.2 CPU) | 5 % |
 
-Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool passes its share to the other pools. Tiers and shares are release constants; a change needs a new release and is announced in advance. See [hardware](/hardware).
+Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool’s unpaid share is burned. Tiers and shares are release constants; a change needs a new release and is announced in advance. See [hardware](/hardware).
 
-Until the competitions open, **100 %** of miner emissions goes to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
+Before the competitions opened on 16 October 2026 at 12:00 UTC, **100 %** of miner emissions went to inference miners. The split can change. Any change is announced in advance on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
 
 ## What you can do with earned alpha {#what-you-can-do-with-earned-alpha}
 

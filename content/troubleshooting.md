@@ -28,7 +28,7 @@ Start with the read-only machine check (the `doctor` command). Each blocker incl
 | `cpu_cores`, `ram_gb` | Use a host meeting the release capacity or practice on a local chain |
 | `python` | Controller: Python 3.8+; tools virtual environment: Python 3.10+ |
 | `gpu_capacity_s1-fast` | s1-fast needs a compatible NVIDIA GPU with 24 GB or more VRAM (GPU memory) and R580+ |
-| `gpu_capacity_s1-pro` | s1-pro needs 80–96 GB NVIDIA VRAM; cards below 80 GB cannot hold the weights and cache |
+| `gpu_capacity_s1-pro` | s1-pro needs an NVIDIA GPU with at least 48 GB VRAM; only RTX PRO 6000 Blackwell Server Edition is measured, and other cards must pass the mammoth self-check |
 | `gpu_capacity_s1-lite` | s1-lite needs an NVIDIA GPU with 8 GB or more (or a Jetson Orin with 8 GB or more unified memory) |
 | `disk_s1-fast`, `disk_s1-pro`, `disk_s1-lite`, `disk_s1-cpu` | Free space in your own REAX directory or choose a larger disk; follow the release's per-pool minimum |
 

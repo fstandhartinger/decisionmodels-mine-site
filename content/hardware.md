@@ -2,21 +2,21 @@
 
 {{HUMAN_NOTE}}
 
-A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. Release {{RELEASE_ID}} has four pools, from an 80 GB datacenter GPU down to a plain CPU. Each model serves one pool, and a single-model hotkey commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. Since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
+A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. Release {{RELEASE_ID}} has four pools, from a 48 GB datacenter GPU down to a plain CPU. Each model serves one pool, and a single-model hotkey commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. Since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
 
 ## Miner pools in release {{RELEASE_ID}}
 
 | Pool | Model | Hardware | Share of the inference part |
 |---|---|---|---|
 | `s1-fast` | Plumb-4B, bf16 weights ≈ 9 GB | NVIDIA GPU, **≥ 24 GB** VRAM, driver R580+ (CUDA 13) | GPU tier 80 %, 35 % of it |
-| `s1-pro` | Rune 26B-A4B v3, bf16 ≈ 52 GB (gated on Hugging Face) | NVIDIA GPU, **80–96 GB** VRAM | GPU tier 80 %, 65 % of it |
+| s1-pro | mammoth-1, about 54.7 GB, MIT | NVIDIA GPU, 48 GB or more VRAM; only RTX PRO 6000 Blackwell Server Edition measured | GPU tier 80 %, 65 % of it |
 | `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
 | `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
 
-Shares apply to the inference part of miner emissions (all of it before the competitions start, 50 % after; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
+Shares apply to the inference part of miner emissions (currently starts at 40 % and follows measured customer demand; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
 
 - **Tier order:** the average per miner in a tier is at most half of the tier above.
-- **Empty pools:** if a pool has no miner, its share passes to the other pools. Nothing is burned.
+- **Empty pools:** an unpaid pool share is burned.
 
 Tiers, shares and targets are release constants. A change needs a new release and is announced in advance.
 
@@ -36,22 +36,20 @@ Release 1.2.0rc11.post7 uses these single-backend miner defaults so capacity pro
 
 The per-hotkey caps are **640 decisions/s for s1-pro** and **2560 decisions/s for s1-fast**, both **from Tue 27 Oct 2026 16:00 UTC**, when REAX validators switch. The s1-lite and s1-cpu caps stay unchanged.
 
-## s1-pro: Rune 26B-A4B v3 (80–96 GB)
+## s1-pro: mammoth-1 (48 GB or more)
 
-| GPU | VRAM | Status |
-|---|---|---|
-| RTX PRO 6000 Blackwell | 96 GB | measured, bit-identical to the reference |
-| H100 | 80 GB | measured, bit-identical to the reference |
-| H200, B200 | | expected to work, not measured |
-| A100 | 80 GB | not measured; at your own risk, run the self-check first |
-| Cards below the 80 GB class | | cannot hold the 52 GB weights plus KV cache |
+| Item | Current requirement |
+|---|---|
+| Model | baselabs/mammoth-1, pinned revision 61cec44c281c693992e3d6ebeb44dd3402dfa186 |
+| Manifest | 3f3558e583b0a1d6 |
+| Weights and licence | About 54.7 GB; MIT |
+| Minimum GPU | One NVIDIA GPU with at least 48 GB VRAM |
+| Measured card | RTX PRO 6000 Blackwell Server Edition only |
 
-- **Deterministic runtime, required.** Use `runtimes/s1-pro` with `RUNE_DETERMINISTIC=1` (the default). Other builds are not accepted: stock vLLM gives different numbers under different load and scores only about 65 % of its rounds; FP8 or online-quantised builds score about 12 % of rounds and are struck in about 22 % of them.
-- **Gated weights.** The Hugging Face repo `surogate/rune-26b-a4b-GGUF` (bf16 safetensors despite the name) is gated. Accept the gate with your own Hugging Face account and run `hf auth login`. REAX never mirrors the weights, and `reaxctl` never asks for your token.
-- **Confidential-compute cloud GPUs:** the runtime container needs `-v "$(pwd)/runtimes/vllm-ccfix:/opt/reax-ccfix:ro" -e PYTHONPATH=/opt/reax-ccfix -e REAX_VLLM_DISABLE_UVA=1`; without it vLLM returns garbage there. Results are unchanged.
-- **Kit command:** `./reaxctl install --mode mainnet --pool s1-pro --yes --json --confirm-mainnet`, then the self-check `reax-selfcheck --model s1-pro`. It must print PASS before you commit.
-- Each round asks 8 decisions and verifies 3; a round in tolerance scores `0.8 + 0.2 × speed` (full speed at 1 s, zero at 12 s). Capacity target: 10 decisions per second.
+The minimum VRAM is the pool requirement, not a claim that every 48 GB card has been measured. Run reax-selfcheck --model s1-pro on other cards and require **PASS** before committing. The exact pinned weights and runtime are required; other model revisions and quantisations do not count.
 
+- **Kit command:** ./reaxctl install --mode mainnet --pool s1-pro --yes --json --confirm-mainnet, then run reax-selfcheck --model s1-pro. It must print PASS before you commit.
+- Each round asks 8 decisions and verifies 3. Capacity target: 10 decisions per second.
 ## s1-lite: small GPU, including Jetson Orin
 
 - **Model:** the s1-fast model Plumb-4B v5 as `GGUF Q8_0` (4.48 GB, pinned file) on llama.cpp CUDA (`runtimes/s1-gguf`). Same prompt and temperature as s1-fast.
@@ -122,7 +120,7 @@ $C --entrypoint reax-commit miner set "reax-spec/1:<track_id>:<owner>/<repo>@<40
 $C --entrypoint reax-commit miner withdraw competition        # removes only the competition entry
 ```
 
-  Run `--dry-run` first and read the fields it would write: the first one must be your inference commitment. The competition entry is evaluated on the subnet's own worker, never on your serving GPU. Track ids, deadlines and rules are on [reax.co/competitions](https://reax.co/competitions). Engine entries use `reax-engine-submit <image>@sha256:<digest>` in the same way; the engine track is open since 20 October 2026, 18:00 UTC.
+  Run `--dry-run` first and read the fields it would write: the first one must be your inference commitment. The competition entry is evaluated on the subnet's own worker, never on your serving GPU. Track ids, deadlines and rules are on [reax.co/competitions](https://reax.co/competitions). Engine entries use `reax-engine-submit <image>@sha256:<digest>` in the same way; the REAX Engine track opened on 20 October 2026, 18:00 UTC and is now paused after its Friday 30 October slot, with no next crowning scheduled.
 - The subnet documentation is the source of truth: [docs/MINER.md, "Several models on one hotkey"](https://github.com/reaxlabs/reax-subnet/blob/main/docs/MINER.md#several-models-on-one-hotkey-and-a-competition-entry-next-to-it) and [docs/DESIGN-MULTIROLE.md](https://github.com/reaxlabs/reax-subnet/blob/main/docs/DESIGN-MULTIROLE.md).
 
 ## Network
