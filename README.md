@@ -64,3 +64,7 @@ Environment: `DATABASE_URL` (Postgres; unset means writes return 503), `ADMIN_TO
 Endpoints under `/api/eu/`: `GET health`, `GET agreement?lang=`, `POST preview`, `POST accept`, `GET agreements/<id>.pdf?t=<token>`, `POST contact`; admin: `GET admin/events?after=`, `GET admin/agreements/<id>.pdf`, `POST admin/agreements/<id>/verification`, `POST admin/agreements/<id>/revoke`, `GET admin/registry`.
 
 Tests: `pip install -r requirements.txt -r requirements-api.txt`, then `python -m unittest tests.test_api`. Database tests create and drop a temporary database via `TEST_PG_ADMIN_URL` (default: local unix socket).
+
+## Pinned release and active pool
+
+The served descriptor and kit archive stay an exact release pair. A live network does not imply that every bundled pool still matches the current validator. For the older Rune s1-pro manifest, the build adds an explicit advisory to the landing page, agent playbook, hardware guide, llms files, requirement copy and mine.json copy. Upgrade operational pins only after the release owner supplies a verified public miner/runtime pair. This advisory changes no registration, scoring, image or chain settings.

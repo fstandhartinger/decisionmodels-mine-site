@@ -26,6 +26,11 @@
 ## {{STATUS_TITLE}} {#status-title}
 
 {{STATUS_BODY}}
+
+{{RELEASE_ADVISORY}}
+
+[Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
+
 </section>
 
 <section class="home-section" id="quick-answers" markdown="1">

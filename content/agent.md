@@ -8,6 +8,11 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 
 ## 1. Tell the person the current status first
 
+{{RELEASE_ADVISORY}}
+
+[Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
+
+
 - {{PRACTICE_NOTE}}
 - Check the live state yourself: `GET https://mine.decisionmodels.io/releases/current.json` and read `status.live`, `status.launch_status`, `status.netuid`, `source.public` and `images.public`. {{STATUS_BRIEF}} {{SOURCE_STATUS}}
 - In one sentence: **REAX is live, registration is open and the miner software is public, so a person with suitable hardware can set up a miner today; rewards are variable and can be zero.** Registering a hotkey only makes sense once its miner can run (self-check passing). If `status.live` is true and `source.public` and `images.public` are true, full setup is open. A live chain alone does not satisfy the source gate: with private source or images, stop after doctor and plan.
