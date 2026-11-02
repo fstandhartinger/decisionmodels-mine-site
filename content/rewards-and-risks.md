@@ -14,9 +14,9 @@ This page explains the mechanics. It is not financial or tax advice, and it make
 
 ## How miner rewards are split {#how-miner-rewards-are-split}
 
-The current starting allocation is 40 % for inference, adjusted with measured customer demand; 20 % for REAX Engine and 30 % for the generalist decision-model track. The remaining 10 % is not allocated to a track. Every part that is not paid is burned. Both competition tracks are paused after their Friday 30 October 2026 slots; no next crowning is scheduled. During a pause, the published run-out rule applies to the champion. Check the [live queue and status](https://reax.co/competitions/live/) before acting.
+Inference gets 30 % from the first weight set at or after Monday 2 November 2026, 14:30 UTC (40 % before then) and follows measured customer demand; REAX Engine is allocated 20 % and the generalist decision-model track 30 %. The remaining share is not allocated to a track. Every part that is not paid is burned. Both competition tracks are paused after their Friday 30 October 2026 slots; no next crowning is scheduled. During a pause, the published run-out rule applies to the champion. Check the [live queue and status](https://reax.co/competitions/live/) before acting.
 
-- **40 %:** inference, distributed by contribution across the pinned models.
+- **30 %:** inference (40 % before Monday 2 November 2026, 14:30 UTC), distributed by contribution across the pinned models.
 - **20 %:** REAX Engine competition, a permanent track currently paused.
 - **30 %:** generalist decision-model track for open-weight Jev-compatible models, currently paused; the official base is [REAX 1](https://huggingface.co/decisionmodels/reax-1), and rank shares within the track are 75 %, 17 % and 8 %.
 
