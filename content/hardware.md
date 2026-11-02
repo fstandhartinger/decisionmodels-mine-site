@@ -7,9 +7,9 @@
 [Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
 
 
-A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. Release {{RELEASE_ID}} has four pools, from a 48 GB datacenter GPU down to a plain CPU. Each model serves one pool, and a single-model hotkey commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. Since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
+A REAX miner serves one pinned model exactly as the validators run it. Validators compare answers with their own reference run, so the machine has to run the **exact pinned weights in the pinned runtime image**. The current validator pool rules have four pools, from a 48 GB datacenter GPU down to a plain CPU. The table below shows those active rules; its s1-pro row uses mammoth-1 (manifest 3f3558e583b0a1d6), effective since 30 October 2026 at 09:00 UTC. Each model serves one pool, and a single-model hotkey commits to it as `reax-s1/1:<pool>:<manifest_id>`; the miner CLI does this for you. Since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry, see [below](#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987).
 
-## Miner pools in release {{RELEASE_ID}}
+## Current validator pool rules
 
 | Pool | Model | Hardware | Share of the inference part |
 |---|---|---|---|
