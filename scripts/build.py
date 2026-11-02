@@ -109,6 +109,16 @@ def state_copy(release):
                     HUMAN_NOTE='Your agent can start a free practice run today. Mainnet registration remains blocked until status.live is true.',
                     CHECKER_BODY=copy['CHECKER_BODY'] + ' Mainnet registration remains blocked until status.live is true.',
                     LLMS_NOTE=copy['LLMS_NOTE'] + ' Mainnet registration remains blocked until status.live is true.')
+    copy['RELEASE_ADVISORY'] = ''
+    pro = next((pool for pool in release.get('pools', []) if pool['id'] == 's1-pro'), {})
+    if STATE == 'live' and pro.get('manifest_id') == '5b11440bf57b5434':
+        copy['RELEASE_ADVISORY'] = ('The bundled kit 0.1.8 and release descriptor still pin the older Rune s1-pro runtime. '
+            'The active s1-pro pool uses mammoth-1 (manifest 3f3558e583b0a1d6) since 30 October 2026 at 09:00 UTC. '
+            'Do not use this kit’s s1-pro install, update or hardware verdict as proof of compatibility with the active pool. '
+            'Follow the published mammoth miner guide linked below, and require a passing mammoth self-check before registering or switching. '
+            'Localnet practice remains available; the bundled image pins have not been updated to mammoth-1.')
+        copy['LLMS_NOTE'] += ' ' + copy['RELEASE_ADVISORY']
+        copy['CHECKER_BODY'] += ' ' + copy['RELEASE_ADVISORY']
     return STATE, copy
 
 def write(path, value):
