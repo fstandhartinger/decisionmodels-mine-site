@@ -86,6 +86,18 @@ class SiteTests(unittest.TestCase):
         schema=json.loads((ROOT/'schemas/mine.schema.json').read_text()); validate(self.data,schema,schema)
         release=json.loads((DIST/'releases/current.json').read_text())
         for key in ['status','requirements','pools']: self.assertEqual(self.data[key],release[key])
+        self.assertEqual(self.data['pools_scope'], 'bundled_kit_descriptor')
+        pro = next(p for p in release['pools'] if p['id'] == 's1-pro')
+        overrides = self.data['active_pool_overrides']
+        if self.data['state'] == 'live' and pro['manifest_id'] == '5b11440bf57b5434':
+            self.assertEqual(len(overrides), 1)
+            self.assertEqual(overrides[0]['manifest_id'], '3f3558e583b0a1d6')
+            self.assertEqual(overrides[0]['supersedes_manifest_id'], pro['manifest_id'])
+            self.assertFalse(overrides[0]['bundled_kit_compatible'])
+            self.assertEqual(overrides[0]['gpu']['min_vram_gb'], 48)
+            self.assertTrue(overrides[0]['runtime_requirements']['mammoth_selfcheck_required'])
+        else:
+            self.assertEqual(overrides, [])
         self.assertIs(type(self.data['status']['live']), bool)
         self.assertEqual(self.data['status']['launch_status'], 'live' if self.data['status']['live'] else 'registered_starting_soon')
         self.assertEqual(self.data['status']['netuid'], 92)
