@@ -110,15 +110,11 @@ def state_copy(release):
                     CHECKER_BODY=copy['CHECKER_BODY'] + ' Mainnet registration remains blocked until status.live is true.',
                     LLMS_NOTE=copy['LLMS_NOTE'] + ' Mainnet registration remains blocked until status.live is true.')
     copy['RELEASE_ADVISORY'] = ''
-    pro = next((pool for pool in release.get('pools', []) if pool['id'] == 's1-pro'), {})
-    if STATE == 'live' and pro.get('manifest_id') == '5b11440bf57b5434':
-        copy['RELEASE_ADVISORY'] = ('The bundled kit 0.1.8 and release descriptor still pin the older Rune s1-pro runtime. '
-            'The active s1-pro pool uses mammoth-1 (manifest 3f3558e583b0a1d6) since 30 October 2026 at 09:00 UTC. '
-            'Do not use this kit’s s1-pro install, update or hardware verdict as proof of compatibility with the active pool. '
-            'Follow the published mammoth miner guide linked below, and require a passing mammoth self-check before registering or switching. '
-            'Localnet practice remains available; the bundled image pins have not been updated to mammoth-1.')
-        copy['LLMS_NOTE'] += ' ' + copy['RELEASE_ADVISORY']
-        copy['CHECKER_BODY'] += ' ' + copy['RELEASE_ADVISORY']
+    # Kit 0.1.9 and the mirrored descriptor describe the active mammoth pool.
+    # Preserve the canonical notes byte for byte in the published descriptor.
+    if STATE == 'live' and release['source']['public'] and release['images']['public']:
+        copy['CHECKER_BODY'] = release['status'].get('notes', copy['CHECKER_BODY'])
+        copy['LLMS_NOTE'] += ' Kit 0.1.9 installs the active mammoth-1 s1-pro contract with pinned FLA configs. Upgrade older kits before installing s1-pro.'
     return STATE, copy
 
 def write(path, value):
@@ -141,8 +137,7 @@ def build():
     shutil.copytree(ROOT / 'site', DIST)
     shutil.copytree(ROOT / 'schemas', DIST / 'schemas')
     # Keep operational release fields pinned; presentation notes follow the same state copy.
-    release['status'] = dict(release['status'], notes=copy['CHECKER_BODY'])
-    write('releases/current.json', json.dumps(release, indent=2)+'\n')
+    (DIST / 'releases/current.json').write_bytes((ROOT / 'site/releases/current.json').read_bytes())
     substitutions = {'KIT_VERSION': lock['version'], 'RELEASE_ID': lock['release_id'], 'KIT_COMMIT': lock['commit'], 'KIT_SHA256': lock['sha256'], 'UPDATED': lock['updated']}
     substitutions.update(copy)
     def fill(value):
@@ -233,30 +228,11 @@ def build():
     }
     data = dict(guide=guide, state=STATE, copy=copy, source=release['source'], schema='decisionmodels-mine/1', status=release['status'], updated=lock['updated'], prompts=prompts,
                 agent_tiers=[dict(id='A', title='Local execution',capability='Shell/file operations on the selected target host, subject to permissions.', examples=['Claude Code local','Codex CLI local','Cursor local','Gemini CLI local']),dict(id='B',title='Hosted or browser execution',capability='Read guides and prepare a reviewed script; no default target-host shell.',examples=['Cloud coding sessions','Browser agents']),dict(id='C',title='Chat only',capability='Explain and prepare steps; no execution tool.',examples=['Chat without tools'])],rules=rules,steps=steps,mainnet_steps=mainnet,os_support=os_support,requirements=release['requirements'],pools=release['pools'],links=dict(agent='/agent.md',hardware='/hardware',rent='/rent',eu='/eu',eu_sign='/eu/sign',linux='/os/linux',windows='/os/windows',macos='/os/macos',wallets='/wallets',risks='/rewards-and-risks',release='/releases/current.json',kit='https://github.com/reaxlabs/reax-miner-kit',protocol='https://reax.dev/mine/',faq='https://reax.dev/miner-faq/',register='https://reax.dev/register/'),integrity={k:lock[k] for k in ('version','release_id','commit','sha256','tarball')})
-    # Preserve the bundled descriptor for installer/doctor compatibility. Active
-    # pool overrides are informational and never substitute unverified kit pins.
     data['pools_scope'] = 'bundled_kit_descriptor'
-    data['pools_note'] = ('pools and requirements describe /releases/current.json and the bundled kit. '
-        'enabled_at_launch is historical, not proof of current validator acceptance. '
-        'Read active_pool_overrides for published changes; follow its guide and pass self-check before switching.')
+    data['pools_note'] = ('pools and requirements describe the active validator models and the bundled kit 0.1.9. '
+        's1-pro runtime.enabled enables its mammoth contract on kit 0.1.9; enabled_at_launch stays false to refuse installs on older controllers. '
+        'Upgrade the kit, then require a passing mammoth self-check before serving. Descriptor refresh does not alter running miners.')
     data['active_pool_overrides'] = []
-    if copy['RELEASE_ADVISORY']:
-        data['active_pool_overrides'].append({
-            'id': 's1-pro', 'effective_at': '2026-10-30T09:00:00Z',
-            'release': 'v1.2.0-rc11.post8.1-kit1',
-            'model': 'mammoth-1',
-            'weights': {'repo': 'baselabs/mammoth-1', 'revision': '61cec44c281c693992e3d6ebeb44dd3402dfa186'},
-            'manifest_id': '3f3558e583b0a1d6',
-            'supersedes_manifest_id': '5b11440bf57b5434',
-            'reference_runtime': 'ghcr.io/reaxlabs/reax-engine-ref-mammoth@sha256:3080a593060542bccbdaf7cf0c66593fc182d9753b3facd50206df86d93b8588',
-            'gpu': {'vendor': 'NVIDIA', 'count': 1, 'min_vram_gb': 48,
-                    'measured': ['RTX PRO 6000 Blackwell Server Edition (96 GB)'],
-                    'note': 'Other NVIDIA cards require a passing mammoth self-check; VRAM alone is not compatibility proof.'},
-            'runtime_requirements': {'FLA_CACHE_MODE': 'strict', 'pinned_fla_configs_required': True,
-                                     'mammoth_selfcheck_required': True},
-            'bundled_kit_compatible': False,
-            'guide': 'https://github.com/reaxlabs/reax-subnet/blob/main/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81'
-        })
     write('mine.json', json.dumps(data,indent=2,ensure_ascii=False)+'\n')
     prompt_html = '<div class="prompt-card"><div class="prompt-tabs" role="tablist" aria-label="Prompt variants">'
     for ident,label in [('short','Short'),('safe','Safe by default'),('guided',"I’m not technical")]:

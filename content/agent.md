@@ -8,7 +8,7 @@ Pages you may need (each also exists as Markdown): [hardware](/hardware.md) · [
 
 ## 1. Tell the person the current status first
 
-{{RELEASE_ADVISORY}}
+Kit 0.1.9 includes the active mammoth-1 s1-pro runtime and pinned FLA configs. Upgrade older kits before installing s1-pro; run the mammoth self-check and require PASS before serving.
 
 [Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
 
@@ -41,7 +41,7 @@ Run the kit's read-only check (section 6, step 1) or, if you cannot run commands
 | Miner pool | Model it serves | Minimum hardware | Share of the inference part |
 |---|---|---|---|
 | `s1-fast` | Plumb-4B (bf16 weights ≈ 9 GB) | 1 NVIDIA GPU with **≥ 24 GB** VRAM, driver **R580+** (CUDA 13), Linux x86_64 (or WSL2), 4 CPU cores, 32 GB RAM, 20 GB disk, public IP + one inbound TCP port | GPU tier 80 %, 35 % of it |
-| s1-pro | mammoth-1, about 54.7 GB, MIT | 1 NVIDIA GPU with 48 GB or more, 80 GB disk; only RTX PRO 6000 Blackwell Server Edition measured | GPU tier 80 %, 65 % of it |
+| s1-pro | mammoth-1, about 54.7 GB, MIT | 1 NVIDIA GPU with 48 GB or more, 100 GB disk; only RTX PRO 6000 Blackwell Server Edition measured | GPU tier 80 %, 65 % of it |
 | `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
 | `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
 

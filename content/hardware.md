@@ -2,7 +2,7 @@
 
 {{HUMAN_NOTE}}
 
-{{RELEASE_ADVISORY}}
+Kit 0.1.9 includes the active mammoth-1 s1-pro runtime and pinned FLA configs. Upgrade older kits before installing s1-pro; run the mammoth self-check and require PASS before serving.
 
 [Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
 
@@ -25,7 +25,7 @@ Shares apply to the inference part of miner emissions (30 % from Monday 2 Novemb
 
 Tiers, shares and targets are release constants. A change needs a new release and is announced in advance.
 
-Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM, Docker + NVIDIA container toolkit, public IP with inbound TCP 8091, synchronised clock. Free disk per pool: `s1-fast` 20 GB, `s1-pro` 80 GB, `s1-lite` 8 GB, `s1-cpu` 3 GB.
+Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM, Docker + NVIDIA container toolkit, public IP with inbound TCP 8091, synchronised clock. Free disk per pool: `s1-fast` 20 GB, `s1-pro` 100 GB, `s1-lite` 8 GB, `s1-cpu` 3 GB.
 
 Is the fast model easy to run at home? **Yes, if you have a 24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090. With a smaller NVIDIA card (8 GB or more) or no GPU, use `s1-lite` or `s1-cpu`. Apple, AMD and Intel GPUs are not used; the GPU runtimes are pinned CUDA builds.
 
@@ -115,7 +115,7 @@ What it does and does not change:
 
 - Every model is scored as its own slot with its own pool cap, its own score and its own strikes, exactly like a separate hotkey. You save registrations, not hardware: each model still needs its own runtime on your machine, its own weights and its own free disk, and the pool hardware above applies per model.
 - Each model has its own runtime (ports 8101 s1-fast, 8102 s1-pro, 8103 s1-lite, 8104 s1-cpu; loopback only, never published) and its own limits. The miner publishes one commitment, `reax-s1m/1:<pool>:<manifest_id>,<pool>:<manifest_id>`.
-- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.8, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner.
+- `reaxctl install` still installs one pool. For several models use the example compose file in the bundled kit (kit 0.1.9, `service/docker-compose.multimodel.example.yml`) and follow [docs/MULTIMODEL.md](https://github.com/reaxlabs/reax-miner-kit/blob/main/docs/MULTIMODEL.md). In short: one runtime per model with the same token file, `REAX_MODELS=<pool>,<pool>` and `REAX_<POOL>_RUNTIME_URL=http://127.0.0.1:<port>` on the miner.
 - Write the competition entry with the tools in the miner image, never with a hand-made `btcli` commit, because every commitment write replaces all fields and would delete your inference commitment. With the miner's compose file (`C="docker compose -f <compose file> run --rm --no-deps"`):
 
 ```bash

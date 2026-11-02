@@ -1,8 +1,8 @@
 {
-  "version": "0.1.8",
-  "release_id": "1.2.0rc11.post7",
-  "commit": "dfa1a358910641dd358a09db8c7e34838042be08",
-  "sha256": "186f5d06b902e7519bffde331eb1560265250de233d3e302286199144007f634",
-  "tarball": "reax-miner-kit-0.1.8.tar.gz",
-  "updated": "2026-10-26"
+  "version": "0.1.9",
+  "release_id": "1.2.0rc11.post8.1-kit1",
+  "commit": "fcefe3fc72f8dae5c10ecbe856fe1faf2be9b831",
+  "sha256": "4806871ccca93d2a25d5a15abce3f7d1f1b7bc7b0c9cadf20479ee623c26bd75",
+  "tarball": "reax-miner-kit-0.1.9.tar.gz",
+  "updated": "2026-11-02"
 }
