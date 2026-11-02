@@ -18,7 +18,7 @@ A REAX miner serves one pinned model exactly as the validators run it. Validator
 | `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
 | `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
 
-Shares apply to the inference part of miner emissions (currently starts at 40 % and follows measured customer demand; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
+Shares apply to the inference part of miner emissions (30 % from Monday 2 November 2026, 14:30 UTC, 40 % before then, and follows measured customer demand; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
 
 - **Tier order:** the average per miner in a tier is at most half of the tier above.
 - **Empty pools:** an unpaid pool share is burned.
