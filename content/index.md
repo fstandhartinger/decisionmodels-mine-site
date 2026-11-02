@@ -27,7 +27,7 @@
 
 {{STATUS_BODY}}
 
-{{RELEASE_ADVISORY}}
+Kit 0.1.9 includes the active mammoth-1 s1-pro runtime and pinned FLA configs. Upgrade older kits before installing s1-pro; run the mammoth self-check and require PASS before serving.
 
 [Mammoth runtime and self-check guide](https://github.com/reaxlabs/reax-subnet/blob/v1.2.0-rc11.post8.1-kit1/docs/MINER.md#s1-pro-switches-from-rune-to-mammoth-1-on-fri-30-oct-2026-0900-utc-release-120rc11post81)
 

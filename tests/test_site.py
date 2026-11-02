@@ -108,15 +108,8 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(self.data['integrity']['sha256'],hashlib.sha256((DIST/'kit'/self.data['integrity']['tarball']).read_bytes()).hexdigest())
         with tarfile.open(DIST/'kit'/self.data['integrity']['tarball']) as archive:
             pinned = json.loads(archive.extractfile('releases/current.json').read())
-            # Site onboarding status is intentionally newer than the kit archive.
-            # All immutable release data must still match; only status and its
-            # `updated` stamp (both rewritten by the start watcher) are overlaid.
-            site_release = json.loads(json.dumps(release))
-            pinned['status'] = site_release['status']
-            # The start watcher also stamps `updated` when it flips status; everything else must still match.
-            self.assertLessEqual(pinned['updated'], site_release['updated'])
-            pinned['updated'] = site_release['updated']
-            self.assertEqual(pinned, site_release)
+            self.assertEqual(pinned, release)
+            self.assertEqual(archive.extractfile('releases/current.json').read(), (DIST/'releases/current.json').read_bytes())
             self.assertEqual(release['status']['notes'], self.data['copy']['CHECKER_BODY'])
             version_source = archive.extractfile('reaxlib/__init__.py').read().decode()
             kit_version = re.search(r'__version__\s*=\s*[\"\']([^\"\']+)', version_source).group(1)
