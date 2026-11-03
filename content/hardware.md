@@ -29,7 +29,7 @@ Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM
 
 Is the fast model easy to run at home? **Yes, if you have a 24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090. With a smaller NVIDIA card (8 GB or more) or no GPU, use `s1-lite` or `s1-cpu`. Apple, AMD and Intel GPUs are not used; the GPU runtimes are pinned CUDA builds.
 
-Release 1.2.0rc11.post7 uses these single-backend miner defaults so capacity probes can measure the full speed:
+Release 1.2.0rc11.post8.1-kit1 uses these single-backend miner defaults so capacity probes can measure the full speed:
 
 | Pool | `REAX_PER_CALLER_CONCURRENCY` | `REAX_PER_CALLER_PER_MINUTE` | `REAX_MAX_CONCURRENT` | `REAX_MAX_PENDING_PER_IP` |
 |---|---|---|---|---|
