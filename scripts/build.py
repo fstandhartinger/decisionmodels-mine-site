@@ -215,7 +215,7 @@ def build():
             'tiers':{'inference_part_share':{'gpu':0.80,'small_gpu':0.15,'cpu':0.05},'inside_gpu_tier':{'s1-fast':0.35,'s1-pro':0.65},'rule':'Average per miner in a tier is at most half of the tier above; an unpaid empty-pool share is burned.'},
             'quantization':'Each pool requires its exact pinned weights (bf16 for s1-fast and s1-pro, the pinned Q8_0 GGUF for s1-lite and s1-cpu); any other quantisation is scored badly or struck.',
             'scaling':'Each model serves one pool; since block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry: see /hardware. Inside a pool weight = score x verified capacity, capped at the pool target; capacity is measured by surprise load probes on all UIDs of the pool at once, so many hotkeys on one machine add nothing.',
-            'not_mining_pools':'Decision Models API models such as Blink 26B-A4B, Quyet and d3 are not mining pools today.'},
+            'not_mining_pools':'Decision Models API models such as Blink 26B-A4B and d3 are not mining pools today.'},
         'rentals': {'page':'/rent.md','rule':'Suggest options with dated indicative prices; the person rents. Prefer VM/bare metal with Docker and a public port.'},
         'wallet': {'page':'/wallets.md','paths':[
             {'id':'talisman','summary':'Talisman browser extension: Polkadot/Substrate account, Bittensor enabled; person copies the public 5... address.'},

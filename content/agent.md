@@ -56,7 +56,7 @@ Verdicts to give, in plain words:
 - **Less than 4 cores or 4 GB RAM**: "This machine cannot mine this release." Offer a rented server ([/rent.md](/rent.md)).
 - **Other quantised builds do not help.** Each pool requires its exact pinned weights (bf16 for s1-fast and s1-pro, the pinned Q8_0 GGUF for s1-lite and s1-cpu) in the pinned runtime image. Any other quantisation gives different answers and is scored badly or struck.
 - **One hotkey (UID) = one port; each model serves one pool** (since chain block 9331987, about 13:00 UTC on 21 October 2026, one hotkey can carry several models behind one port plus one competition entry; see [hardware](/hardware#several-models-and-a-competition-entry-on-one-hotkey-from-block-9331987)). A server with 8 GPUs can run up to 8 miners, each with its own hotkey, registration and port. Inside a pool the weight is score × verified capacity, capped at the pool target, measured by surprise load probes on all UIDs of the pool at once; many hotkeys on one machine share its throughput and add nothing, while one hotkey with more GPUs behind it counts more, up to the target.
-- The models the Decision Models API sells under other names (for example Blink 26B-A4B, Quyet, d3) are **not** mining pools today. If someone asks to mine them, say so.
+- The models the Decision Models API sells under other names (for example Blink 26B-A4B and d3) are **not** mining pools today. If someone asks to mine them, say so.
 
 Also check: public reachability. A home connection needs a port forward for TCP 8091 (the person configures the router); many rented "container pods" cannot expose a fixed public port or run Docker — prefer a VM or bare-metal server ([/rent.md](/rent.md) lists which offers work).
 
