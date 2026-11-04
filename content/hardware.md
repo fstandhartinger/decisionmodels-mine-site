@@ -23,7 +23,7 @@ Shares apply to the inference part of miner emissions (30 % from Monday 2 Novemb
 - **Tier order:** the average per miner in a tier is at most half of the tier above.
 - **Empty pools:** an unpaid pool share is burned.
 
-Tiers, shares and targets are release constants. A change needs a new release and is announced in advance.
+Tiers, shares and targets are release constants. A change needs a new release and is announced at least 24 hours before it starts. Adding a model to the inference list needs no advance notice ([details](https://reax.co/competitions/faq/#faq-inference-add-model)).
 
 Common to the GPU pools: Linux x86_64 (WSL2 conditional), 4 CPU cores, 32 GB RAM, Docker + NVIDIA container toolkit, public IP with inbound TCP 8091, synchronised clock. Free disk per pool: `s1-fast` 20 GB, `s1-pro` 100 GB, `s1-lite` 8 GB, `s1-cpu` 3 GB.
 

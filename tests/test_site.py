@@ -168,7 +168,7 @@ class SiteTests(unittest.TestCase):
 
     def test_reward_split_section(self):
         page=(DIST/'rewards-and-risks.html').read_text()
-        for needle in ('How miner rewards are split','40 %','20 %','30 %','burned','100 %','announced in advance','Jev-compatible'):
+        for needle in ('How miner rewards are split','40 %','20 %','30 %','burned','100 %','at least 24 hours before it starts','Jev-compatible'):
             self.assertIn(needle,page)
         self.assertIn('How miner rewards are split',(DIST/'rewards-and-risks.md').read_text())
         for name in ('index.md','agent.md'):
