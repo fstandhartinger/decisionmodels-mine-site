@@ -86,7 +86,8 @@ Decisions per second on the validator's reference path, one decision at a time (
 | H100 80GB | 80 GB | ≈ 61 | eligible |
 | A100, H200, B200, B300, A10/L4 (24 GB) | ≥ 24 GB | not yet measured | should work; run the kit's calibration self-check before serving |
 | RTX 4080/5080, 4070 Ti Super, laptop GPUs (incl. laptop "RTX 4090", 16 GB) | 16 GB | — | not enough memory for s1-fast; can serve `s1-lite` |
-| Apple Silicon, AMD, Intel, no GPU | — | — | no GPU pool; a CPU can serve `s1-cpu`; can also act as the controller for a remote NVIDIA server |
+| AMD, Intel, no GPU | — | — | no GPU pool; an x86-64 or aarch64 Linux CPU can serve `s1-cpu` (aarch64: ARMv8.2+; not tested on macOS); can also act as the controller for a remote NVIDIA server |
+| Apple Silicon (macOS) | — | — | no local mining on macOS; use it as the controller for a remote NVIDIA Linux server |
 
 Two machines with the same card can still give slightly different results, so the kit runs a self-check on your machine before you start serving.
 

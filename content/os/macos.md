@@ -1,6 +1,6 @@
 # macOS: check your host, plan a controller and signer
 
-A Mac cannot mine this release locally. The runtime requires NVIDIA CUDA 13 on a Linux x86_64 host. Apple GPUs and Docker architecture emulation cannot supply that hardware. {{HUMAN_NOTE}}
+A Mac cannot mine this release locally. The runtime requires NVIDIA CUDA 13 on a Linux x86_64 host. Apple GPUs and Docker architecture emulation cannot supply that hardware. s1-cpu targets Linux (x86_64 or aarch64). {{HUMAN_NOTE}}
 
 ## Agent step: check and plan here
 
