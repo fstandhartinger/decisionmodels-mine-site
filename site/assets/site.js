@@ -94,7 +94,7 @@
         verdict.replaceChildren(); verdict.hidden = !os.value || !gpu.value;
         if (verdict.hidden) return;
         const value = gpu.value;
-        const sizes = { none: 0, lt8: 4, '8': 8, '24': 24, '80': 80, amd: 0, apple: 0 };
+        const sizes = { none: 0, lt8: 4, '8': 8, '24': 24, '48': 48, '80': 80, amd: 0, apple: 0 };
         const vendor = value === 'amd' ? 'AMD' : value === 'apple' ? 'Apple' : 'NVIDIA';
         const result = window.MiningRequirements.check(data, os.value, sizes[value], vendor);
         const sentence = document.createElement('p');

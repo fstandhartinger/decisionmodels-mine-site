@@ -45,7 +45,7 @@ Run the kit's read-only check (section 6, step 1) or, if you cannot run commands
 | `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
 | `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
 
-All four pools are enabled in release {{RELEASE_ID}}. Shares are of the inference part of miner emissions; the average per miner in a tier is at most half of the tier above; an empty pool passes its share to the other pools. Each model serves one pool; from block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry. Use `./reaxctl doctor --json` to read `recommended_pool`, or `--pool <id>` to check a specific pool.
+All four pools are enabled in release {{RELEASE_ID}}. Shares are of the inference part of miner emissions; the average per miner in a tier is at most half of the tier above; an empty pool's unpaid share is burned. Each model serves one pool; from block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry. Use `./reaxctl doctor --json` to read `recommended_pool`, or `--pool <id>` to check a specific pool.
 
 Verdicts to give, in plain words:
 
@@ -101,7 +101,7 @@ Nova Wallet (phone) and the Polkadot.js extension also hold Bittensor accounts. 
 ./reaxctl install --mode mainnet --pool s1-fast --yes --json --confirm-mainnet
 ```
 
-Use the pool from the hardware verdict (`--pool s1-fast`, `s1-pro`, `s1-lite` or `s1-cpu`). Pass `--confirm-mainnet` only after the human explicitly approves a mainnet install. It installs the tools, pulls the pinned images by digest and downloads the pinned weights (≈ 9 GB for s1-fast, ≈ 52 GB for s1-pro, 4.5 GB for s1-lite, 0.8 GB for s1-cpu; s1-pro needs the person to accept the Hugging Face gate first). Then run the kit's calibration self-check printed by `plan`.
+Use the pool from the hardware verdict (`--pool s1-fast`, `s1-pro`, `s1-lite` or `s1-cpu`). Pass `--confirm-mainnet` only after the human explicitly approves a mainnet install. It installs the tools, pulls the pinned images by digest and downloads the pinned weights (≈ 9 GB for s1-fast, ≈ 55 GB for s1-pro (mammoth-1, ungated), 4.5 GB for s1-lite, 0.8 GB for s1-cpu). Then run the kit's calibration self-check printed by `plan`.
 
 **Step 5 — hotkey and public coldkey address (agent).**
 

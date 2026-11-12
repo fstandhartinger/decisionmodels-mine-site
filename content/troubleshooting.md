@@ -7,7 +7,7 @@ Start with the read-only machine check (the `doctor` command). Each blocker incl
 ```bash
 ./reaxctl doctor --json
 ./reaxctl plan --mode localnet --json
-# Once the miner software is published and installed:
+# After install:
 ./reaxctl status --json
 ./reaxctl logs --lines 100
 ```

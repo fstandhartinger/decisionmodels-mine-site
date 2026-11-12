@@ -23,7 +23,7 @@ Approve admin changes before Docker/toolkit installation. Keep the funded coldke
 
 ## Networking
 
-A public IP and inbound TCP 8091 are required. Approve any router/firewall changes. Never expose the model’s supporting services (sidecars) on ports 8101, 8102 or 8000. Carrier-grade NAT may prevent inbound connections; do not assume port forwarding fixes it. Check actual external reachability before a payment.
+A public IP and inbound TCP 8091 are required. Approve any router/firewall changes. Never expose the model’s supporting services (sidecars) on ports 8101–8104 or 8000. Carrier-grade NAT may prevent inbound connections; do not assume port forwarding fixes it. Check actual external reachability before a payment.
 
 ## AMD or no GPU
 
