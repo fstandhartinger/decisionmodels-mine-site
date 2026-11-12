@@ -24,7 +24,7 @@ If `nvidia-smi` is not on PATH, NVIDIA documents `/usr/lib/wsl/lib/nvidia-smi`. 
 
 Docker Desktop networking and Docker Engine inside WSL differ. Desktop host networking is an opt-in feature in version 4.34+, not the same as a native Linux host. WSL NAT, Windows firewall and home-router forwarding can each block inbound TCP. Windows 11 mirrored networking is conditional on supported versions; do not promise it fixes public ingress. Check reachability again after a reboot.
 
-Only TCP 8091 may be public. Ports 8101, 8102 and 8000 stay private. Ask before changing permissions or networking.
+Only TCP 8091 may be public. Ports 8101–8104 and 8000 stay private. Ask before changing permissions or networking.
 
 ## Human step: wallet signing
 

@@ -20,7 +20,8 @@
       const pro = gpuPools.find(p => p.id === 's1-pro');
       if (pro) reasons.push(pro.gpu.unmeasured_note);
       reasons.push(data.copy.CHECKER_BODY);
-      return { verdict: hardwareCandidate ? (support.mining === 'conditional' ? 'Conditional WSL2 candidate' : (data.status.live ? 'Hardware candidate; verify runtime' : 'Hardware candidate for launch')) : data.copy.OTHER_HOST, reasons, hardware_candidate: hardwareCandidate, eligible_pools: support.mining === 'remote_only' ? [] : eligiblePools, live: data.status.live, guide: support.guide };
+      const cpuCandidate = !hardwareCandidate && support.mining === 'native' && eligiblePools.includes('s1-cpu');
+      return { verdict: hardwareCandidate ? (support.mining === 'conditional' ? 'Conditional WSL2 candidate' : (data.status.live ? 'Hardware candidate; verify runtime' : 'Hardware candidate for launch')) : (cpuCandidate ? (data.status.live ? 'CPU pool candidate (s1-cpu); verify runtime' : 'CPU pool candidate (s1-cpu) for launch') : data.copy.OTHER_HOST), reasons, hardware_candidate: hardwareCandidate, eligible_pools: support.mining === 'remote_only' ? [] : eligiblePools, live: data.status.live, guide: support.guide };
     }
   };
 })();

@@ -75,7 +75,7 @@ There are four pools. A **24 GB NVIDIA card** such as an RTX 3090, 4090 or 5090 
 | --- | --- |
 | GPU | s1-fast: NVIDIA ≥24 GB; s1-pro: NVIDIA 48 GB or more; s1-lite: NVIDIA ≥8 GB or Jetson Orin; s1-cpu: no GPU (AVX2 or ARMv8.2 CPU). One pool per model; one hotkey can carry several models (from block 9331987) |
 | Driver | R580+ for CUDA 13 |
-| Host | 4 CPU cores · 32 GB RAM · 20 GB free disk |
+| Host | 4 CPU cores · 32 GB RAM · 20 GB free disk for `s1-fast` (`s1-pro` 100 GB, `s1-lite` 8 GB; `s1-cpu` 4 GB RAM, 3 GB disk) → [hardware](/hardware) |
 | Network | Public IP · inbound TCP 8091 · synchronized clock |
 | OS | Linux x86_64; Windows via WSL2 is conditional and not yet tested by us end to end |
 
