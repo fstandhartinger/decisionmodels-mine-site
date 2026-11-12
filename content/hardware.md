@@ -21,7 +21,7 @@ A REAX miner serves one pinned model exactly as the validators run it. Validator
 Shares apply to the inference part of miner emissions (30 % from Monday 2 November 2026, 14:30 UTC, 40 % before then, and follows measured customer demand; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
 
 - **Tier order:** the average per miner in a tier is at most half of the tier above.
-- **Empty pools:** an unpaid pool share is burned.
+- **Empty pools:** a pool without an eligible miner passes its share pro rata to the other inference pools. Only when no pool has an eligible miner does the inference part go to the subnet owner's UID (burned). Unpaid competition parts are burned (see [rewards](/rewards-and-risks)).
 
 Tiers, shares and targets are release constants. A change needs a new release and is announced at least 24 hours before it starts. Adding a model to the inference list needs no advance notice ([details](https://reax.co/competitions/faq/#faq-inference-add-model)).
 
@@ -86,7 +86,8 @@ Decisions per second on the validator's reference path, one decision at a time (
 | H100 80GB | 80 GB | ≈ 61 | eligible |
 | A100, H200, B200, B300, A10/L4 (24 GB) | ≥ 24 GB | not yet measured | should work; run the kit's calibration self-check before serving |
 | RTX 4080/5080, 4070 Ti Super, laptop GPUs (incl. laptop "RTX 4090", 16 GB) | 16 GB | — | not enough memory for s1-fast; can serve `s1-lite` |
-| Apple Silicon, AMD, Intel, no GPU | — | — | no GPU pool; a CPU can serve `s1-cpu`; can also act as the controller for a remote NVIDIA server |
+| AMD, Intel, no GPU | — | — | no GPU pool; an x86-64 or aarch64 Linux CPU can serve `s1-cpu` (aarch64: ARMv8.2+; not tested on macOS); can also act as the controller for a remote NVIDIA server |
+| Apple Silicon (macOS) | — | — | no local mining on macOS; use it as the controller for a remote NVIDIA Linux server |
 
 Two machines with the same card can still give slightly different results, so the kit runs a self-check on your machine before you start serving.
 
