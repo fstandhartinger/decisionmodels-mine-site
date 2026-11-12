@@ -31,7 +31,7 @@ The inference part is split by hardware tier, with the average per miner in a ti
 | Small GPU | `s1-lite` (NVIDIA ≥ 8 GB, incl. Jetson Orin) | 15 % |
 | CPU | `s1-cpu` (AVX2 or ARMv8.2 CPU) | 5 % |
 
-Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool’s unpaid share is burned. Tiers and shares are release constants; a change needs a new release and is announced at least 24 hours before it starts. See [hardware](/hardware).
+Inside a pool, weight = score × verified capacity, capped at the pool's target. Capacity is measured by surprise load probes that hit all UIDs of a pool at once, so many hotkeys on one machine add nothing. An empty pool’s share passes pro rata to the other inference pools; it is burned only when no pool has an eligible miner. Tiers and shares are release constants; a change needs a new release and is announced at least 24 hours before it starts. See [hardware](/hardware).
 
 Before the competitions opened on 16 October 2026 at 12:00 UTC, **100 %** of miner emissions went to inference miners. The split can change. Any change is announced at least 24 hours before it starts, on this site and on reax.co, with the date it takes effect. No amount is promised, and rewards can be zero.
 

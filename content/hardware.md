@@ -21,7 +21,7 @@ A REAX miner serves one pinned model exactly as the validators run it. Validator
 Shares apply to the inference part of miner emissions (30 % from Monday 2 November 2026, 14:30 UTC, 40 % before then, and follows measured customer demand; see [rewards](/rewards-and-risks#how-miner-rewards-are-split)). Two rules shape them:
 
 - **Tier order:** the average per miner in a tier is at most half of the tier above.
-- **Empty pools:** an unpaid pool share is burned.
+- **Empty pools:** a pool without an eligible miner passes its share pro rata to the other inference pools. Only when no pool has an eligible miner does the inference part go to the subnet owner's UID (burned). Unpaid competition parts are burned (see [rewards](/rewards-and-risks)).
 
 Tiers, shares and targets are release constants. A change needs a new release and is announced at least 24 hours before it starts. Adding a model to the inference list needs no advance notice ([details](https://reax.co/competitions/faq/#faq-inference-add-model)).
 

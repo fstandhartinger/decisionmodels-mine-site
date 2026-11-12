@@ -45,7 +45,7 @@ Run the kit's read-only check (section 6, step 1) or, if you cannot run commands
 | `s1-lite` | Plumb-4B, 8-bit GGUF (4.48 GB), llama.cpp | NVIDIA GPU with **≥ 8 GB**, including Jetson Orin (8 GB or more) | small-GPU tier 15 % |
 | `s1-cpu` | Gutsy 0.8B, 8-bit GGUF (0.81 GB), llama.cpp | any x86-64 CPU with AVX2 or an ARMv8.2 CPU, 4+ cores, 4 GB RAM | CPU tier 5 % |
 
-All four pools are enabled in release {{RELEASE_ID}}. Shares are of the inference part of miner emissions; the average per miner in a tier is at most half of the tier above; an empty pool's unpaid share is burned. Each model serves one pool; from block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry. Use `./reaxctl doctor --json` to read `recommended_pool`, or `--pool <id>` to check a specific pool.
+All four pools are enabled in release {{RELEASE_ID}}. Shares are of the inference part of miner emissions; the average per miner in a tier is at most half of the tier above; an empty pool's share passes pro rata to the other inference pools (burned only when no pool has an eligible miner). Each model serves one pool; from block 9331987 (about 13:00 UTC on 21 October 2026) one hotkey can carry several models plus one competition entry. Use `./reaxctl doctor --json` to read `recommended_pool`, or `--pool <id>` to check a specific pool.
 
 Verdicts to give, in plain words:
 
