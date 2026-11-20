@@ -248,6 +248,7 @@ class SiteTests(unittest.TestCase):
                     elif name == 'live-public':
                         self.assertEqual(data['state'], 'live')
                         self.assertIn('Network live', home)
+                        self.assertIn('REAX is live on Bittensor Finney as netuid 92.', (output/'llms.txt').read_text())
                         self.assertNotIn('source remains private', home.lower())
                         self.assertTrue(all(not s['blocked_until_live'] for s in data['steps'][2:]))
                         register = next(s for s in data['mainnet_steps'] if s['id']=='register')
