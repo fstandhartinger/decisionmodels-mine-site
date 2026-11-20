@@ -51,7 +51,7 @@ COPY = {
         'CHECKER_BODY': 'Start with a free local-chain practice run using test TAO before real registration. This check does not enable real mining; verify runtime and public ingress.',
         'OTHER_HOST': 'Practice here; real mining needs another host',
         'GPU_NOTE': 'A free local-chain practice run uses test TAO before real registration.',
-        'LLMS_NOTE': 'Practice free on a local chain with test TAO before real registration. Verify host readiness, keep coldkeys off the miner and require human payment approval.',
+        'LLMS_NOTE': 'REAX is live on Bittensor Finney as netuid 92. Practice free on a local chain with test TAO before real registration. Verify host readiness, keep coldkeys off the miner and require human payment approval.',
         'CHOOSE_MODE': 'Choose a free local-chain practice run before real registration',
         'PLAN_VERIFY': 'Review the ordered practice plan; use test TAO before real registration.',
     },
